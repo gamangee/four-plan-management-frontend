@@ -1,0 +1,15 @@
+{
+  "user": [
+    {
+      "name": "Rynn Park",
+      "account_id": "administrator",
+      "password" : "admin123",
+      "role": "admin",
+      "email": null,
+      "department": "인사팀",
+      "position": "팀장",
+      "yearly": null,
+      "duty": false
+    }
+  ]
+}
