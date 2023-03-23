@@ -12,7 +12,7 @@ function App() {
     <ThemeProvider theme={{ style: theme, variables }}>
       <GlobalStyle />
       <DarkModeProvider>
-        <SideBar />
+        {/* <SideBar /> */}
         <Outlet />
       </DarkModeProvider>
     </ThemeProvider>
