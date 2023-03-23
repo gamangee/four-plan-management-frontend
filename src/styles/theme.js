@@ -14,9 +14,10 @@ const theme = {
   dev: '#B5EAD7', // 개발팀
   hr: '#C7CEEA', // 인사팀
   calendarText: '#004375', // 캘린더 글자색
-  textSmall: '14px',
-  textMedium: '16px',
-  textLarge: '20px',
+  textxs: '14px',
+  textsm: '16px',
+  textmd: '18px',
+  textlg: '20px',
   BtnborderRadius: '10px', // 버튼 & 오늘의 당직
   borderRadius: '30px', // 기본 container
 };
