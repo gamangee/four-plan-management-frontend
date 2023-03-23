@@ -3,9 +3,10 @@ import reset from 'styled-reset';
 
 const GlobalStyle = createGlobalStyle`
 ${reset}
+font-family: 'Noto Sans KR', sans-serif;
   * {
     box-sizing: border-box;
-    font-family: 'Roboto', sans-serif, 'Noto Sans KR', sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
   }
   a{
     color:inherit;
