@@ -1,8 +1,63 @@
-import React from 'react';
-import { AiFillEyeInvisible } from 'react-icons/ai';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
 import styled from 'styled-components';
 
+const randomNums = () => {
+  let result = Math.floor(Math.random() * 10 + 1);
+  if (result < 10) {
+    result = '0' + result;
+  }
+  return result;
+};
+
 export default function UserInfo() {
+  const [index, setIndex] = useState(10);
+  const [isVisibleA, setIsVisibleA] = useState(false);
+  const [isVisibleB, setIsVisibleB] = useState(false);
+  const [isVisibleC, setIsVisibleC] = useState(false);
+
+  const changeTypeA = () => {
+    setIsVisibleA(prev => !prev);
+  };
+
+  const changeTypeB = () => {
+    setIsVisibleB(prev => !prev);
+  };
+
+  const changeTypeC = () => {
+    setIsVisibleC(prev => !prev);
+  };
+
+  useEffect(() => {
+    setIndex(randomNums());
+  }, []);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+
+    setValue,
+  } = useForm();
+
+  const onValid = data => {
+    if (data.newPassword !== data.checkPassword) {
+      setError(
+        'checkPassword',
+        {
+          message: '비밀번호가 일치하지 않습니다.',
+        },
+        { shouldFocus: true }
+      );
+    }
+    setValue('email', '');
+    setValue('currentPassword', '');
+    setValue('newPassword', '');
+    setValue('checkPassword', '');
+  };
+
   return (
     <Container>
       <DashBoard>
@@ -12,7 +67,7 @@ export default function UserInfo() {
           <UserInformation>
             <ProfileImg>
               <Image
-                src="/images/profile/profile_img_02.jpg"
+                src={`/images/profile/profile_img_${index}.jpg`}
                 alt="profile_img"
               />
               <UserName>홍길동</UserName>
@@ -21,42 +76,69 @@ export default function UserInfo() {
               <Infos>• 남은 연차 : XX일</Infos>
               <Infos>• 오늘은 당직 날이 아닙니다.</Infos>
             </ProfileImg>
-            <ProfileContents>
+            <ProfileContents onSubmit={handleSubmit(onValid)}>
               <Label htmlFor="email">이메일</Label>
               <Align>
                 <Input
+                  {...register('email', {
+                    required: true,
+                    pattern: {
+                      value:
+                        /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i,
+                      message: '이메일 형식에 맞지 않습니다.',
+                    },
+                  })}
                   id="email"
                   type="email"
                   placeholder="user2023@fourplanner.com"
                 />
                 <Btn>수정</Btn>
               </Align>
+              <ErrorMessage>{errors?.email?.message}</ErrorMessage>
               <Label htmlFor="currentPassword">비밀번호</Label>
               <Align>
                 <Input
+                  {...register('currentPassword', { required: true })}
                   id="currentPassword"
-                  type="password"
+                  type={isVisibleA ? 'text' : 'password'}
                   placeholder="•••••••••"
                 />
                 <Btn>수정</Btn>
-                <Icon>
-                  <AiFillEyeInvisible />
+                <Icon onClick={changeTypeA} isVisible={isVisibleA}>
+                  {isVisibleA ? <AiFillEye /> : <AiFillEyeInvisible />}
                 </Icon>
               </Align>
+              <ErrorMessage>{errors?.currentPassword?.message}</ErrorMessage>
               <Label htmlFor="newPassword">새 비밀번호</Label>
               <Align>
-                <Input id="newPassword" type="password" />
-                <Icon>
-                  <AiFillEyeInvisible />
+                <Input
+                  {...register('newPassword', {
+                    required: true,
+                    minLength: {
+                      value: 8,
+                      message: '비밀번호가 너무 짧습니다. (최소 8자 이상)',
+                    },
+                  })}
+                  id="newPassword"
+                  type={isVisibleB ? 'text' : 'password'}
+                />
+                <Icon onClick={changeTypeB} isVisible={isVisibleB}>
+                  {isVisibleB ? <AiFillEye /> : <AiFillEyeInvisible />}
                 </Icon>
               </Align>
+              <ErrorMessage>{errors?.newPassword?.message}</ErrorMessage>
               <Label htmlFor="checkPassword">새 비밀번호 확인</Label>
               <Align>
-                <Input id="checkPassword" type="password" />
-                <Icon>
-                  <AiFillEyeInvisible />
+                <Input
+                  {...register('checkPassword', { required: true })}
+                  id="checkPassword"
+                  type={isVisibleC ? 'text' : 'password'}
+                />
+                <Icon onClick={changeTypeC} isVisible={isVisibleC}>
+                  {isVisibleC ? <AiFillEye /> : <AiFillEyeInvisible />}
                 </Icon>
               </Align>
+              <ErrorMessage>{errors?.checkPassword?.message}</ErrorMessage>
             </ProfileContents>
           </UserInformation>
         </UserInfoContainer>
@@ -151,7 +233,7 @@ const Infos = styled.div`
   font-weight: 600;
 `;
 
-const ProfileContents = styled.div`
+const ProfileContents = styled.form`
   ${props => props.theme.variables.flex('column', 'center', '')};
   width: 100%;
   min-width: 300px;
@@ -166,6 +248,7 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
+  color: ${props => props.theme.style.text};
   border: 2px solid ${props => props.theme.style.skyblue};
   border-radius: ${props => props.theme.style.BtnborderRadius};
   outline: none;
@@ -178,8 +261,8 @@ const Input = styled.input`
   }
 
   &:placeholder {
+    color: ${props => props.theme.style.lightGray};
   }
-  color: ${props => props.theme.style.lightGray};
 `;
 
 const Btn = styled.button`
@@ -205,8 +288,14 @@ const Align = styled.div`
   margin-bottom: 20px;
 `;
 
+const ErrorMessage = styled.div`
+  color: ${props => props.theme.style.warning};
+  margin: -10px 0 30px;
+`;
+
 const Icon = styled.div`
-  color: ${props => props.theme.style.lightGray};
+  color: ${props =>
+    props.isVisible ? props.theme.style.text : props.theme.style.lightGray};
   position: absolute;
   top: 30%;
   right: 32%;
@@ -214,6 +303,7 @@ const Icon = styled.div`
   transition: all 0.4s ease;
 
   &:hover {
-    color: ${props => props.theme.style.black};
+    color: ${props =>
+      props.isVisible ? props.theme.style.lightGray : props.theme.style.text};
   }
 `;
