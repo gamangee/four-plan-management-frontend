@@ -159,7 +159,8 @@ const DashBoard = styled.div`
   background-color: ${props => props.theme.style.white};
   border-radius: ${props => props.theme.style.borderRadius};
   margin: 0 auto;
-  min-width: 1300px;
+  width: 1400px;
+  height: 900px;
   padding: 20px;
 `;
 
@@ -167,37 +168,43 @@ const SideBar = styled.div`
   background-color: ${props => props.theme.style.white};
   border-radius: ${props => props.theme.style.borderRadius};
   border: 8px solid ${props => props.theme.style.skyblue};
-  min-width: 280px;
-  height: 80vh;
+  width: 300px;
+  height: 860px;
 `;
 
 const UserInfoContainer = styled.div`
+  ${props => props.theme.variables.flex('column', 'center', 'center')};
   width: 100%;
+  height: inherit;
   min-width: 600px;
-  height: 100%;
-  padding: 60px;
+  padding: 50px;
+  position: relative;
 `;
 
 const Tab = styled.div`
+  ${props => props.theme.variables.flex('', 'center', 'center')};
   background-color: ${props => props.theme.style.skyblue};
   border-radius: ${props => props.theme.style.borderRadius};
   color: ${props => props.theme.style.text};
-  width: 200px;
-  padding: 12px;
-  text-align: center;
+  width: 230px;
+  height: 40px;
   font-weight: 700;
-  margin-bottom: 70px;
+  position: absolute;
+  top: 50px;
+  left: 50px;
 `;
 
 const UserInformation = styled.div`
-  ${props => props.theme.variables.flex('', '', 'center')};
+  ${props => props.theme.variables.flex('', 'center', 'center')};
+  width: 100%;
 `;
 
 const ProfileImg = styled.div`
   ${props => props.theme.variables.flex('column', 'center', 'center')};
   background-color: ${props => props.theme.style.skyblue};
   border-radius: ${props => props.theme.style.borderRadius};
-  padding: 60px 20px;
+  padding: 60px 30px;
+  width: 320px;
   white-space: nowrap;
 `;
 
@@ -236,10 +243,9 @@ const Infos = styled.div`
 `;
 
 const ProfileContents = styled.form`
-  ${props => props.theme.variables.flex('column', 'center', '')};
+  ${props => props.theme.variables.flex('column', 'space-between', '')};
   width: 100%;
-  min-width: 300px;
-  padding-left: 30px;
+  padding: 0 50px;
 `;
 
 const Label = styled.label`
@@ -254,7 +260,7 @@ const Input = styled.input`
   border: 2px solid ${props => props.theme.style.skyblue};
   border-radius: ${props => props.theme.style.BtnborderRadius};
   outline: none;
-  width: 400px;
+  width: 450px;
   margin-right: 20px;
   padding: 10px 20px;
   transition: all 0.4s ease;
@@ -276,7 +282,8 @@ const Btn = styled.button`
   font-size: ${props => props.theme.style.textmd};
   outline: none;
   border: none;
-  padding: 8px 20px;
+  width: 80px;
+  height: 40px;
   white-space: nowrap;
   transition: all 0.4s ease;
 
@@ -301,8 +308,8 @@ const Icon = styled.div`
   color: ${props =>
     props.isVisible ? props.theme.style.text : props.theme.style.lightGray};
   position: absolute;
-  top: 30%;
-  right: 28%;
+  top: 13px;
+  left: 410px;
   cursor: pointer;
   transition: all 0.4s ease;
 

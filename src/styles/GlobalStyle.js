@@ -26,11 +26,11 @@ a:active{
          -o-transition: all 0.2s ease-in-out;
             transition: all 0.2s ease-in-out;
 }
-input[type=“radio”], input[type=“checkbox”] {vertical-align:middle !important; margin:-.2em 3px 0 0 !important;}
+input[type='radio'], input[type='checkbox'] {vertical-align:middle !important; margin:-.2em 3px 0 0 !important;}
 input,select {vertical-align:middle; background:#fff;}
-input,textarea,button{-webkit-appearance:none;-webkit-border-radius:0}
-input[type=‘checkbox’]{-webkit-appearance:checkbox}
-input[type=‘radio’]{-webkit-appearance:radio}
+input,textarea,button{-webkit-appearance:none;--webkit-border-radius:0}
+input[type='checkbox']{-webkit-appearance:checkbox}
+input[type='radio']{-webkit-appearance:radio}
 button{cursor:pointer}
 `;
 
