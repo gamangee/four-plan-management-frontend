@@ -16,6 +16,7 @@ export default function UserInfo() {
   const [isVisibleA, setIsVisibleA] = useState(false);
   const [isVisibleB, setIsVisibleB] = useState(false);
   const [isVisibleC, setIsVisibleC] = useState(false);
+  const [formData, setFormData] = useState({});
 
   const changeTypeA = () => {
     setIsVisibleA(prev => !prev);
@@ -38,7 +39,6 @@ export default function UserInfo() {
     handleSubmit,
     formState: { errors },
     setError,
-
     setValue,
   } = useForm();
 
@@ -56,8 +56,9 @@ export default function UserInfo() {
     setValue('currentPassword', '');
     setValue('newPassword', '');
     setValue('checkPassword', '');
+    setFormData(data);
   };
-
+  // console.log(formData);
   return (
     <Container>
       <DashBoard>
@@ -158,6 +159,7 @@ const DashBoard = styled.div`
   background-color: ${props => props.theme.style.white};
   border-radius: ${props => props.theme.style.borderRadius};
   margin: 0 auto;
+  min-width: 1300px;
   padding: 20px;
 `;
 
@@ -165,7 +167,7 @@ const SideBar = styled.div`
   background-color: ${props => props.theme.style.white};
   border-radius: ${props => props.theme.style.borderRadius};
   border: 8px solid ${props => props.theme.style.skyblue};
-  min-width: 250px;
+  min-width: 280px;
   height: 80vh;
 `;
 
@@ -181,7 +183,7 @@ const Tab = styled.div`
   border-radius: ${props => props.theme.style.borderRadius};
   color: ${props => props.theme.style.text};
   width: 200px;
-  padding: 10px;
+  padding: 12px;
   text-align: center;
   font-weight: 700;
   margin-bottom: 70px;
@@ -252,16 +254,18 @@ const Input = styled.input`
   border: 2px solid ${props => props.theme.style.skyblue};
   border-radius: ${props => props.theme.style.BtnborderRadius};
   outline: none;
+  width: 400px;
+  margin-right: 20px;
   padding: 10px 20px;
-  margin-right: 16px;
   transition: all 0.4s ease;
 
   &:focus {
     border: 2px solid ${props => props.theme.style.text};
   }
 
-  &:placeholder {
+  &::placeholder {
     color: ${props => props.theme.style.lightGray};
+    letter-spacing: 1px;
   }
 `;
 
@@ -272,7 +276,7 @@ const Btn = styled.button`
   font-size: ${props => props.theme.style.textmd};
   outline: none;
   border: none;
-  padding: 10px 20px;
+  padding: 8px 20px;
   white-space: nowrap;
   transition: all 0.4s ease;
 
@@ -298,7 +302,7 @@ const Icon = styled.div`
     props.isVisible ? props.theme.style.text : props.theme.style.lightGray};
   position: absolute;
   top: 30%;
-  right: 32%;
+  right: 28%;
   cursor: pointer;
   transition: all 0.4s ease;
 
