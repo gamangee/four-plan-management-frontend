@@ -1,22 +1,47 @@
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
 
 export default function SignUp() {
-  // 입력값
-  const [state, setState] = useState({
-    name: '',
-    id: '',
-    email: '',
-    pw: '',
-    pwCheck: '',
-  });
-  // 비밀번호 일치 여부
-  const [isEqual, setIsEqual] = useState(false);
-  // 회원가입 완료 여부
-  const [isSuccess, setIsSuccess] = useState(false);
   // url 이동
   const navigate = useNavigate();
+  // pw 보이기
+  const [isVisiblePw, setIsVisiblePw] = useState(false);
+  // pwCheck 보이기
+  const [isVisiblePwCheck, setIsVisiblePwCheck] = useState(false);
+
+  // ******
+  // 회원가입 완료 여부
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  // 입력값 : react-hook-form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+    clearErrors,
+    setValue,
+  } = useForm();
+
+  // onValid : 검사
+  const onValid = data => {
+    if (data.pw !== data.pwCheck) {
+      setError('pwCheck');
+      setValue('pwCheck', '');
+    } else {
+      clearErrors('pwCheck');
+      onSubmit(data);
+    }
+  };
+
+  // ******
+  // onSubmit : 등록 => API연결
+  const onSubmit = data => {
+    console.log('signUp onSubmit', data);
+  };
 
   return (
     <SignUpBackground style={{ backgroundImage: 'url(./images/bg3.jpg' }}>
@@ -27,36 +52,97 @@ export default function SignUp() {
           <br />
           You can use our service !
         </InfoPhrase>
-        <Form>
+        <Form onSubmit={handleSubmit(onValid)}>
           {/* userName */}
           <SignUpInput
             type="text"
+            name="name"
             placeholder="Please enter your Name"
-          ></SignUpInput>
+            {...register('name', {
+              required: true,
+            })}
+          />
+          {errors.name && <WarningPhrase>필수 입력 항목입니다.</WarningPhrase>}
           {/* id */}
           <SignUpInput
             type="text"
+            name="id"
             placeholder="Please enter your ID"
-          ></SignUpInput>
+            {...register('id', {
+              required: true,
+              minLength: {
+                value: 2,
+              },
+              maxLength: {
+                value: 10,
+              },
+            })}
+          />
+          {errors.id && (
+            <WarningPhrase>
+              ID는 2자 이상, 10자 이하로 입력해주세요.
+            </WarningPhrase>
+          )}
           {/* email */}
           <SignUpInput
             type="text"
+            name="email"
             placeholder="Please enter your E-mail"
-          ></SignUpInput>
+            {...register('email', {
+              required: true,
+              pattern: {
+                // 이메일 형식
+                value:
+                  /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{2,3})(\]?)$/,
+              },
+            })}
+          />
+          {errors.email && (
+            <WarningPhrase>이메일 형식에 맞지 않습니다.</WarningPhrase>
+          )}
           {/* password */}
-          <SignUpInput
-            type="password"
-            placeholder="Please enter your Password"
-          ></SignUpInput>
+          <Div>
+            <SignUpInput
+              type={isVisiblePw ? 'text' : 'password'}
+              name="pw"
+              placeholder="Please enter your Password"
+              {...register('pw', {
+                required: true,
+                minLength: {
+                  value: 8,
+                },
+                maxLength: {
+                  value: 15,
+                },
+              })}
+            />
+            <Icon onClick={() => setIsVisiblePw(!isVisiblePw)}>
+              {isVisiblePw ? <AiFillEye /> : <AiFillEyeInvisible />}
+            </Icon>
+          </Div>
+          {errors.pw && (
+            <WarningPhrase>
+              비밀번호는 8자 이상, 15자 이하로 입력해주세요.
+            </WarningPhrase>
+          )}
           {/* check password */}
-          <SignUpInput
-            type="password"
-            placeholder="Please check your Password"
-          ></SignUpInput>
-          {isEqual && (
+          <Div>
+            <SignUpInput
+              type={isVisiblePwCheck ? 'text' : 'password'}
+              name="pwCheck"
+              placeholder="Please check your Password"
+              {...register('pwCheck', {
+                required: true,
+              })}
+            />
+            <Icon onClick={() => setIsVisiblePwCheck(!isVisiblePwCheck)}>
+              {isVisiblePwCheck ? <AiFillEye /> : <AiFillEyeInvisible />}
+            </Icon>
+          </Div>
+          {errors.pwCheck && (
             <WarningPhrase>비밀번호가 일치하지 않습니다.</WarningPhrase>
           )}
-          <SignUpBtn>Sign Up</SignUpBtn>
+          <SignUpBtn type="submit">Sign Up</SignUpBtn>
         </Form>
       </SignUpSection>
     </SignUpBackground>
@@ -72,6 +158,9 @@ export const SignUpBackground = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
 `;
 
 export const SignUpSection = styled.section`
@@ -110,6 +199,23 @@ export const SignUpInput = styled.input`
   fontsize: ${props => props.theme.style.textMedium};
   border: 0;
   border-radius: ${props => props.theme.style.BtnborderRadius};
+  outline: none;
+`;
+
+export const Div = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  ${props => props.theme.variables.flex('column', '', 'center')};
+  position: relative;
+`;
+
+export const Icon = styled.div`
+  color: ${props => props.theme.style.lightGray};
+  position: absolute;
+  cursor: pointer;
+  top: 25%;
+  right: 15%;
+  transition: 0.4s ease;
 `;
 
 export const WarningPhrase = styled.p`

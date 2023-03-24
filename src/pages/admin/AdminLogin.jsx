@@ -26,7 +26,10 @@ export const LoginBackground = styled.div`
   margin: 0;
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
+  // background-repeat: no-repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
 `;
 
 export const LoginSection = styled.section`
