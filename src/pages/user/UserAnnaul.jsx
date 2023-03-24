@@ -9,6 +9,9 @@ export default function UserAnnaul() {
     setIsChecked(prev => !prev);
   };
 
+  const [startDay, setStartDay] = useState();
+  const [endDay, setEndDay] = useState();
+
   return (
     <Container>
       <DashBoard>
@@ -16,8 +19,11 @@ export default function UserAnnaul() {
         <UserInfoContainer>
           <Tab>연차 관리</Tab>
           <AnnualInput>
-            <Label>연차 등록일</Label>
-            <Input />
+            <Label htmlFor="register">연차 등록일</Label>
+            <Input
+              id="register"
+              value={`${startDay || ''} ~ ${endDay || ''}`}
+            />
             <BtnAlign>
               <Btn>등록</Btn>
               <Btn>수정</Btn>
@@ -25,19 +31,26 @@ export default function UserAnnaul() {
             </BtnAlign>
           </AnnualInput>
           <AnnualRegister>
-            <AnnualDatePicker />
+            <AnnualDatePicker setStartDay={setStartDay} setEndDay={setEndDay} />
             <SelectDates>
               <SelectDate>
                 <DateLabel>연차 시작일 :</DateLabel>
-                <Input />
+                <Input defaultValue={startDay || ''} />
               </SelectDate>
               <SelectDate>
                 <DateLabel>연차 종료일 :</DateLabel>
-                <Input />
+                <Input defaultValue={endDay || ''} />
               </SelectDate>
               <SelectDate>
                 <DateLabel>총 연차 일수 :</DateLabel>
-                <Input />
+                <Input
+                  defaultValue={
+                    (new Date(endDay).getTime() -
+                      new Date(startDay).getTime()) /
+                      (1000 * 60 * 60 * 24) +
+                      1 || ''
+                  }
+                />
               </SelectDate>
               <Check>
                 <CheckInput type="checkbox" id="checked" />

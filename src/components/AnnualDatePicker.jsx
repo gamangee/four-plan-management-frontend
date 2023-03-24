@@ -1,21 +1,29 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
-import { ko } from 'date-fns/esm/locale';
 import 'react-datepicker/dist/react-datepicker.css';
 
-export default function AnnualDatePicker() {
+export default function AnnualDatePicker({ setStartDay, setEndDay }) {
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(null);
+
+  const onChange = dates => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+    setStartDay(start?.toISOString().slice(0, 10));
+    setEndDay(end?.toISOString().slice(0, 10));
+  };
+
   return (
     <DatePicker
       inline
-      locale={ko}
       dateFormat="yyyy.MM.dd (eee)"
+      onChange={onChange}
       selected={startDate}
-      onChange={date => setStartDate(date)}
-      selectsStart
+      selectsRange
       startDate={startDate}
       endDate={endDate}
+      disabledKeyboardNavigation
     />
   );
 }
