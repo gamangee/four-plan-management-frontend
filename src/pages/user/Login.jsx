@@ -37,7 +37,6 @@ export const LoginBackground = styled.div`
 
 export const LoginSection = styled.section`
   width: 500px;
-  height: 500px;
   padding: 30px 10px;
   margin: 0 auto;
   background-color: ${props => props.theme.style.skyblue};
@@ -48,7 +47,7 @@ export const LoginSection = styled.section`
 
 export const SimpleLogo = styled.img`
   width: 60px;
-  margin: 20px;
+  margin: 15px;
 `;
 
 export const InfoPhrase = styled.p`
