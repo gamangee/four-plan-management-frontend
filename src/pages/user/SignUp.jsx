@@ -29,7 +29,9 @@ export default function SignUp() {
   // onValid : 검사
   const onValid = data => {
     if (data.pw !== data.pwCheck) {
-      setError('pwCheck');
+      setError('pwCheck', {
+        message: '비밀번호가 일치하지 않습니다.',
+      });
       setValue('pwCheck', '');
     } else {
       clearErrors('pwCheck');
@@ -59,46 +61,52 @@ export default function SignUp() {
             name="name"
             placeholder="Please enter your Name"
             {...register('name', {
-              required: true,
+              required: '필수 입력 항목입니다.',
+              pattern: {
+                value: /^[a-zA-Z가-힣]+$/,
+                message: '이름을 정확히 입력해주세요.',
+              },
             })}
           />
-          {errors.name && <WarningPhrase>필수 입력 항목입니다.</WarningPhrase>}
+          {errors.name && <WarningPhrase>{errors.name.message}</WarningPhrase>}
           {/* id */}
           <SignUpInput
             type="text"
             name="id"
             placeholder="Please enter your ID"
             {...register('id', {
-              required: true,
+              required: '필수 입력 항목입니다.',
+              pattern: {
+                value: /^[a-zA-Z0-9]+$/,
+                message: '아이디는 영문 혹은 숫자의 조합으로 입력해주세요.',
+              },
               minLength: {
                 value: 2,
+                message: '아이디는 2자 이상, 10자 이하로 입력해주세요.',
               },
               maxLength: {
                 value: 10,
+                message: '아이디는 2자 이상, 10자 이하로 입력해주세요.',
               },
             })}
           />
-          {errors.id && (
-            <WarningPhrase>
-              ID는 2자 이상, 10자 이하로 입력해주세요.
-            </WarningPhrase>
-          )}
+          {errors.id && <WarningPhrase>{errors.id.message}</WarningPhrase>}
           {/* email */}
           <SignUpInput
             type="text"
             name="email"
             placeholder="Please enter your E-mail"
             {...register('email', {
-              required: true,
+              required: '필수 입력 항목입니다.',
               pattern: {
-                // 이메일 형식
                 value:
                   /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{2,3})(\]?)$/,
+                message: '이메일 형식이 맞지 않습니다.',
               },
             })}
           />
           {errors.email && (
-            <WarningPhrase>이메일 형식에 맞지 않습니다.</WarningPhrase>
+            <WarningPhrase>{errors.email.message}</WarningPhrase>
           )}
           {/* password */}
           <Div>
@@ -107,12 +115,14 @@ export default function SignUp() {
               name="pw"
               placeholder="Please enter your Password"
               {...register('pw', {
-                required: true,
+                required: '필수 입력 항목입니다.',
                 minLength: {
                   value: 8,
+                  message: '비밀번호는 8자 이상, 15자 이하로 입력해주세요.',
                 },
                 maxLength: {
                   value: 15,
+                  message: '비밀번호는 8자 이상, 15자 이하로 입력해주세요.',
                 },
               })}
             />
@@ -120,11 +130,7 @@ export default function SignUp() {
               {isVisiblePw ? <AiFillEye /> : <AiFillEyeInvisible />}
             </Icon>
           </Div>
-          {errors.pw && (
-            <WarningPhrase>
-              비밀번호는 8자 이상, 15자 이하로 입력해주세요.
-            </WarningPhrase>
-          )}
+          {errors.pw && <WarningPhrase>{errors.pw.message}</WarningPhrase>}
           {/* check password */}
           <Div>
             <SignUpInput
@@ -132,7 +138,7 @@ export default function SignUp() {
               name="pwCheck"
               placeholder="Please check your Password"
               {...register('pwCheck', {
-                required: true,
+                required: '필수 입력 항목입니다.',
               })}
             />
             <Icon onClick={() => setIsVisiblePwCheck(!isVisiblePwCheck)}>
@@ -140,7 +146,7 @@ export default function SignUp() {
             </Icon>
           </Div>
           {errors.pwCheck && (
-            <WarningPhrase>비밀번호가 일치하지 않습니다.</WarningPhrase>
+            <WarningPhrase>{errors.pwCheck.message}</WarningPhrase>
           )}
           <SignUpBtn type="submit">Sign Up</SignUpBtn>
         </Form>

@@ -18,10 +18,7 @@ export default function LoginForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-    setValue,
-    setError,
-    clearErrors,
+    formState: { errors, isSubmitting },
   } = useForm();
 
   // onValid : 검사
@@ -43,11 +40,14 @@ export default function LoginForm() {
         id="id"
         placeholder="Please enter your ID"
         {...register('id', {
-          required: true,
-          minLength: 1,
+          required: '아이디를 입력해주세요.',
+          pattern: {
+            value: /^[a-zA-Z0-9]+$/,
+            message: '아이디 입력이 잘못되었습니다.',
+          },
         })}
       />
-      {errors.id && <WarningPhrase>아이디를 입력해주세요.</WarningPhrase>}
+      {errors.id && <WarningPhrase>{errors.id.message}</WarningPhrase>}
       {/* pw */}
       <Div>
         <LoginInput
@@ -55,20 +55,20 @@ export default function LoginForm() {
           id="pw"
           placeholder="Please enter your Password"
           {...register('pw', {
-            required: true,
+            required: '비밀번호를 입력해주세요.',
           })}
         />
         <Icon onClick={() => setIsVisiblePw(!isVisiblePw)}>
           {isVisiblePw ? <AiFillEye /> : <AiFillEyeInvisible />}
         </Icon>
       </Div>
-      {errors.pw && <WarningPhrase>비밀번호를 입력해주세요.</WarningPhrase>}
+      {errors.pw && <WarningPhrase>{errors.pw.message}</WarningPhrase>}
       {/* 로그인 안내 문구 */}
       {!isSuccess && (
         <WarningPhrase>아이디 또는 비밀번호가 일치하지 않습니다.</WarningPhrase>
       )}
       {/* signin btn */}
-      <SignInBtn>Sign In</SignInBtn>
+      <SignInBtn disabled={isSubmitting}>Sign In</SignInBtn>
     </Form>
   );
 }
