@@ -18,7 +18,13 @@ export default function Login() {
         {/* 로그인 form */}
         <LoginForm />
         {/* SignUp Btn => signUp Page 이동 */}
-        <SignUpBtn onClick={() => navigate('/signup')}>Sign Up</SignUpBtn>
+        <SignUpBtn
+          onClick={() => {
+            navigate('/signup');
+          }}
+        >
+          Sign Up
+        </SignUpBtn>
       </LoginSection>
     </LoginBackground>
   );
@@ -28,14 +34,14 @@ export const LoginBackground = styled.div`
   // 전체 화면 채우기
   min-width: 100%;
   min-height: 100vh;
-  padding: 15vh;
-  margin: 0;
+  ${props => props.theme.variables.flex('', 'center', 'center')};
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 1;
 `;
 
 export const LoginSection = styled.section`
@@ -68,4 +74,8 @@ export const SignUpBtn = styled.button`
   background-color: ${props => props.theme.style.blue};
   border: 0;
   border-radius: ${props => props.theme.style.BtnborderRadius};
+  transition: 0.3s ease;
+  &:hover {
+    background-color: ${props => props.theme.style.text};
+  }
 `;

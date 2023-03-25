@@ -11,8 +11,8 @@ export default function SignUp() {
   const [isVisiblePw, setIsVisiblePw] = useState(false);
   // pwCheck 보이기
   const [isVisiblePwCheck, setIsVisiblePwCheck] = useState(false);
-
-  // ******
+  // 회원가입 한 user data
+  const [userSignup, setUserSignup] = useState();
   // 회원가입 완료 여부
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -20,7 +20,7 @@ export default function SignUp() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     setError,
     clearErrors,
     setValue,
@@ -40,10 +40,15 @@ export default function SignUp() {
   };
 
   // ******
-  // onSubmit : 등록 => API연결
+  // onSubmit : 등록
   const onSubmit = data => {
-    console.log('signUp onSubmit', data);
+    // console.log('signUp onSubmit', data);
+    setUserSignup(data);
   };
+
+  // API 연결하기
+  // userSignup 데이터 => API 전송 {accountId, password, name, email}
+  //      => statuscode 200 && status success => setIsSuccess(true)
 
   return (
     <SignUpBackground style={{ backgroundImage: 'url(./images/bg3.jpg' }}>
@@ -148,7 +153,7 @@ export default function SignUp() {
           {errors.pwCheck && (
             <WarningPhrase>{errors.pwCheck.message}</WarningPhrase>
           )}
-          <SignUpBtn type="submit">Sign Up</SignUpBtn>
+          <SignUpBtn disabled={isSubmitting}>Sign Up</SignUpBtn>
         </Form>
       </SignUpSection>
     </SignUpBackground>
@@ -159,14 +164,14 @@ export const SignUpBackground = styled.div`
   // 전체 화면 채우기
   min-width: 100%;
   min-height: 100vh;
-  padding: 10vh;
-  margin: 0;
+  ${props => props.theme.variables.flex('', 'center', 'center')};
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 1;
 `;
 
 export const SignUpSection = styled.section`
@@ -222,6 +227,9 @@ export const Icon = styled.div`
   top: 25%;
   right: 15%;
   transition: 0.4s ease;
+  &:hover {
+    color: ${props => props.theme.style.text};
+  }
 `;
 
 export const WarningPhrase = styled.p`
@@ -240,4 +248,8 @@ export const SignUpBtn = styled.button`
   background-color: ${props => props.theme.style.blue};
   border: 0;
   border-radius: ${props => props.theme.style.BtnborderRadius};
+  transition: 0.3s ease;
+  &:hover {
+    background-color: ${props => props.theme.style.text};
+  }
 `;

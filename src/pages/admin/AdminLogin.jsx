@@ -22,14 +22,14 @@ export const LoginBackground = styled.div`
   // 전체 화면 채우기
   min-width: 100%;
   min-height: 100vh;
-  padding: 15vh;
-  margin: 0;
+  ${props => props.theme.variables.flex('', 'center', 'center')};
   background-size: cover;
   background-position: center;
-  // background-repeat: no-repeat;
+  background-repeat: no-repeat;
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 1;
 `;
 
 export const LoginSection = styled.section`
