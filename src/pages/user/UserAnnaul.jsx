@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import AnnualDatePicker from '../../components/AnnualDatePicker';
+import getDayOff from '../../utility/dayOff';
 
 export default function UserAnnaul() {
   const [isChecked, setIsChecked] = useState(false);
+  const [startDay, setStartDay] = useState();
+  const [endDay, setEndDay] = useState();
 
   const onClickChecked = () => {
     setIsChecked(prev => !prev);
   };
-
-  const [startDay, setStartDay] = useState();
-  const [endDay, setEndDay] = useState();
 
   return (
     <Container>
@@ -23,6 +23,7 @@ export default function UserAnnaul() {
             <Input
               id="register"
               value={`${startDay || ''} ~ ${endDay || ''}`}
+              readOnly
             />
             <BtnAlign>
               <Btn>등록</Btn>
@@ -35,21 +36,17 @@ export default function UserAnnaul() {
             <SelectDates>
               <SelectDate>
                 <DateLabel>연차 시작일 :</DateLabel>
-                <Input defaultValue={startDay || ''} />
+                <Input defaultValue={startDay || ''} readOnly />
               </SelectDate>
               <SelectDate>
                 <DateLabel>연차 종료일 :</DateLabel>
-                <Input defaultValue={endDay || ''} />
+                <Input defaultValue={endDay || ''} readOnly />
               </SelectDate>
               <SelectDate>
                 <DateLabel>총 연차 일수 :</DateLabel>
                 <Input
-                  defaultValue={
-                    (new Date(endDay).getTime() -
-                      new Date(startDay).getTime()) /
-                      (1000 * 60 * 60 * 24) +
-                      1 || ''
-                  }
+                  readOnly
+                  defaultValue={getDayOff(startDay, endDay) || ''}
                 />
               </SelectDate>
               <Check>
