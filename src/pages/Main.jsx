@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { useService } from '../context/context';
 import TodayDuty from './TodayDuty';
+import UserSearch from './UserSearch';
 
 // export const AUTH_TYPE = {
 //   PAGE_LIST: "PAGE_LIST",
@@ -128,6 +129,14 @@ export default function Main() {
           </Btn>
           <Btn onClick={selectFilter}>유저</Btn>
         </BtnGroup>
+        {isModalOpen && (
+          <UserSearch
+            setIsModalOpen={setIsModalOpen}
+            scheduleList={scheduleList}
+            schedule={schedule}
+            setSelected={setSelected}
+          />
+        )}
       </FlexContainer1>
       <FlexContainer2>
         <FullCalendar
