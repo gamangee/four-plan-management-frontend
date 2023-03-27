@@ -153,6 +153,11 @@ button{cursor:pointer}
   opacity: 0.5;
 }
 
+
+.react-datepicker__day--in-selecting-range.react-datepicker__day--selecting-range-start.react-datepicker__day--selecting-range-end.react-datepicker__day--today{
+  opacity: 1;
+}
+
 .react-datepicker__day--selected.react-datepicker__day--weekend{
   color: ${props => props.theme.style.white};    
 

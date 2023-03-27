@@ -1,16 +1,27 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import AnnualDatePicker from '../../components/AnnualDatePicker';
-import getDayOff from '../../utility/dayOff';
+import UserBtn from '../../components/UserBtn';
+import UserRegister from '../../components/UserRegister';
+
+const BTN_SIZE_S = { width: '80px', height: '50px' };
 
 export default function UserAnnaul() {
-  const [isChecked, setIsChecked] = useState(false);
   const [startDay, setStartDay] = useState();
   const [endDay, setEndDay] = useState();
 
-  const onClickChecked = () => {
-    setIsChecked(prev => !prev);
-  };
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const [isModifyOpen, setIsModifyOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  if (
+    (isRegisterOpen && isModifyOpen && !isDeleteOpen) ||
+    (!isRegisterOpen && isModifyOpen && isDeleteOpen) ||
+    (isRegisterOpen && !isModifyOpen && isDeleteOpen)
+  ) {
+    setIsRegisterOpen(false);
+    setIsModifyOpen(false);
+    setIsDeleteOpen(false);
+  }
 
   return (
     <UserInfoContainer>
@@ -23,39 +34,56 @@ export default function UserAnnaul() {
           readOnly
         />
         <BtnAlign>
-          <Btn>등록</Btn>
-          <Btn>수정</Btn>
-          <Btn>삭제</Btn>
+          <UserBtn
+            title="등록"
+            size={BTN_SIZE_S}
+            isOpen={isRegisterOpen}
+            handleOpen={() => setIsRegisterOpen(prev => !prev)}
+          />
+          <UserBtn
+            title="수정"
+            size={BTN_SIZE_S}
+            isOpen={isModifyOpen}
+            handleOpen={() => setIsModifyOpen(prev => !prev)}
+          />
+          <UserBtn
+            title="삭제"
+            size={BTN_SIZE_S}
+            isOpen={isDeleteOpen}
+            handleOpen={() => setIsDeleteOpen(prev => !prev)}
+          />
         </BtnAlign>
       </AnnualInput>
-      <AnnualRegister>
-        <AnnualDatePicker setStartDay={setStartDay} setEndDay={setEndDay} />
-        <SelectDates>
-          <SelectDate>
-            <DateLabel>연차 시작일 :</DateLabel>
-            <Input defaultValue={startDay || ''} readOnly />
-          </SelectDate>
-          <SelectDate>
-            <DateLabel>연차 종료일 :</DateLabel>
-            <Input defaultValue={endDay || ''} readOnly />
-          </SelectDate>
-          <SelectDate>
-            <DateLabel>총 연차 일수 :</DateLabel>
-            <Input readOnly defaultValue={getDayOff(startDay, endDay) || ''} />
-          </SelectDate>
-          <Check>
-            <CheckInput type="checkbox" id="checked" />
-            <CheckLabel
-              htmlFor="checked"
-              isChecked={isChecked}
-              onClick={onClickChecked}
-            >
-              위의 내용을 확인하였습니다.
-            </CheckLabel>
-          </Check>
-          <RegistBtn>등록하기</RegistBtn>
-        </SelectDates>
-      </AnnualRegister>
+      {isRegisterOpen && !isModifyOpen && !isDeleteOpen && (
+        <UserRegister
+          startDay={startDay}
+          endDay={endDay}
+          setStartDay={setStartDay}
+          setEndDay={setEndDay}
+          btnTitle="등록하기"
+          btnMethod="POST"
+        />
+      )}
+      {!isRegisterOpen && isModifyOpen && !isDeleteOpen && (
+        <UserRegister
+          startDay={startDay}
+          endDay={endDay}
+          setStartDay={setStartDay}
+          setEndDay={setEndDay}
+          btnTitle="수정하기"
+          btnMethod="POST"
+        />
+      )}
+      {!isRegisterOpen && !isModifyOpen && isDeleteOpen && (
+        <UserRegister
+          startDay={startDay}
+          endDay={endDay}
+          setStartDay={setStartDay}
+          setEndDay={setEndDay}
+          btnTitle="삭제하기"
+          btnMethod="DELETE"
+        />
+      )}
     </UserInfoContainer>
   );
 }
@@ -114,69 +142,6 @@ const Input = styled.input`
   }
 `;
 
-const Btn = styled.button`
-  background-color: ${props => props.theme.style.skyblue};
-  border-radius: ${props => props.theme.style.BtnborderRadius};
-  color: ${props => props.theme.style.text};
-  font-size: ${props => props.theme.style.textmd};
-  outline: none;
-  border: none;
-  width: 80px;
-  height: 50px;
-  white-space: nowrap;
-  transition: all 0.4s ease;
-
-  &:hover {
-    background-color: ${props => props.theme.style.text};
-    color: ${props => props.theme.style.white};
-  }
-`;
-
 const BtnAlign = styled.div`
   ${props => props.theme.variables.flex('', 'space-between', 'center')};
-`;
-
-const AnnualRegister = styled.div`
-  ${props => props.theme.variables.flex('', 'space-between', 'center')};
-  border: 8px solid ${props => props.theme.style.skyblue};
-  border-radius: ${props => props.theme.style.borderRadius};
-  color: ${props => props.theme.style.text};
-  width: 100%;
-  min-width: 900px;
-  height: 550px;
-  padding: 50px;
-`;
-
-const SelectDates = styled.div`
-  width: 40%;
-`;
-
-const SelectDate = styled.div`
-  ${props => props.theme.variables.flex('', 'space-between', 'center')};
-`;
-
-const DateLabel = styled(Label)`
-  width: 200px;
-`;
-
-const Check = styled.div`
-  margin: 20px 0 40px;
-`;
-
-const CheckInput = styled.input`
-  width: 16px;
-  height: 16px;
-`;
-
-const CheckLabel = styled.label`
-  color: ${props =>
-    props.isChecked ? props.theme.style.text : props.theme.style.lightGray};
-  margin-top: 30px;
-  font-weight: 700;
-  margin-left: 6px;
-`;
-
-const RegistBtn = styled(Btn)`
-  width: 120px;
-  height: 50px;
 `;
