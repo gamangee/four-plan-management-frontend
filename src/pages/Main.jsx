@@ -4,7 +4,6 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { useService } from '../context/context';
-import TodayDuty from './TodayDuty';
 import UserSearch from './UserSearch';
 
 // export const AUTH_TYPE = {
@@ -111,7 +110,6 @@ export default function Main() {
 
   return (
     <Container>
-      <TodayDuty />
       <FlexContainer1>
         <ContentName>Calendar</ContentName>
         <BtnGroup>

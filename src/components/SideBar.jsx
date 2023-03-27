@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import TodayDuty from '../pages/TodayDuty';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FiUser, FiCalendar } from 'react-icons/fi';
@@ -13,6 +14,7 @@ export default function SideBar() {
 
   return (
     <Container>
+      <TodayDuty />
       <LogoImg
         src="/images/logo_origin.svg"
         alt="logo"
@@ -64,6 +66,7 @@ const Container = styled.div`
   border: 10px solid ${props => props.theme.style.skyblue};
   border-radius: ${props => props.theme.style.borderRadius};
   margin: 20px;
+  margin-left: 0;
 `;
 
 const LogoImg = styled.img`
