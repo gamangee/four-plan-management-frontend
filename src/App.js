@@ -6,14 +6,23 @@ import SideBar from './components/SideBar';
 import GlobalStyle from './styles/GlobalStyle';
 import theme from './styles/theme';
 import variables from './styles/variables';
+import DashBoard from './components/DashBoard';
+import { ApiProvider } from './context/context';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
     <ThemeProvider theme={{ style: theme, variables }}>
       <GlobalStyle />
       <DarkModeProvider>
-        <SideBar />
-        <Outlet />
+        <ApiProvider>
+          <DashBoard>
+            <SideBar />
+            <Outlet />
+          </DashBoard>
+        </ApiProvider>
       </DarkModeProvider>
     </ThemeProvider>
   );
