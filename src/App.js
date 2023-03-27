@@ -18,10 +18,12 @@ function App() {
       <GlobalStyle />
       <DarkModeProvider>
         <ApiProvider>
-          <DashBoard>
-            <SideBar />
-            <Outlet />
-          </DashBoard>
+          <QueryClientProvider client={queryClient}>
+            <DashBoard>
+              <SideBar />
+              <Outlet />
+            </DashBoard>
+          </QueryClientProvider>
         </ApiProvider>
       </DarkModeProvider>
     </ThemeProvider>
