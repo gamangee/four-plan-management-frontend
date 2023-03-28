@@ -9,7 +9,7 @@ export function ApiProvider({ children }) {
   const service = new Service();
 
   useEffect(() => {
-    axios.get('/user/userLogin.json').then(res => setUser(res));
+    axios.get('/user/userLogin.json').then(res => setUser(res.data.user));
   }, []);
 
   return (

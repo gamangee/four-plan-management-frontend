@@ -89,7 +89,6 @@ export default function UserInfo() {
               type="email"
               placeholder="user2023@fourplanner.com"
             />
-            <Btn>수정</Btn>
           </Align>
           <ErrorMessage>{errors?.email?.message}</ErrorMessage>
           <Label htmlFor="currentPassword">비밀번호</Label>
@@ -100,7 +99,6 @@ export default function UserInfo() {
               type={isVisibleA ? 'text' : 'password'}
               placeholder="•••••••••"
             />
-            <Btn>수정</Btn>
             <Icon onClick={changeTypeA} isVisible={isVisibleA}>
               {isVisibleA ? <AiFillEye /> : <AiFillEyeInvisible />}
             </Icon>
@@ -136,6 +134,7 @@ export default function UserInfo() {
             </Icon>
           </Align>
           <ErrorMessage>{errors?.checkPassword?.message}</ErrorMessage>
+          <Btn>수정하기</Btn>
         </ProfileContents>
       </UserInformation>
     </UserInfoContainer>
@@ -144,8 +143,7 @@ export default function UserInfo() {
 
 const UserInfoContainer = styled.div`
   ${props => props.theme.variables.flex('column', 'center', 'center')};
-  height: inherit;
-  min-width: 600px;
+  height: 100%;
   padding: 50px;
   position: relative;
 `;
@@ -221,7 +219,7 @@ const Label = styled.label`
   color: ${props => props.theme.style.text};
   font-size: ${props => props.theme.style.textmd};
   font-weight: 600;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 `;
 
 const Input = styled.input`
@@ -230,7 +228,6 @@ const Input = styled.input`
   border-radius: ${props => props.theme.style.BtnborderRadius};
   outline: none;
   width: 450px;
-  margin-right: 20px;
   padding: 10px 20px;
   transition: all 0.4s ease;
 
@@ -251,10 +248,11 @@ const Btn = styled.button`
   font-size: ${props => props.theme.style.textmd};
   outline: none;
   border: none;
-  width: 80px;
-  height: 40px;
+  width: 200px;
+  height: 60px;
   white-space: nowrap;
   transition: all 0.4s ease;
+  margin-left: auto;
 
   &:hover {
     background-color: ${props => props.theme.style.text};

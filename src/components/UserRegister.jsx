@@ -13,7 +13,7 @@ export default function UserRegister({
   endDay,
   setEndDay,
   btnTitle,
-  btnMethod,
+  submitData,
 }) {
   const [isChecked, setIsChecked] = useState(false);
   const onClickChecked = () => {
@@ -26,7 +26,13 @@ export default function UserRegister({
 
   return (
     <AnnualRegister>
-      <AnnualDatePicker setStartDay={setStartDay} setEndDay={setEndDay} />
+      <DisabledClick type={btnTitle}>
+        <AnnualDatePicker
+          setStartDay={setStartDay}
+          setEndDay={setEndDay}
+          type={btnTitle}
+        />
+      </DisabledClick>
       <SelectDates>
         <SelectDate>
           <DateLabel>연차 시작일 :</DateLabel>
@@ -56,9 +62,9 @@ export default function UserRegister({
         </Check>
         <UserBtn
           title={btnTitle}
-          method={btnMethod}
           size={BTN_SIZE_M}
           isChecked={isChecked}
+          submitData={submitData}
         />
       </SelectDates>
     </AnnualRegister>
@@ -74,6 +80,10 @@ const AnnualRegister = styled.div`
   min-width: 900px;
   height: 550px;
   padding: 50px;
+`;
+
+const DisabledClick = styled.div`
+  pointer-events: ${props => (props.type === '삭제하기' ? 'none' : 'auto')};
 `;
 
 const SelectDates = styled.div`

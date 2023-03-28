@@ -1,16 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import TodayDuty from '../pages/TodayDuty';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FiUser, FiCalendar } from 'react-icons/fi';
 import { MdLogout } from 'react-icons/md';
-import { useService } from '../context/context';
 
 export default function SideBar() {
   const navigate = useNavigate();
-
-  const { user } = useService();
-  console.log(user);
 
   return (
     <Container>

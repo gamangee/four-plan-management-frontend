@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useService } from '../../context/context';
 import UserBtn from '../../components/UserBtn';
 import UserRegister from '../../components/UserRegister';
 
 const BTN_SIZE_S = { width: '80px', height: '50px' };
 
 export default function UserAnnaul() {
+  const { user } = useService();
   const [startDay, setStartDay] = useState();
   const [endDay, setEndDay] = useState();
 
@@ -61,7 +63,11 @@ export default function UserAnnaul() {
           setStartDay={setStartDay}
           setEndDay={setEndDay}
           btnTitle="등록하기"
-          btnMethod="POST"
+          submitData={{
+            start_date: startDay,
+            end_date: endDay,
+            scheduleType: 'YEARLY',
+          }}
         />
       )}
       {!isRegisterOpen && isModifyOpen && !isDeleteOpen && (
@@ -71,7 +77,12 @@ export default function UserAnnaul() {
           setStartDay={setStartDay}
           setEndDay={setEndDay}
           btnTitle="수정하기"
-          btnMethod="POST"
+          submitData={{
+            id: user.id,
+            start_date: startDay,
+            end_date: endDay,
+            scheduleType: 'YEARLY',
+          }}
         />
       )}
       {!isRegisterOpen && !isModifyOpen && isDeleteOpen && (
@@ -81,7 +92,9 @@ export default function UserAnnaul() {
           setStartDay={setStartDay}
           setEndDay={setEndDay}
           btnTitle="삭제하기"
-          btnMethod="DELETE"
+          submitData={{
+            id: user.id,
+          }}
         />
       )}
     </UserInfoContainer>
