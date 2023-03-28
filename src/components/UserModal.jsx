@@ -7,7 +7,8 @@ export default function UserModal({ isOpen, onClose, status, title }) {
   if (!isOpen) return null;
 
   return (
-    <ModalOverlay onClick={onClose}>
+    <>
+      <Container onClick={onClose} />
       <ModalWrapper>
         <TextAlign>
           <Text>
@@ -15,24 +16,28 @@ export default function UserModal({ isOpen, onClose, status, title }) {
               ? `${title.slice(0, 2)} 완료!`
               : '날짜를 다시 선택해주세요.'}
           </Text>
-          <UserBtn title="확인" size={{ width: '80px', height: '50px' }} />
+          <Btn onClick={onClose}>
+            <UserBtn title="확인" size={{ width: '80px', height: '50px' }} />
+          </Btn>
         </TextAlign>
         <CloseBtn>
-          <IoIosClose />
+          <IoIosClose onClick={onClose} />
         </CloseBtn>
       </ModalWrapper>
-    </ModalOverlay>
+    </>
   );
 }
 
-const ModalOverlay = styled.div`
+const Container = styled.div`
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: 999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 8;
+  display: flex;
 `;
 
 const ModalWrapper = styled.div`
@@ -44,7 +49,7 @@ const ModalWrapper = styled.div`
   width: 400px;
   height: 200px;
   border-radius: 15px;
-  z-index: 9999;
+  z-index: 9;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 `;
 
@@ -59,6 +64,8 @@ const Text = styled.div`
   margin-bottom: 20px;
 `;
 
+const Btn = styled.div``;
+
 const CloseBtn = styled.button`
   color: ${props => props.theme.style.text};
   background-color: transparent;
@@ -68,4 +75,5 @@ const CloseBtn = styled.button`
   top: 6px;
   right: 6px;
   font-size: 26px;
+  z-index: 10px;
 `;

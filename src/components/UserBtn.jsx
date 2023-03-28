@@ -1,8 +1,11 @@
+import React, { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import React from 'react';
-import { useState } from 'react';
 import styled from 'styled-components';
-import { registerSchedule } from '../service/Service';
+import {
+  deleteSchedule,
+  registerSchedule,
+  updateSchedule,
+} from '../service/Service';
 import UserModal from './UserModal';
 
 export default function UserBtn({
@@ -12,21 +15,34 @@ export default function UserBtn({
   handleOpen,
   isChecked,
   submitData,
+  selected,
+  setSelected,
 }) {
   const [isOpenModal, setIsOpenModal] = useState(true);
-
   const closeModal = () => setIsOpenModal(false);
 
-  const { mutate, isSuccess, isError } = useMutation(registerSchedule);
+  const { mutate, isSuccess, isError } = useMutation(variables => {
+    switch (variables.action) {
+      case '등록':
+        return registerSchedule(variables.data);
+      case '수정':
+        return updateSchedule(variables.data);
+      case '삭제':
+        return deleteSchedule(variables.data);
+      default:
+        throw new Error('Invalid action');
+    }
+  });
 
-  const submit = () => {
-    mutate(submitData);
+  const submit = selected => {
+    mutate({ selected, data: submitData });
   };
 
   return (
     <>
       <Btn
-        onClick={!isChecked ? handleOpen : submit}
+        onClick={!isChecked ? () => setSelected(title) : () => submit(title)}
+        // onClick={() => setSelected(title)}
         size={size}
         isOpen={isOpen}
         disabled={title.length > 2 && !isChecked}

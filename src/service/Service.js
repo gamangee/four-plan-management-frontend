@@ -1,28 +1,33 @@
 import axios from 'axios';
 
-export default class Service {
-  async schedule() {
-    // console.log('Fetching!!!!!!!!🔥');
-    return axios.get(`/user/schedule.json`).then(res => res.data.users);
-  }
-}
-
-export const client = axios.create({
-  baseURL: 'https://87ab77be-f720-47c5-a4cc-e60ae02ad69f.mock.pstmn.io',
-});
-
 const config = {
   headers: { 'content-type': 'application/json' },
 };
 
-export const registerSchedule = data => {
-  return client.post('/schedule/save', data, config);
-};
+export default class Service {
+  constructor() {
+    this.client = axios.create({
+      baseURL: 'https://c07f9dfe-726b-48c1-b276-4c4c6e89ee87.mock.pstmn.io',
+    });
+  }
+  async schedule() {
+    // console.log('Fetching!!!!!!!!🔥');
+    return axios.get(`/user/schedule.json`).then(res => res.data.users);
+  }
 
-export const updateSchedule = (data, id) => {
-  return client.post(`/schedule/update/${id}`, data);
-};
+  updateUserInfo(data) {
+    return this.client.post(`/account/update/${data.accountId}`, data, config);
+  }
 
-export const deleteSchedule = (data, id) => {
-  return client.post(`/schedule/delete/${id}`, data);
-};
+  registerSchedule(data) {
+    return this.client.post('/schedule/save', data, config);
+  }
+
+  updateSchedule(data) {
+    return this.client.post(`/schedule/update/${data.id}`, data, config);
+  }
+
+  deleteSchedule(data) {
+    return this.client.post(`/schedule/delete/${data.id}`, data, config);
+  }
+}

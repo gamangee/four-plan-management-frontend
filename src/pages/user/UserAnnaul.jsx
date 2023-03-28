@@ -1,29 +1,21 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useService } from '../../context/context';
-import UserBtn from '../../components/UserBtn';
 import UserRegister from '../../components/UserRegister';
-
-const BTN_SIZE_S = { width: '80px', height: '50px' };
 
 export default function UserAnnaul() {
   const { user } = useService();
   const [startDay, setStartDay] = useState();
   const [endDay, setEndDay] = useState();
 
-  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
-  const [isModifyOpen, setIsModifyOpen] = useState(false);
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [selected, setSelected] = useState('등록');
 
-  if (
-    (isRegisterOpen && isModifyOpen && !isDeleteOpen) ||
-    (!isRegisterOpen && isModifyOpen && isDeleteOpen) ||
-    (isRegisterOpen && !isModifyOpen && isDeleteOpen)
-  ) {
-    setIsRegisterOpen(false);
-    setIsModifyOpen(false);
-    setIsDeleteOpen(false);
-  }
+  const [value, setValue] = useState({
+    id: user.id,
+    start_date: startDay,
+    end_date: endDay,
+    scheduleType: 'YEARLY',
+  });
 
   return (
     <UserInfoContainer>
@@ -36,77 +28,29 @@ export default function UserAnnaul() {
           readOnly
         />
         <BtnAlign>
-          <UserBtn
-            title="등록"
-            size={BTN_SIZE_S}
-            isOpen={isRegisterOpen}
-            handleOpen={() => setIsRegisterOpen(prev => !prev)}
-          />
-          <UserBtn
-            title="수정"
-            size={BTN_SIZE_S}
-            isOpen={isModifyOpen}
-            handleOpen={() => setIsModifyOpen(prev => !prev)}
-          />
-          <UserBtn
-            title="삭제"
-            size={BTN_SIZE_S}
-            isOpen={isDeleteOpen}
-            handleOpen={() => setIsDeleteOpen(prev => !prev)}
-          />
+          <Btn onClick={e => setSelected(e.target.textContent)}>등록</Btn>
+          <Btn onClick={e => setSelected(e.target.textContent)}>수정</Btn>
+          <Btn onClick={e => setSelected(e.target.textContent)}>삭제</Btn>
         </BtnAlign>
       </AnnualInput>
-      {isRegisterOpen && !isModifyOpen && !isDeleteOpen && (
-        <UserRegister
-          startDay={startDay}
-          endDay={endDay}
-          setStartDay={setStartDay}
-          setEndDay={setEndDay}
-          btnTitle="등록하기"
-          submitData={{
-            start_date: startDay,
-            end_date: endDay,
-            scheduleType: 'YEARLY',
-          }}
-        />
-      )}
-      {!isRegisterOpen && isModifyOpen && !isDeleteOpen && (
-        <UserRegister
-          startDay={startDay}
-          endDay={endDay}
-          setStartDay={setStartDay}
-          setEndDay={setEndDay}
-          btnTitle="수정하기"
-          submitData={{
-            id: user.id,
-            start_date: startDay,
-            end_date: endDay,
-            scheduleType: 'YEARLY',
-          }}
-        />
-      )}
-      {!isRegisterOpen && !isModifyOpen && isDeleteOpen && (
-        <UserRegister
-          startDay={startDay}
-          endDay={endDay}
-          setStartDay={setStartDay}
-          setEndDay={setEndDay}
-          btnTitle="삭제하기"
-          submitData={{
-            id: user.id,
-          }}
-        />
-      )}
+      <UserRegister
+        startDay={startDay}
+        setStartDay={setStartDay}
+        endDay={endDay}
+        setEndDay={setEndDay}
+        selected={selected}
+        value={value}
+      />
     </UserInfoContainer>
   );
 }
 
 const UserInfoContainer = styled.div`
-  ${props => props.theme.variables.flex('column', 'center', '')};
-  height: inherit;
-  min-width: 600px;
-  padding: 50px;
   position: relative;
+  width: 1050px;
+  height: inherit;
+  margin-left: 25px;
+  padding: 50px;
 `;
 
 const Tab = styled.div`
@@ -114,17 +58,20 @@ const Tab = styled.div`
   background-color: ${props => props.theme.style.skyblue};
   border-radius: ${props => props.theme.style.borderRadius};
   color: ${props => props.theme.style.text};
-  width: 230px;
+  width: 200px;
   height: 40px;
   font-weight: 700;
-  position: absolute;
+  position: fixed;
   top: 50px;
-  left: 50px;
+  left: 380px;
 `;
 
 const AnnualInput = styled.div`
   width: 300px;
   margin: 80px 0 50px;
+  position: fixed;
+  top: 50px;
+  left: 380px;
 `;
 
 const Label = styled.label`
@@ -157,4 +104,22 @@ const Input = styled.input`
 
 const BtnAlign = styled.div`
   ${props => props.theme.variables.flex('', 'space-between', 'center')};
+`;
+
+const Btn = styled.button`
+  background-color: ${props => props.theme.style.skyblue};
+  border-radius: ${props => props.theme.style.BtnborderRadius};
+  color: ${props => props.theme.style.text};
+  font-size: ${props => props.theme.style.textmd};
+  width: 80px;
+  height: 50px;
+  outline: none;
+  border: none;
+  white-space: nowrap;
+  transition: all 0.4s ease;
+
+  &:hover {
+    background-color: ${props => props.theme.style.text};
+    color: ${props => props.theme.style.white};
+  }
 `;

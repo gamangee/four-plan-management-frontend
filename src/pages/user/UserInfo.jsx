@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
 import styled from 'styled-components';
+import { useService } from '../../context/context';
 
 const randomNums = () => {
   let result = Math.floor(Math.random() * 10 + 1);
@@ -12,11 +13,12 @@ const randomNums = () => {
 };
 
 export default function UserInfo() {
+  const { user, service } = useService();
+
   const [index, setIndex] = useState(10);
   const [isVisibleA, setIsVisibleA] = useState(false);
   const [isVisibleB, setIsVisibleB] = useState(false);
   const [isVisibleC, setIsVisibleC] = useState(false);
-  const [formData, setFormData] = useState({});
 
   const changeTypeA = () => {
     setIsVisibleA(prev => !prev);
@@ -39,7 +41,7 @@ export default function UserInfo() {
     handleSubmit,
     formState: { errors },
     setError,
-    setValue,
+    reset,
   } = useForm();
 
   const onValid = data => {
@@ -52,12 +54,24 @@ export default function UserInfo() {
         { shouldFocus: true }
       );
     }
-    setValue('email', '');
-    setValue('currentPassword', '');
-    setValue('newPassword', '');
-    setValue('checkPassword', '');
-    setFormData(data);
+    reset();
+    onSubmit(data);
+    alert('성공!');
   };
+
+  const onInValid = () => {
+    alert('실패!');
+  };
+
+  const onSubmit = data => {
+    service.updateUserInfo({
+      accountId: user.accountId,
+      email: data.email,
+      password: data.currentPassword,
+      newPassword: data.newPassword,
+    });
+  };
+
   return (
     <UserInfoContainer>
       <Tab>내 정보 수정</Tab>
@@ -73,7 +87,7 @@ export default function UserInfo() {
           <Infos>• 남은 연차 : XX일</Infos>
           <Infos>• 오늘은 당직 날이 아닙니다.</Infos>
         </ProfileImg>
-        <ProfileContents onSubmit={handleSubmit(onValid)}>
+        <ProfileContents onSubmit={handleSubmit(onValid, onInValid)}>
           <Label htmlFor="email">이메일</Label>
           <Align>
             <Input
@@ -143,8 +157,9 @@ export default function UserInfo() {
 
 const UserInfoContainer = styled.div`
   ${props => props.theme.variables.flex('column', 'center', 'center')};
+  width: 1050px;
   height: 100%;
-  padding: 50px;
+  margin-left: 25px;
   position: relative;
 `;
 
@@ -153,17 +168,16 @@ const Tab = styled.div`
   background-color: ${props => props.theme.style.skyblue};
   border-radius: ${props => props.theme.style.borderRadius};
   color: ${props => props.theme.style.text};
-  width: 230px;
+  width: 200px;
   height: 40px;
   font-weight: 700;
-  position: absolute;
+  position: fixed;
   top: 50px;
-  left: 50px;
+  left: 380px;
 `;
 
 const UserInformation = styled.div`
   ${props => props.theme.variables.flex('', 'center', 'center')};
-  width: 100%;
 `;
 
 const ProfileImg = styled.div`

@@ -1,20 +1,25 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import styled from 'styled-components';
+import {
+  deleteSchedule,
+  registerSchedule,
+  updateSchedule,
+} from '../service/Service';
 import getDayOff from '../utility/dayOff';
 import AnnualDatePicker from './AnnualDatePicker';
-import UserBtn from './UserBtn';
-
-const BTN_SIZE_M = { width: '120px', height: '50px' };
+import { useService } from '../context/context';
 
 export default function UserRegister({
   startDay,
   setStartDay,
   endDay,
   setEndDay,
-  btnTitle,
-  submitData,
+  selected,
+  value,
 }) {
+  const { service } = useService();
+
   const [isChecked, setIsChecked] = useState(false);
   const onClickChecked = () => {
     if (startDay === undefined || endDay === undefined) {
@@ -24,14 +29,32 @@ export default function UserRegister({
     setIsChecked(prev => !prev);
   };
 
+  const { mutate, isSuccess, isError } = useMutation(() => {
+    switch (selected) {
+      case '등록':
+        return service.registerSchedule({
+          start_date: value.start_date,
+          end_date: value.end,
+          scheduleType: value.scheduleType,
+        });
+      case '수정':
+        return service.updateSchedule({
+          id: value.id,
+          start_date: value.start_date,
+          end_date: value.end,
+          scheduleType: value.scheduleType,
+        });
+      case '삭제':
+        return service.deleteSchedule({ id: value.id });
+      default:
+        throw new Error('Invalid action');
+    }
+  });
+
   return (
     <AnnualRegister>
-      <DisabledClick type={btnTitle}>
-        <AnnualDatePicker
-          setStartDay={setStartDay}
-          setEndDay={setEndDay}
-          type={btnTitle}
-        />
+      <DisabledClick type={selected}>
+        <AnnualDatePicker setStartDay={setStartDay} setEndDay={setEndDay} />
       </DisabledClick>
       <SelectDates>
         <SelectDate>
@@ -60,13 +83,10 @@ export default function UserRegister({
             위의 내용을 확인하였습니다.
           </CheckLabel>
         </Check>
-        <UserBtn
-          title={btnTitle}
-          size={BTN_SIZE_M}
-          isChecked={isChecked}
-          submitData={submitData}
-        />
+        <Btn onClick={selected => mutate(selected)}>{selected + '하기'}</Btn>
       </SelectDates>
+      {isSuccess && alert('성공')}
+      {isError && alert('실패')}
     </AnnualRegister>
   );
 }
@@ -76,14 +96,16 @@ const AnnualRegister = styled.div`
   border: 8px solid ${props => props.theme.style.skyblue};
   border-radius: ${props => props.theme.style.borderRadius};
   color: ${props => props.theme.style.text};
-  width: 100%;
-  min-width: 900px;
+  width: 1000px;
   height: 550px;
   padding: 50px;
+  position: fixed;
+  top: 300px;
+  left: 380px;
 `;
 
 const DisabledClick = styled.div`
-  pointer-events: ${props => (props.type === '삭제하기' ? 'none' : 'auto')};
+  pointer-events: ${props => (props.type === '삭제' ? 'none' : 'auto')};
 `;
 
 const SelectDates = styled.div`
@@ -141,4 +163,22 @@ const CheckLabel = styled.label`
   margin-top: 30px;
   font-weight: 700;
   margin-left: 6px;
+`;
+
+const Btn = styled.button`
+  background-color: ${props => props.theme.style.skyblue};
+  border-radius: ${props => props.theme.style.BtnborderRadius};
+  color: ${props => props.theme.style.text};
+  font-size: ${props => props.theme.style.textmd};
+  width: 120px;
+  height: 50px;
+  outline: none;
+  border: none;
+  white-space: nowrap;
+  transition: all 0.4s ease;
+
+  &:hover {
+    background-color: ${props => props.theme.style.text};
+    color: ${props => props.theme.style.white};
+  }
 `;
