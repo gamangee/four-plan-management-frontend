@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import TodayDuty from '../pages/TodayDuty';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FiUser, FiCalendar } from 'react-icons/fi';
 import { MdLogout } from 'react-icons/md';
+import { useService } from '../context/context';
+import axios from 'axios';
 
 export default function SideBar() {
   const navigate = useNavigate();
+
+  const { setUser } = useService();
+
+  useEffect(() => {
+    axios.get('/userlogin').then(res => setUser(res.data.user));
+  }, []);
 
   return (
     <Container>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
@@ -11,16 +11,14 @@ export default function LoginForm() {
   const navigate = useNavigate();
   // pw 보이기
   const [isVisiblePw, setIsVisiblePw] = useState(false);
-  // 로그인 입력한 user data
-  const [userLogin, setUserLogin] = useState(false);
-  // 로그인 성공여부
-  const [isSuccess, setIsSuccess] = useState(false);
 
   // 입력값 : react-hook-form
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    setError,
+    setValue,
   } = useForm();
 
   // onValid : 검사
@@ -28,52 +26,47 @@ export default function LoginForm() {
     onSubmit(data);
   };
 
-  // onSubmit : 등록
-  const onSubmit = data => {
-    setUserLogin(data);
+  // Enter 눌렀을 경우에도 로그인 요청
+  const onKeyPress = e => {
+    if (e.key === 'Enter') {
+      handleSubmit(onValid);
+    }
   };
 
-  // *****
-  // API연결
-  // userLogin : {accountId, password} => API => status & setCookie("accessToken", accessToken)
-
-  // useEffect(() => {
-  //   axios({
-  //     url: '',
-  //     method: 'POST',
-  //     headers: { Authorization: 'Bearer [JWT token]' },
-  //     data: userLogin,
-  //     withCredentials: true,
-  //   })
-  //     .then(res => {
-  //       const accessToken = res.data.access;
-  //       setCookie('accessToken', accessToken);
-  //       navigate('/main');
-  //     })
-  //     .catch(e => alert(e.message));
-  // }, [userLogin]);
-
-  useEffect(() => {
-    // 로그인 유저 정보가 있을 때 요청 전송
-    userLogin &&
-      axios('http://localhost:3000/user/userToken.json')
-        .then(res => {
-          // 토큰 저장
-          setCookie('accessToken', res.data.accessToken);
-          setIsSuccess(true);
-          navigate('/main', { state: userLogin.id });
-        })
-        .catch(e => setIsSuccess(false));
-  }, [userLogin]);
+  // onSubmit : 등록
+  const onSubmit = data => {
+    // data : 입력한 user 로그인 데이터
+    axios({
+      url: '/login', // ***** API연결하기 !
+      method: 'POST',
+      data: data,
+      // headers: { Authorization: 'Bearer [JWT token]' },
+      // withCredentials: true,
+    })
+      .then(res => {
+        console.log(res);
+        if (res.data.code === '200') {
+          const accessToken = res.data.accessToken;
+          setCookie('accessToken', accessToken);
+          navigate('/main');
+        }
+      })
+      .catch(() => {
+        setValue('password', '');
+        setError('password', {
+          message: '아이디 또는 비밀번호가 일치하지 않습니다.',
+        });
+      });
+  };
 
   return (
-    <Form onSubmit={handleSubmit(onValid)}>
+    <Form onSubmit={handleSubmit(onValid)} onKeyPress={onKeyPress}>
       {/* id */}
       <LoginInput
         type="text"
-        id="id"
+        id="accountId"
         placeholder="Please enter your ID"
-        {...register('id', {
+        {...register('accountId', {
           required: '아이디를 입력해주세요.',
           pattern: {
             value: /^[a-zA-Z0-9]+$/,
@@ -81,14 +74,16 @@ export default function LoginForm() {
           },
         })}
       />
-      {errors.id && <WarningPhrase>{errors.id.message}</WarningPhrase>}
+      {errors.accountId && (
+        <WarningPhrase>{errors.accountId.message}</WarningPhrase>
+      )}
       {/* pw */}
       <Div>
         <LoginInput
           type={isVisiblePw ? 'text' : 'password'}
-          id="pw"
+          id="password"
           placeholder="Please enter your Password"
-          {...register('pw', {
+          {...register('password', {
             required: '비밀번호를 입력해주세요.',
           })}
         />
@@ -96,11 +91,10 @@ export default function LoginForm() {
           {isVisiblePw ? <AiFillEye /> : <AiFillEyeInvisible />}
         </Icon>
       </Div>
-      {errors.pw && <WarningPhrase>{errors.pw.message}</WarningPhrase>}
-      {/* 로그인 안내 문구 */}
-      {isSuccess && (
-        <WarningPhrase>아이디 또는 비밀번호가 일치하지 않습니다.</WarningPhrase>
+      {errors.password && (
+        <WarningPhrase>{errors.password.message}</WarningPhrase>
       )}
+
       {/* signin btn */}
       <SignInBtn disabled={isSubmitting}>Sign In</SignInBtn>
     </Form>

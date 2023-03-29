@@ -21,6 +21,9 @@ export function ApiProvider({ children }) {
     axios.get('/user/userLogin.json').then(res => setUser(res.data.user));
     axios.get('/user/schedule.json').then(res => setSchedule(res.data.users));
   }, []);
+  // useEffect(() => {
+  //   axios.get('/user/userLogin.json').then(res => setUser(res));
+  // }, []);
 
   useEffect(() => {
     if (user.length > 0) {
@@ -34,7 +37,7 @@ export function ApiProvider({ children }) {
   console.log(user);
 
   return (
-    <ApiContext.Provider value={{ service, user }}>
+    <ApiContext.Provider value={{ service, user, setUser }}>
       {children}
     </ApiContext.Provider>
   );

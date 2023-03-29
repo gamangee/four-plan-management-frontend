@@ -3,12 +3,39 @@ import styled from 'styled-components';
 import { useService } from '../../context/context';
 import UserRegister from '../../components/UserRegister';
 import { useEffect } from 'react';
+import AnnualDatePicker from '../../components/AnnualDatePicker';
+import { useService } from '../../context/context';
+import getDayOff from '../../utility/dayOff';
 
 export default function UserAnnaul() {
   const { user } = useService();
   const [startDay, setStartDay] = useState();
   const [endDay, setEndDay] = useState();
 
+  const [selected, setSelected] = useState('등록');
+
+  const [value, setValue] = useState({
+    id: user.id,
+    start_date: startDay,
+    end_date: endDay,
+    scheduleType: 'YEARLY',
+  });
+
+  // useEffect(() => {
+  //   setValue({
+  //     id: user.id,
+  //     start_date: startDay,
+  //     end_date: endDay,
+  //     scheduleType: 'YEARLY',
+  //   });
+  // }, []);
+  const { user } = useService();
+
+  const onClickChecked = () => {
+    setIsChecked(prev => !prev);
+  };
+
+  // console.log('user', user);
   const [selected, setSelected] = useState('등록');
 
   const [value, setValue] = useState({
