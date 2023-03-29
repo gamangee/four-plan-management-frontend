@@ -2,39 +2,56 @@ import React, { useEffect, useRef, useState } from 'react';
 import OutsideClick from './OutsideClick';
 import styled from 'styled-components';
 
-export default function UserSearch({ setIsModalOpen, schedule, setSelected }) {
-  const [selectUser, setSelectUser] = useState(); // 모달에서 입력한 값
-  const [searchList, setSearchList] = useState(); // selectUser를 통해서 정렬 값
-  const [selectedUser, setSelectedUser] = useState([]); // 클릭해서 담은 값
-
+export default function UserSearch({
+  setIsModalOpen,
+  schedule,
+  setSelected,
+  selectedUser,
+  setSelectedUser,
+  isModalOpen,
+}) {
+  const [searchUser, setSearchUser] = useState([]); // 모달에서 입력한 값
+  const [userList, setUserList] = useState(); // searchUser를 통해서 정렬 값
   const ref = useRef();
   const inputRef = useRef();
 
   const onSubmit = e => {
     e.preventDefault();
     const value = inputRef.current.value;
-    setSelectUser(value);
+    setSearchUser(value);
   };
 
   useEffect(() => {
-    if (selectUser) {
-      const list = schedule.filter(user => user.name.includes(selectUser));
-      setSearchList(list);
+    if (selectedUser.length > 0) {
+      const list = schedule.filter(user =>
+        selectedUser.includes(user.Schedule.account_id)
+      );
+      setUserList(list);
     }
-  }, [selectUser]);
+  }, [isModalOpen]);
+
+  useEffect(() => {
+    if (searchUser.length > 0) {
+      const list = schedule.filter(user => user.name.includes(searchUser));
+      setUserList(list);
+    }
+  }, [searchUser]);
 
   const handleChecked = e => {
-    const index = e.target.name;
-    const newArray = selectedUser.concat(searchList[index].Schedule.account_id);
-    setSelectedUser(newArray);
-    console.log(searchList[index]);
-    // console.log(searchList[index]);
-    // setSelected(searchList[index]);
-    // setIsModalOpen(false);
+    const accountId = e.target.dataset.id;
+
+    const index = selectedUser.findIndex(e => e === accountId);
+    if (index > -1) {
+      const filter = selectedUser.filter(user => user !== accountId);
+      console.log(filter);
+      setSelectedUser(filter);
+    } else {
+      setSelectedUser(prev => [...prev, accountId]);
+    }
   };
 
   OutsideClick(ref, () => {
-    setSelected('전체'); // 아무것도 클릭 안했을때..
+    // setSelected('전체'); // 아무것도 클릭 안했을때..
     setIsModalOpen(false);
   });
 
@@ -65,14 +82,15 @@ export default function UserSearch({ setIsModalOpen, schedule, setSelected }) {
         <Form onSubmit={onSubmit}>
           <InputBox ref={inputRef} placeholder="User Name" />
           <UserList>
-            {searchList &&
-              searchList.map((user, i) => (
+            {userList &&
+              userList.map((user, i) => (
                 <Li key={user.start + user.end + user.title}>
                   <Checkbox
                     type="checkbox"
                     id={user.Schedule.account_id}
-                    name={i}
+                    data-id={user.Schedule.account_id}
                     onChange={handleChecked}
+                    checked={selectedUser.includes(user.Schedule.account_id)}
                   />
                   <Label htmlFor={user.Schedule.account_id}>
                     <Name> 이름 : {user.name}</Name>
@@ -104,6 +122,7 @@ const Container = styled.div`
 `;
 
 const SearchUser = styled.div`
+  ${props => props.theme.variables.flex('column', 'space-between', 'center')}
   position: absolute;
   top: 150px;
   left: 20%;
@@ -116,12 +135,11 @@ const SearchUser = styled.div`
   z-index: 10;
   opacity: 1;
   font-size: 20px;
-  // display: ${props => (props.toggle ? 'block' : 'none')};
   color: ${props => props.theme.style.text};
 `;
 
 const Form = styled.form`
-  ${props => props.theme.variables.flex('column', 'center', 'center')}
+  ${props => props.theme.variables.flex('column', '', 'center')}
   height: 100%;
 `;
 
@@ -130,7 +148,7 @@ const InputBox = styled.input`
   height: 50px;
   border: 2px solid white;
   background-color: ${props => props.theme.style.mainBg};
-  margin-bottom: 25px;
+  margin: 20px 0 30px 0;
   outline: none;
   border-radius: 10px;
   text-indent: 12px;
@@ -145,33 +163,71 @@ const InputBox = styled.input`
 const UserList = styled.ul`
   padding: 15px;
   width: 330px;
-  height: 280px;
+  height: 300px;
   border: 2px solid ${props => props.theme.style.mainBg};
   background-color: ${props => props.theme.style.mainBg};
   border-radius: 10px;
+  overflow: scroll;
+  margin-bottom: 10px;
 `;
 
-const Btn = styled.button``;
+const Btn = styled.button`
+  position: relative;
+  width: 200px;
+  height: 40px;
+  bottom: 20px;
+  background-color: ${props => props.theme.style.mainBg};
+  border: none;
+  border-radius: 10px;
+`;
 
 const Checkbox = styled.input`
-  position: relative;
-  top: -2px;
-  margin-right: 10px;
-  width: 12px;
-  height: 12px;
-  background-color: white;
-  border: 1px solid ${props => props.theme.style.text};
-  -webkit-appearance: auto;
+  display: none;
+
+  & + Label {
+    cursor: pointer;
+  }
+
+  & + Label > div {
+    vertical-align: middle;
+    padding-left: 5px;
+  }
+
+  & + Label:before {
+    position : absolute;
+    left : 5px;
+    content: '';
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    border: 2px solid ${props => props.theme.style.text};
+    border-radius: 4px;
+    vertical-align: middle;
+  margin-left :10px;
+  }
+
+  &:checked + Label:before{
+  width: 17px;
+  height: 17px;
+  content: '';
+  background-color: ${props => props.theme.style.text};
+  border-color: ${props => props.theme.style.text};
+  background-repeat: no-repeat;
+  background-position: 50%;
 `;
 
 const Li = styled.li`
   ${props => props.theme.variables.flex('row', 'center', 'center')}
-  margin-bottom :10px;
+  position : relative;
+  margin-bottom: 10px;
 `;
 const Label = styled.label`
   ${props => props.theme.variables.flex('column', 'center', 'center')}
   width : 280px;
-  background-color: orange;
+  padding-bottom: 8px;
+  border-bottom: 1px solid ${props => props.theme.style.lightGray};
+  padding-left 30px;
+  }
 `;
 
 const Name = styled.div`
