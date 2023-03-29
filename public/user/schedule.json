@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "name": "Nicolas Serrano Arevalo",
+      "name": "홍길동",
       "department": "개발팀",
       "position": "팀장",
       "Schedule": {
@@ -16,7 +16,7 @@
       }
     },
     {
-      "name": "Chris Metzen",
+      "name": "홍길동",
       "department": "디자인팀",
       "position": "사원",
       "Schedule": {
@@ -40,7 +40,7 @@
         "type": "duty",
         "content": null,
         "start_date": "2023-03-22T14:30:00Z",
-        "end_date": "2023-03-23T06:00:00Z",
+        "end_date": "2023-03-22",
         "created_at": null,
         "modified_at": null
       }
@@ -52,10 +52,10 @@
       "Schedule": {
         "id": 4,
         "account_id": "Benjamin35",
-        "type": "duty",
-        "content": null,
-        "start_date": "2023-03-0718:00:00Z",
-        "end_date": "2023-03-08T06:00:00Z",
+        "type": "plan",
+        "content": "주제 : 해고",
+        "start_date": "2023-03-07T09:00:00Z",
+        "end_date": "2023-03-07",
         "created_at": null,
         "modified_at": null
       }

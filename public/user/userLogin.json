@@ -1,13 +1,24 @@
 {
   "user": {
+    "id": "123",
     "name": "Nicolas Serrano Arevalo",
-    "account_id": "nico123",
-    "password" : "niconiconi",
+    "accountId": "abc123",
+    "password": "niconiconi",
     "role": "user",
     "email": "nico321@gmail.com",
     "department": "개발팀",
     "position": "팀장",
     "yearly": 24,
-    "duty": true
+    "duty": true,
+    "Schedule": {
+      "id": 1,
+      "account_id": "nico123",
+      "type": "duty",
+      "content": null,
+      "start_date": "2023-03-22T18:00:00Z",
+      "end_date": "2023-03-24",
+      "created_at": null,
+      "modified_at": null
+    }
   }
 }
