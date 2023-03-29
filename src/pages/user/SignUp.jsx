@@ -1,11 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
 import axios from 'axios';
 import { setCookie } from '../../cookie';
-import { CSSTransition } from 'react-transition-group';
 
 export default function SignUp() {
   // url 이동
@@ -42,7 +41,7 @@ export default function SignUp() {
 
   // onSubmit : 등록
   const onSubmit = data => {
-    console.log(data);
+    // console.log(data);
     // data : 회원가입 한 user data
     axios({
       url: 'https://87ab77be-f720-47c5-a4cc-e60ae02ad69f.mock.pstmn.io/signup', // ***** API연결하기 !
@@ -205,7 +204,6 @@ export default function SignUp() {
       {/* <ModalContainer>
         <Modal>가입완료</Modal>
       </ModalContainer> */}
-      <CSSTransition></CSSTransition>
     </Wrapper>
   );
 }

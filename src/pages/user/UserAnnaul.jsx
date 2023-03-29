@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import AnnualDatePicker from '../../components/AnnualDatePicker';
+import { useService } from '../../context/context';
 import getDayOff from '../../utility/dayOff';
 
 export default function UserAnnaul() {
@@ -8,9 +9,13 @@ export default function UserAnnaul() {
   const [startDay, setStartDay] = useState();
   const [endDay, setEndDay] = useState();
 
+  const { user } = useService();
+
   const onClickChecked = () => {
     setIsChecked(prev => !prev);
   };
+
+  // console.log('user', user);
 
   return (
     <UserInfoContainer>

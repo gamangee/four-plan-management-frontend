@@ -37,18 +37,18 @@ export default function LoginForm() {
   const onSubmit = data => {
     // data : 입력한 user 로그인 데이터
     axios({
-      url: 'https://87ab77be-f720-47c5-a4cc-e60ae02ad69f.mock.pstmn.io/login', // ***** API연결하기 !
+      url: '/login', // ***** API연결하기 !
       method: 'POST',
       data: data,
       // headers: { Authorization: 'Bearer [JWT token]' },
       // withCredentials: true,
     })
       .then(res => {
-        // console.log(res);
+        console.log(res);
         if (res.data.code === '200') {
           const accessToken = res.data.accessToken;
           setCookie('accessToken', accessToken);
-          navigate('/main', { state: res.data.code });
+          navigate('/main');
         }
       })
       .catch(() => {
