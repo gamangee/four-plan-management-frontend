@@ -10,4 +10,5 @@ export const setCookie = (name, value, option) => {
 // 쿠키 가져오기
 export const getCookie = name => {
   return cookie.get(name);
+  // name => accessToken
 };

@@ -55,7 +55,6 @@ export default function UserRegister({
       });
     }
     if (selected === '수정') {
-      console.log(value);
       service.updateSchedule(value.id, {
         id: value.id,
         start_date: value.start_date,

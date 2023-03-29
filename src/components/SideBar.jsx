@@ -13,8 +13,8 @@ export default function SideBar() {
   const { setUser } = useService();
 
   useEffect(() => {
-    axios.get('/userlogin').then(res => setUser(res.data.user));
-  }, []);
+    axios.get('/user/login').then(res => setUser(res.data.user));
+  }, [setUser]);
 
   return (
     <Container>

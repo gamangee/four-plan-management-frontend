@@ -95,7 +95,7 @@ export default function Main() {
   );
 
   const selectFilter = e => {
-    console.log('selectFilter');
+    // console.log('selectFilter');
     if (e.target.textContent !== '유저') {
       setSelected(e.target.textContent);
       setIsModalOpen(false);
@@ -105,8 +105,8 @@ export default function Main() {
     }
   };
 
-  console.log(schedule);
-  console.log(selected);
+  // console.log(schedule);
+  // console.log(selected);
 
   return (
     <Container>

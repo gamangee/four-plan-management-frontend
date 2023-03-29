@@ -23,7 +23,7 @@ export const handlers = [
   }),
 
   // 로그인 유저 정보
-  rest.get('/userlogin', (req, res, ctx) => {
+  rest.get('/user/login', (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -53,8 +53,13 @@ export const handlers = [
     );
   }),
 
-  // 스케쥴
-  rest.get('/schedule', (req, res, ctx) => {
+  // 유저 정보 수정 => 수정하기
+  rest.post('/account/update/:accountId', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({}));
+  }),
+
+  // 전체 스케쥴
+  rest.get('/user/schedule', (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -68,28 +73,16 @@ export const handlers = [
             position: '팀장',
             yearly: '30',
             duty: false,
-            Schedule: [
-              {
-                id: '10',
-                accountId: 'abc123',
-                type: 'YEARLY',
-                content: null,
-                start_date: '2023-03-23T00:00:00Z',
-                end_date: '2023-03-24T00:00:00Z',
-                created_at: '2023-03-15T15:25:00Z',
-                modified_at: '2023-03-15T15:25:00Z',
-              },
-              {
-                id: '10',
-                accountId: 'abc123',
-                type: 'DUTY',
-                content: null,
-                start_date: '2023-03-30T00:00:00Z',
-                end_date: '2023-03-30T23:59:59Z',
-                created_at: '2023-03-20T15:25:00Z',
-                modified_at: '2023-03-20T15:25:00Z',
-              },
-            ],
+            Schedule: {
+              id: '1',
+              accountId: 'abc123',
+              type: 'YEARLY',
+              content: null,
+              start_date: '2023-03-23T00:00:00Z',
+              end_date: '2023-03-24T00:00:00Z',
+              created_at: '2023-03-15T15:25:00Z',
+              modified_at: '2023-03-15T15:25:00Z',
+            },
           },
           {
             name: '홍길동',
@@ -100,29 +93,16 @@ export const handlers = [
             position: '사원',
             yearly: '15',
             duty: true,
-            Schedule: [
-              {
-                id: '10',
-                accountId: 'abc123',
-                type: 'DUTY',
-                content: null,
-                start_date: '2023-03-28T00:00:00Z',
-                end_date: '2023-03-28T23:59:59Z',
-                created_at: '2023-03-20T15:25:00Z',
-                modified_at: '2023-03-20T15:25:00Z',
-              },
-            ],
-          },
-          {
-            name: '길동이',
-            accountId: 'higildong',
-            role: 'ROLE_USER',
-            email: 'higildong@naver.com',
-            department: '인사팀',
-            position: '팀장',
-            yearly: '20',
-            duty: false,
-            Schedule: null,
+            Schedule: {
+              id: '2',
+              accountId: 'abc123',
+              type: 'DUTY',
+              content: null,
+              start_date: '2023-03-28T00:00:00Z',
+              end_date: '2023-03-28T23:59:59Z',
+              created_at: '2023-03-20T15:25:00Z',
+              modified_at: '2023-03-20T15:25:00Z',
+            },
           },
           {
             name: 'Glen A. Schofield',
@@ -253,17 +233,15 @@ export const handlers = [
   rest.post('/schedule/save', (req, res, ctx) => {
     return res(
       ctx.status(201),
-      ctx.json(
-        res({
-          code: '200',
-          status: 'success',
-        })
-      )
+      ctx.json({
+        code: '200',
+        status: 'success',
+      })
     );
   }),
 
   // 연차수정
-  rest.post('/schedule/update', (req, res, ctx) => {
+  rest.post('/schedule/update/:dataId', (req, res, ctx) => {
     if (req.body.scheduleType === 'YEARLY') {
       return res(
         ctx.status(200),
@@ -279,7 +257,7 @@ export const handlers = [
   }),
 
   // 연차삭제
-  rest.post('schedule/delete', (req, res, ctx) => {
+  rest.post('/schedule/delete/:dataId', (req, res, ctx) => {
     if (!req.body.id) {
       return res(ctx.status(403), ctx.json({ message: 'delete error' }));
     }

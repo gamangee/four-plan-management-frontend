@@ -34,7 +34,7 @@ export function ApiProvider({ children }) {
     }
   }, [user]);
 
-  console.log(user);
+  // console.log(user);
 
   return (
     <ApiContext.Provider value={{ service, user, setUser }}>
