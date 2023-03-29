@@ -1,7 +1,8 @@
 {
   "user": {
+    "id" :"asd123",
     "name": "Nicolas Serrano Arevalo",
-    "account_id": "nico123",
+    "accountId": "nico123",
     "password" : "niconiconi",
     "role": "user",
     "email": "nico321@gmail.com",

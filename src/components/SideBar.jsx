@@ -9,7 +9,6 @@ export default function SideBar() {
   const navigate = useNavigate();
 
   const { user } = useService();
-  console.log(user);
 
   return (
     <Container>
