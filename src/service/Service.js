@@ -18,8 +18,13 @@ export default class Service {
     return axios.get(`/user/schedule.json`).then(res => res.data.users);
   }
 
-  updateUserInfo(data) {
-    return this.client.post(`/account/update/${data.accountId}`, data, config);
+  async updateUserInfo(data) {
+    try {
+      await this.client.post(`/account/update/${data.accountId}`, data, config);
+      return alert('개인 정보 수정 완료');
+    } catch (error) {
+      return alert(error);
+    }
   }
 
   async registerSchedule(data) {

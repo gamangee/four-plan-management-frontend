@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
 import styled from 'styled-components';
-import UserModal from '../../components/UserModal';
 import { useService } from '../../context/context';
+import UserModal from '../../components/UserModal';
+
+// 1. 프로필 사진 -> context에서 관리하기
+// 2. 통신 성공/실패 여부 -> UserModal 사용하기
+// 3. input type password/text 리팩토링
 
 const randomNums = () => {
   let result = Math.floor(Math.random() * 10 + 1);
@@ -20,7 +24,6 @@ export default function UserInfo() {
 
   const [isVisible, setIsVisible] = useState({ A: false, B: false, C: false });
 
-  // 리팩토링
   const changeTypeA = () => {
     const newObj = { ...isVisible, A: !isVisible.A };
     setIsVisible(newObj);
@@ -64,10 +67,6 @@ export default function UserInfo() {
     onSubmit(data);
   };
 
-  const onInValid = () => {
-    alert('실패!');
-  };
-
   const onSubmit = data => {
     service.updateUserInfo({
       accountId: user.accountId,
@@ -92,7 +91,7 @@ export default function UserInfo() {
           <Infos>• 남은 연차 : XX일</Infos>
           <Infos>• 오늘은 당직 날이 아닙니다.</Infos>
         </ProfileImg>
-        <ProfileContents onSubmit={handleSubmit(onValid, onInValid)}>
+        <ProfileContents onSubmit={handleSubmit(onValid)}>
           <Label htmlFor="email">이메일</Label>
           <Align>
             <Input
@@ -156,13 +155,13 @@ export default function UserInfo() {
           <Btn>수정하기</Btn>
         </ProfileContents>
       </UserInformation>
-      {isSubmitSuccessful && (
+      {/* {isSubmitSuccessful && (
         <UserModal
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           status="성공"
         />
-      )}
+      )} */}
     </UserInfoContainer>
   );
 }

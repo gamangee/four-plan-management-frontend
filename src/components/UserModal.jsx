@@ -66,9 +66,10 @@ const Btn = styled.div`
   border: none;
   width: 120px;
   height: 50px;
+  text-align: center;
+  line-height: 50px;
   white-space: nowrap;
   transition: all 0.4s ease;
-  margin-left: auto;
 
   &:hover {
     background-color: ${props => props.theme.style.text};

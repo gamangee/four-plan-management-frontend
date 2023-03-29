@@ -4,16 +4,19 @@ import Service from '../service/Service';
 
 export const ApiContext = createContext();
 
+export const color = {
+  ANNAUL_COLOR: '#D3D3D3', //휴가
+  DUTY_COLOR: '#FF9AA2', // 당직
+  DEV_DEPT_COLOR: '#B5EAD7', //개발x팀
+  HR_DEPT_COLOR: '#C7CEEA', //인사
+  DESIGN_DEPT_COLOR: '#FFB7B2', //디자인
+};
+
 export function ApiProvider({ children }) {
   const [user, setUser] = useState({});
-  const service = new Service();
+  const [selectedUser, setSelectedUser] = useState([]); // 클릭해서 담은 값
 
-  // const [value, setValue] = useState({
-  //   id: user.id,
-  //   start_date: startDay,
-  //   end_date: endDay,
-  //   scheduleType: 'YEARLY',
-  // });
+  const service = new Service();
 
   const [schedule, setSchedule] = useState({});
 
@@ -21,6 +24,9 @@ export function ApiProvider({ children }) {
     axios.get('/user/userLogin.json').then(res => setUser(res.data.user));
     axios.get('/user/schedule.json').then(res => setSchedule(res.data.users));
   }, []);
+  // useEffect(() => {
+  //   axios.get('/user/userLogin.json').then(res => setUser(res));
+  // }, []);
 
   useEffect(() => {
     if (user.length > 0) {
@@ -31,10 +37,12 @@ export function ApiProvider({ children }) {
     }
   }, [user]);
 
-  console.log(user);
+  // console.log(user);
 
   return (
-    <ApiContext.Provider value={{ service, user }}>
+    <ApiContext.Provider
+      value={{ service, user, selectedUser, setSelectedUser, color }}
+    >
       {children}
     </ApiContext.Provider>
   );

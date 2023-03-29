@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
 import styled from 'styled-components';
 import getDayOff from '../utility/dayOff';
 import AnnualDatePicker from './AnnualDatePicker';
 import { useService } from '../context/context';
+
+// 1. 총 연차 일수 -> end_date 누르기 전에 이전 값을 계산하여 -(마이너스)가 나온다.
+// 2. 연차시작일/종료일/연차일수 -> 버튼 클릭시 input 창 초기화
+// 3. '위의 내용을 확인하였습니다.' 체크박스&라벨 클릭 후 버튼 활성화
 
 export default function UserRegister({
   startDay,
   setStartDay,
   endDay,
   setEndDay,
+  originalDay,
+  setOriginalDay,
   selected,
-  setSelected,
   value,
 }) {
   const { service } = useService();
@@ -24,28 +28,6 @@ export default function UserRegister({
     setIsChecked(prev => !prev);
   };
 
-  // const { mutate, isSuccess, isError } = useMutation(() => {
-  //   switch (selected) {
-  //     case '등록':
-  //       return service.registerSchedule({
-  //         start_date: value.start_date,
-  //         end_date: value.end,
-  //         scheduleType: value.scheduleType,
-  //       });
-  //     case '수정':
-  //       return service.updateSchedule({
-  //         id: value.id,
-  //         start_date: value.start_date,
-  //         end_date: value.end,
-  //         scheduleType: value.scheduleType,
-  //       });
-  //     case '삭제':
-  //       return service.deleteSchedule({ id: value.id });
-  //     default:
-  //       throw new Error('Invalid action');
-  //   }
-  // });
-
   const handleSubmit = () => {
     if (selected === '등록') {
       service.registerSchedule({
@@ -55,7 +37,6 @@ export default function UserRegister({
       });
     }
     if (selected === '수정') {
-      console.log(value);
       service.updateSchedule(value.id, {
         id: value.id,
         start_date: value.start_date,
@@ -71,9 +52,13 @@ export default function UserRegister({
   };
 
   return (
-    <AnnualRegister>
+    <AnnualRegister selected={selected}>
       <DisabledClick type={selected}>
-        <AnnualDatePicker setStartDay={setStartDay} setEndDay={setEndDay} />
+        <AnnualDatePicker
+          setStartDay={setStartDay}
+          setEndDay={setEndDay}
+          setOriginalDay={setOriginalDay}
+        />
       </DisabledClick>
       <SelectDates>
         <SelectDate>
@@ -86,7 +71,10 @@ export default function UserRegister({
         </SelectDate>
         <SelectDate>
           <DateLabel>총 연차 일수 :</DateLabel>
-          <Input readOnly value={getDayOff(startDay, endDay) || ''} />
+          <Input
+            readOnly
+            value={getDayOff(originalDay.startDay, originalDay.endDay) || ''}
+          />
         </SelectDate>
         <Check>
           <CheckInput
@@ -103,6 +91,7 @@ export default function UserRegister({
           </CheckLabel>
         </Check>
         <Btn
+          selected={selected}
           onClick={() => {
             handleSubmit();
           }}
@@ -117,6 +106,11 @@ export default function UserRegister({
 const AnnualRegister = styled.div`
   ${props => props.theme.variables.flex('', 'space-between', 'center')};
   border: 8px solid ${props => props.theme.style.skyblue};
+  border: 8px solid
+    ${props =>
+      (props.selected === '등록' && props.theme.style.skyblue) ||
+      (props.selected === '수정' && props.theme.style.text) ||
+      (props.selected === '삭제' && props.theme.style.warning)};
   border-radius: ${props => props.theme.style.borderRadius};
   color: ${props => props.theme.style.text};
   width: 1000px;
@@ -189,19 +183,19 @@ const CheckLabel = styled.label`
 `;
 
 const Btn = styled.button`
-  background-color: ${props => props.theme.style.skyblue};
+  background-color: ${props =>
+    (props.selected === '등록' && props.theme.style.skyblue) ||
+    (props.selected === '수정' && props.theme.style.text) ||
+    (props.selected === '삭제' && props.theme.style.warning)};
   border-radius: ${props => props.theme.style.BtnborderRadius};
-  color: ${props => props.theme.style.text};
+  color: ${props =>
+    (props.selected === '등록' && props.theme.style.text) ||
+    props.theme.style.white};
   font-size: ${props => props.theme.style.textmd};
   width: 120px;
   height: 50px;
   outline: none;
   border: none;
   white-space: nowrap;
-  transition: all 0.4s ease;
-
-  &:hover {
-    background-color: ${props => props.theme.style.text};
-    color: ${props => props.theme.style.white};
-  }
+  transition: all 0.4s ease-in-out;
 `;

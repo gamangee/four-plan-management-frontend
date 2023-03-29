@@ -2,30 +2,32 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useService } from '../../context/context';
 import UserRegister from '../../components/UserRegister';
-import { useEffect } from 'react';
+import convertToKoreanTime from '../../utility/koreanTime';
 
 export default function UserAnnaul() {
   const { user } = useService();
-  const [startDay, setStartDay] = useState();
-  const [endDay, setEndDay] = useState();
+  const ANNUAL_DATA = user.Schedule;
+
+  const [startDay, setStartDay] = useState(
+    convertToKoreanTime(ANNUAL_DATA?.start_date)
+  );
+  const [endDay, setEndDay] = useState(
+    convertToKoreanTime(ANNUAL_DATA?.end_date)
+  );
+
+  const [originalDay, setOriginalDay] = useState({
+    startDay: ANNUAL_DATA?.start_date,
+    endDay: ANNUAL_DATA?.end_date,
+  });
 
   const [selected, setSelected] = useState('등록');
 
   const [value, setValue] = useState({
-    id: user.id,
+    id: user?.Schedule.id || '123',
     start_date: startDay,
     end_date: endDay,
     scheduleType: 'YEARLY',
   });
-
-  // useEffect(() => {
-  //   setValue({
-  //     id: user.id,
-  //     start_date: startDay,
-  //     end_date: endDay,
-  //     scheduleType: 'YEARLY',
-  //   });
-  // }, []);
 
   return (
     <UserInfoContainer>
@@ -34,13 +36,28 @@ export default function UserAnnaul() {
         <Label htmlFor="register">연차 등록일</Label>
         <Input
           id="register"
-          value={`${startDay || ''} ~ ${endDay || ''}`}
+          value={`${startDay || ''}  ~  ${endDay || ''}`}
           readOnly
         />
         <BtnAlign>
-          <Btn onClick={e => setSelected(e.target.textContent)}>등록</Btn>
-          <Btn onClick={e => setSelected(e.target.textContent)}>수정</Btn>
-          <Btn onClick={e => setSelected(e.target.textContent)}>삭제</Btn>
+          <RegisterBtn
+            selected={selected}
+            onClick={e => setSelected(e.target.textContent)}
+          >
+            등록
+          </RegisterBtn>
+          <UpdateBtn
+            selected={selected}
+            onClick={e => setSelected(e.target.textContent)}
+          >
+            수정
+          </UpdateBtn>
+          <DeleteBtn
+            selected={selected}
+            onClick={e => setSelected(e.target.textContent)}
+          >
+            삭제
+          </DeleteBtn>
         </BtnAlign>
       </AnnualInput>
       <UserRegister
@@ -48,8 +65,9 @@ export default function UserAnnaul() {
         setStartDay={setStartDay}
         endDay={endDay}
         setEndDay={setEndDay}
+        originalDay={originalDay}
+        setOriginalDay={setOriginalDay}
         selected={selected}
-        setSelected={setSelected}
         value={value}
       />
     </UserInfoContainer>
@@ -128,9 +146,16 @@ const Btn = styled.button`
   border: none;
   white-space: nowrap;
   transition: all 0.4s ease;
+`;
 
-  &:hover {
-    background-color: ${props => props.theme.style.text};
-    color: ${props => props.theme.style.white};
-  }
+const RegisterBtn = styled(Btn)``;
+
+const UpdateBtn = styled(Btn)`
+  background-color: ${props => props.theme.style.text};
+  color: ${props => props.theme.style.white};
+`;
+
+const DeleteBtn = styled(Btn)`
+  background-color: ${props => props.theme.style.warning};
+  color: ${props => props.theme.style.white};
 `;
