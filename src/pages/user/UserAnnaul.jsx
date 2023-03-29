@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useService } from '../../context/context';
 import UserRegister from '../../components/UserRegister';
+import { useEffect } from 'react';
 
 export default function UserAnnaul() {
   const { user } = useService();
@@ -16,6 +17,15 @@ export default function UserAnnaul() {
     end_date: endDay,
     scheduleType: 'YEARLY',
   });
+
+  // useEffect(() => {
+  //   setValue({
+  //     id: user.id,
+  //     start_date: startDay,
+  //     end_date: endDay,
+  //     scheduleType: 'YEARLY',
+  //   });
+  // }, []);
 
   return (
     <UserInfoContainer>
@@ -39,6 +49,7 @@ export default function UserAnnaul() {
         endDay={endDay}
         setEndDay={setEndDay}
         selected={selected}
+        setSelected={setSelected}
         value={value}
       />
     </UserInfoContainer>

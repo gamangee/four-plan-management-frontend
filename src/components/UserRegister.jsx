@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import styled from 'styled-components';
-import {
-  deleteSchedule,
-  registerSchedule,
-  updateSchedule,
-} from '../service/Service';
 import getDayOff from '../utility/dayOff';
 import AnnualDatePicker from './AnnualDatePicker';
 import { useService } from '../context/context';
@@ -16,10 +11,10 @@ export default function UserRegister({
   endDay,
   setEndDay,
   selected,
+  setSelected,
   value,
 }) {
   const { service } = useService();
-
   const [isChecked, setIsChecked] = useState(false);
   const onClickChecked = () => {
     if (startDay === undefined || endDay === undefined) {
@@ -29,27 +24,51 @@ export default function UserRegister({
     setIsChecked(prev => !prev);
   };
 
-  const { mutate, isSuccess, isError } = useMutation(() => {
-    switch (selected) {
-      case '등록':
-        return service.registerSchedule({
-          start_date: value.start_date,
-          end_date: value.end,
-          scheduleType: value.scheduleType,
-        });
-      case '수정':
-        return service.updateSchedule({
-          id: value.id,
-          start_date: value.start_date,
-          end_date: value.end,
-          scheduleType: value.scheduleType,
-        });
-      case '삭제':
-        return service.deleteSchedule({ id: value.id });
-      default:
-        throw new Error('Invalid action');
+  // const { mutate, isSuccess, isError } = useMutation(() => {
+  //   switch (selected) {
+  //     case '등록':
+  //       return service.registerSchedule({
+  //         start_date: value.start_date,
+  //         end_date: value.end,
+  //         scheduleType: value.scheduleType,
+  //       });
+  //     case '수정':
+  //       return service.updateSchedule({
+  //         id: value.id,
+  //         start_date: value.start_date,
+  //         end_date: value.end,
+  //         scheduleType: value.scheduleType,
+  //       });
+  //     case '삭제':
+  //       return service.deleteSchedule({ id: value.id });
+  //     default:
+  //       throw new Error('Invalid action');
+  //   }
+  // });
+
+  const handleSubmit = () => {
+    if (selected === '등록') {
+      service.registerSchedule({
+        start_date: value.start_date,
+        end_date: value.end,
+        scheduleType: value.scheduleType,
+      });
     }
-  });
+    if (selected === '수정') {
+      console.log(value);
+      service.updateSchedule(value.id, {
+        id: value.id,
+        start_date: value.start_date,
+        end_date: value.end,
+        scheduleType: value.scheduleType,
+      });
+    }
+    if (selected === '삭제') {
+      service.deleteSchedule({
+        id: value.id,
+      });
+    }
+  };
 
   return (
     <AnnualRegister>
@@ -83,10 +102,14 @@ export default function UserRegister({
             위의 내용을 확인하였습니다.
           </CheckLabel>
         </Check>
-        <Btn onClick={selected => mutate(selected)}>{selected + '하기'}</Btn>
+        <Btn
+          onClick={() => {
+            handleSubmit();
+          }}
+        >
+          {selected + '하기'}
+        </Btn>
       </SelectDates>
-      {isSuccess && alert('성공')}
-      {isError && alert('실패')}
     </AnnualRegister>
   );
 }

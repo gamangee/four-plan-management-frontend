@@ -1,9 +1,8 @@
 import React from 'react';
 import { IoIosClose } from 'react-icons/io';
 import styled from 'styled-components';
-import UserBtn from './UserBtn';
 
-export default function UserModal({ isOpen, onClose, status, title }) {
+export default function UserModal({ isOpen, onClose, status }) {
   if (!isOpen) return null;
 
   return (
@@ -11,14 +10,8 @@ export default function UserModal({ isOpen, onClose, status, title }) {
       <Container onClick={onClose} />
       <ModalWrapper>
         <TextAlign>
-          <Text>
-            {status === 'success'
-              ? `${title.slice(0, 2)} 완료!`
-              : '날짜를 다시 선택해주세요.'}
-          </Text>
-          <Btn onClick={onClose}>
-            <UserBtn title="확인" size={{ width: '80px', height: '50px' }} />
-          </Btn>
+          <Text>{status}</Text>
+          <Btn onClick={onClose}>확인</Btn>
         </TextAlign>
         <CloseBtn>
           <IoIosClose onClick={onClose} />
@@ -64,7 +57,24 @@ const Text = styled.div`
   margin-bottom: 20px;
 `;
 
-const Btn = styled.div``;
+const Btn = styled.div`
+  background-color: ${props => props.theme.style.skyblue};
+  border-radius: ${props => props.theme.style.BtnborderRadius};
+  color: ${props => props.theme.style.text};
+  font-size: ${props => props.theme.style.textmd};
+  outline: none;
+  border: none;
+  width: 120px;
+  height: 50px;
+  white-space: nowrap;
+  transition: all 0.4s ease;
+  margin-left: auto;
+
+  &:hover {
+    background-color: ${props => props.theme.style.text};
+    color: ${props => props.theme.style.white};
+  }
+`;
 
 const CloseBtn = styled.button`
   color: ${props => props.theme.style.text};

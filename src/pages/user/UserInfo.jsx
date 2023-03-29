@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
 import styled from 'styled-components';
+import UserModal from '../../components/UserModal';
 import { useService } from '../../context/context';
 
 const randomNums = () => {
@@ -16,21 +17,26 @@ export default function UserInfo() {
   const { user, service } = useService();
 
   const [index, setIndex] = useState(10);
-  const [isVisibleA, setIsVisibleA] = useState(false);
-  const [isVisibleB, setIsVisibleB] = useState(false);
-  const [isVisibleC, setIsVisibleC] = useState(false);
 
+  const [isVisible, setIsVisible] = useState({ A: false, B: false, C: false });
+
+  // 리팩토링
   const changeTypeA = () => {
-    setIsVisibleA(prev => !prev);
+    const newObj = { ...isVisible, A: !isVisible.A };
+    setIsVisible(newObj);
   };
 
   const changeTypeB = () => {
-    setIsVisibleB(prev => !prev);
+    const newObj = { ...isVisible, B: !isVisible.B };
+    setIsVisible(newObj);
   };
 
   const changeTypeC = () => {
-    setIsVisibleC(prev => !prev);
+    const newObj = { ...isVisible, C: !isVisible.C };
+    setIsVisible(newObj);
   };
+
+  const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
     setIndex(randomNums());
@@ -39,7 +45,7 @@ export default function UserInfo() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
     setError,
     reset,
   } = useForm();
@@ -56,7 +62,6 @@ export default function UserInfo() {
     }
     reset();
     onSubmit(data);
-    alert('성공!');
   };
 
   const onInValid = () => {
@@ -110,11 +115,11 @@ export default function UserInfo() {
             <Input
               {...register('currentPassword', { required: true })}
               id="currentPassword"
-              type={isVisibleA ? 'text' : 'password'}
+              type={isVisible.A ? 'text' : 'password'}
               placeholder="•••••••••"
             />
-            <Icon onClick={changeTypeA} isVisible={isVisibleA}>
-              {isVisibleA ? <AiFillEye /> : <AiFillEyeInvisible />}
+            <Icon onClick={changeTypeA} isVisible={isVisible.A}>
+              {isVisible.A ? <AiFillEye /> : <AiFillEyeInvisible />}
             </Icon>
           </Align>
           <ErrorMessage>{errors?.currentPassword?.message}</ErrorMessage>
@@ -129,10 +134,10 @@ export default function UserInfo() {
                 },
               })}
               id="newPassword"
-              type={isVisibleB ? 'text' : 'password'}
+              type={isVisible.B ? 'text' : 'password'}
             />
-            <Icon onClick={changeTypeB} isVisible={isVisibleB}>
-              {isVisibleB ? <AiFillEye /> : <AiFillEyeInvisible />}
+            <Icon onClick={changeTypeB} isVisible={isVisible.B}>
+              {isVisible.B ? <AiFillEye /> : <AiFillEyeInvisible />}
             </Icon>
           </Align>
           <ErrorMessage>{errors?.newPassword?.message}</ErrorMessage>
@@ -141,16 +146,23 @@ export default function UserInfo() {
             <Input
               {...register('checkPassword', { required: true })}
               id="checkPassword"
-              type={isVisibleC ? 'text' : 'password'}
+              type={isVisible.C ? 'text' : 'password'}
             />
-            <Icon onClick={changeTypeC} isVisible={isVisibleC}>
-              {isVisibleC ? <AiFillEye /> : <AiFillEyeInvisible />}
+            <Icon onClick={changeTypeC} isVisible={isVisible.C}>
+              {isVisible.C ? <AiFillEye /> : <AiFillEyeInvisible />}
             </Icon>
           </Align>
           <ErrorMessage>{errors?.checkPassword?.message}</ErrorMessage>
           <Btn>수정하기</Btn>
         </ProfileContents>
       </UserInformation>
+      {isSubmitSuccessful && (
+        <UserModal
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          status="성공"
+        />
+      )}
     </UserInfoContainer>
   );
 }

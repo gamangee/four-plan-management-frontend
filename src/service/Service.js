@@ -1,7 +1,10 @@
 import axios from 'axios';
 
 const config = {
-  headers: { 'content-type': 'application/json' },
+  headers: {
+    'content-type': 'application/json',
+    // Authorization: 'Bearer [JWT token]',
+  },
 };
 
 export default class Service {
@@ -20,14 +23,23 @@ export default class Service {
   }
 
   registerSchedule(data) {
-    return this.client.post('/schedule/save', data, config);
+    return this.client
+      .post('/schedule/save', data, config)
+      .then(() => alert('등록 성공'))
+      .catch(error => alert(error));
   }
 
-  updateSchedule(data) {
-    return this.client.post(`/schedule/update/${data.id}`, data, config);
+  async updateSchedule(dataId, data) {
+    return this.client
+      .post(`/schedule/update/${dataId}`, data, config)
+      .then(() => alert('수정 성공'))
+      .catch(error => alert(error));
   }
 
-  deleteSchedule(data) {
-    return this.client.post(`/schedule/delete/${data.id}`, data, config);
+  async deleteSchedule(data) {
+    return this.client
+      .post(`/schedule/delete/${data.id}`, data, config)
+      .then(() => alert('삭제 성공'))
+      .catch(error => alert(error));
   }
 }
