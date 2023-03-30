@@ -30,7 +30,7 @@ export default function Login() {
   );
 }
 
-export const LoginBackground = styled.div`
+const LoginBackground = styled.div`
   // 전체 화면 채우기
   width: 100vw;
   height: 100vh;
@@ -45,7 +45,7 @@ export const LoginBackground = styled.div`
   z-index: 1;
 `;
 
-export const LoginSection = styled.section`
+const LoginSection = styled.section`
   width: 500px;
   padding: 30px 10px;
   margin: 0 auto;
@@ -55,17 +55,17 @@ export const LoginSection = styled.section`
   ${props => props.theme.variables.flex('column', '', 'center')};
 `;
 
-export const SimpleLogo = styled.img`
+const SimpleLogo = styled.img`
   width: 60px;
   margin: 15px;
 `;
 
-export const InfoPhrase = styled.p`
+const InfoPhrase = styled.p`
   color: ${props => props.theme.style.text};
   font-weight: 700;
 `;
 
-export const SignUpBtn = styled.button`
+const SignUpBtn = styled.button`
   width: 80%;
   height: 50px;
   padding: 5px;

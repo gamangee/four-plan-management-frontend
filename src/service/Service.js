@@ -78,4 +78,10 @@ export default class Service {
   async todayDuty() {
     return this.client.get('/schedule/today-duty').then(res => res.data);
   }
+
+  async changeRole(data) {
+    return this.client
+      .post(`/admin/role/${data.id}`, data, config)
+      .then(res => res.data.message);
+  }
 }

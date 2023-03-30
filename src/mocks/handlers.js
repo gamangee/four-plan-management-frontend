@@ -175,7 +175,6 @@ export const handlers = [
 
   // 유저 정보 삭제
   rest.post('/account/delete/:accountId', (req, res, ctx) => {
-    console.log('hei');
     return res(
       ctx.status(200),
       ctx.json({
@@ -569,9 +568,22 @@ export const handlers = [
         ],
       });
     }
-    return (
+    return res(
       ctx.status(400),
       ctx.json({ code: '400', message: 'id 값을 확인해주세요' })
+    );
+  }),
+
+  // 권한변경
+  rest.post('/admin/role/:id', (req, res, ctx) => {
+    const newRole = req.body.role;
+    return res(
+      ctx.status(200),
+      ctx.json({
+        code: '200',
+        status: 'success',
+        message: `${newRole}으로 수정 완료`,
+      })
     );
   }),
 ];

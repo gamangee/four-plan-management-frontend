@@ -7,7 +7,6 @@ import { setCookie } from '../cookie';
 import { useService } from '../context/context';
 
 export default function LoginForm() {
-  // context
   const { service } = useService();
   // url 이동
   const navigate = useNavigate();
@@ -101,13 +100,13 @@ export default function LoginForm() {
   );
 }
 
-export const Form = styled.form`
+const Form = styled.form`
   width: 100%;
   margin: 20px 0 0;
   ${props => props.theme.variables.flex('column', '', 'center')};
 `;
 
-export const LoginInput = styled.input`
+const LoginInput = styled.input`
   width: 80%;
   height: 50px;
   padding: 10px;
@@ -122,14 +121,14 @@ export const LoginInput = styled.input`
   }
 `;
 
-export const Div = styled.div`
+const Div = styled.div`
   width: 100%;
   margin: 0 auto;
   ${props => props.theme.variables.flex('column', '', 'center')};
   position: relative;
 `;
 
-export const Icon = styled.div`
+const Icon = styled.div`
   color: ${props => props.theme.style.lightGray};
   position: absolute;
   cursor: pointer;
@@ -141,13 +140,13 @@ export const Icon = styled.div`
   }
 `;
 
-export const WarningPhrase = styled.p`
+const WarningPhrase = styled.p`
   color: ${props => props.theme.style.warning};
   margin-bottom: 20px;
   font-size: 12px;
 `;
 
-export const SignInBtn = styled.button`
+const SignInBtn = styled.button`
   width: 80%;
   height: 50px;
   padding: 5px;

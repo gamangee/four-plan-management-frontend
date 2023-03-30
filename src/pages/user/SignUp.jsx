@@ -199,7 +199,7 @@ export default function SignUp() {
   );
 }
 
-export const Wrapper = styled.div`
+const Wrapper = styled.div`
   // 전체 화면 채우기
   width: 100vw;
   height: 100vh;
@@ -214,7 +214,7 @@ export const Wrapper = styled.div`
   z-index: 1;
 `;
 
-export const SignUpContainer = styled.section`
+const SignUpContainer = styled.section`
   width: 500px;
   padding: 30px 10px;
   margin: 0 auto;
@@ -224,24 +224,24 @@ export const SignUpContainer = styled.section`
   ${props => props.theme.variables.flex('column', '', 'center')};
 `;
 
-export const SimpleLogo = styled.img`
+const SimpleLogo = styled.img`
   width: 60px;
   margin: 15px;
 `;
 
-export const InfoPhrase = styled.p`
+const InfoPhrase = styled.p`
   color: ${props => props.theme.style.text};
   font-weight: 700;
   text-align: center;
 `;
 
-export const Form = styled.form`
+const Form = styled.form`
   width: 100%;
   margin: 20px 0 0;
   ${props => props.theme.variables.flex('column', '', 'center')};
 `;
 
-export const SignUpInput = styled.input`
+const SignUpInput = styled.input`
   width: 80%;
   height: 50px;
   padding: 10px;
@@ -316,8 +316,8 @@ export const Modal = styled.div`
   font-size: ${props => props.theme.style.textmd};
   font-weight: 600;
   background-color: ${props => props.theme.style.white};
-  border: 5px solid ${props => props.theme.style.skyblue};
-  border-radius: ${props => props.theme.style.BtnborderRadius};
+  border: 8px solid ${props => props.theme.style.skyblue};
+  border-radius: ${props => props.theme.style.borderRadius};
   position: absolute;
   top: 50%;
   left: 50%;
@@ -325,7 +325,7 @@ export const Modal = styled.div`
   z-index: 10;
 `;
 
-export const AcceptBtn = styled.button`
+const AcceptBtn = styled.button`
   width: 80px;
   height: 30px;
   border-radius: ${props => props.theme.style.BtnborderRadius};
