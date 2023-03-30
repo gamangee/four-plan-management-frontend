@@ -71,8 +71,7 @@ export default class Service {
   // 유저정보검색
   async searchUserList(data) {
     return this.client
-      .post(`/account/search?name=길동`, data, config)
-      .then(res => console.log(res))
-      .catch(error => alert(error));
+      .get('/account/search?name=길동')
+      .then(res => res.data.users);
   }
 }

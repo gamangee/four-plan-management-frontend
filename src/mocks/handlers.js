@@ -352,6 +352,26 @@ export const handlers = [
               modified_at: null,
             },
           },
+          {
+            name: '홍길동',
+            accountId: 'dongdong123',
+            role: 'ROLE_USER',
+            email: 'dongdong22@gmail.com',
+            department: '디자인팀',
+            position: '사원',
+            yearly: '15',
+            duty: true,
+            Schedule: {
+              id: '11',
+              accountId: 'abc123asdwdadasd',
+              type: 'annaul',
+              content: null,
+              start_date: '2023-03-28T00:00:00Z',
+              end_date: '2023-03-28T23:59:59Z',
+              created_at: '2023-03-20T15:25:00Z',
+              modified_at: '2023-03-20T15:25:00Z',
+            },
+          },
         ],
       })
     );
@@ -429,7 +449,7 @@ export const handlers = [
       ctx.json({
         code: '200',
         status: 'success',
-        uasers: [
+        users: [
           {
             id: '1',
             name: '홍길동',
