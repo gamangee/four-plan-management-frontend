@@ -21,6 +21,17 @@ export function ApiProvider({ children }) {
   //   axios.get('/user/userLogin.json').then(res => setUser(res));
   // }, []);
 
+  // console.log(user);
+
+  // useEffect(() => {
+  //   if (user.length > 0) {
+  //     const newUser = schedule.filter(
+  //       user => user.Schedule.account_id === user.accountId
+  //     );
+  //     setUser(newUser);
+  //   }
+  // }, [user]);
+
   return (
     <ApiContext.Provider value={{ service, user, color, setUser }}>
       {children}

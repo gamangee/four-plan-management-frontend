@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import TodayDuty from '../pages/TodayDuty';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiOutlineCalendar } from 'react-icons/ai';
@@ -25,6 +26,7 @@ export default function SideBar() {
 
   return (
     <Container>
+      <TodayDuty />
       <LogoImg
         src="/images/logo_origin.svg"
         alt="logo"
@@ -72,6 +74,7 @@ const Container = styled.div`
   border: 10px solid ${props => props.theme.style.skyblue};
   border-radius: ${props => props.theme.style.borderRadius};
   margin: 20px;
+  margin-left: 0;
 `;
 
 const LogoImg = styled.img`

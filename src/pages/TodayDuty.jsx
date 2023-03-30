@@ -18,8 +18,8 @@ const Container = styled.div`
   ${props => props.theme.variables.flex('column', '', 'center')}
   text-align: center;
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 36px;
+  right: 36px;
   width: 200px;
   height: 100px;
   border-radius: 20px;

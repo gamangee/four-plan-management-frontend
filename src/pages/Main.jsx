@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { useService } from '../context/context';
 import UserSearch from './UserSearch';
+import { useLocation } from 'react-router-dom';
 
 // export const D = {
 //   PAGE_LIST: "PAGE_LIST",
@@ -66,7 +67,7 @@ export default function Main() {
         });
       }
       return users
-        .filter(user => selected.includes(user.Schedule.account_id))
+        .filter(user => selected.includes(user.Schedule.accountId))
         .map(user => ({
           ...user,
           title: user.name,
@@ -97,8 +98,7 @@ export default function Main() {
     }
   };
 
-  console.log(schedule);
-  console.log(selected);
+  // console.log('스케쥴 :', schedule);
 
   return (
     <Container>
