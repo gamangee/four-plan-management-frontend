@@ -28,8 +28,8 @@ export function ApiProvider({ children }) {
   const [schedule, setSchedule] = useState({});
 
   useEffect(() => {
-    axios.get('/user/userLogin.json').then(res => setUser(res.data.user));
-    axios.get('/user/schedule.json').then(res => setSchedule(res.data.users));
+    axios.get('/user/login').then(res => setUser(res.data.user));
+    axios.get('/user/schedule').then(res => setSchedule(res.data.users));
   }, []);
   // useEffect(() => {
   //   axios.get('/user/userLogin.json').then(res => setUser(res));

@@ -44,7 +44,7 @@ export default function LoginForm() {
       // withCredentials: true,
     })
       .then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.data.code === '200') {
           const accessToken = res.data.accessToken;
           setCookie('accessToken', accessToken);

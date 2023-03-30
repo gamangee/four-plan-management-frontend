@@ -70,13 +70,9 @@ export default function SignUp() {
           setError('accountId', {
             message: '이미 존재하는 아이디 입니다.',
           });
-        } else if (message === 'checkEmail') {
+        } else if (message === 'checkEmail' || message === 'checkName') {
           setError('email', {
-            message: message,
-          });
-        } else if (message === 'checkName') {
-          setError('name', {
-            message: message,
+            message: '일치하는 사용자 정보가 없습니다. 인사과에 문의하세요.',
           });
         } else {
           setError('pwCheck', {

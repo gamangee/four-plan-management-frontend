@@ -22,6 +22,44 @@ export const handlers = [
     );
   }),
 
+  // 회원가입
+  rest.post('/signup', (req, res, ctx) => {
+    const name = ['홍길동', '뽀로로', '펭수'];
+    const accountId = ['test123'];
+    const email = ['dong123@gmail.com', 'gil123@naver.com'];
+    if (req.body.accountId === accountId) {
+      // 중복 아이디
+      return res(ctx.status(400), ctx.json({ message: 'existId' }));
+    } else {
+      email.forEach(el => {
+        if (req.body.email !== el) {
+          // 이메일 존재 x
+          return res(ctx.status(400), ctx.json({ message: 'checkEmail' }));
+        }
+      });
+      name.forEach(el => {
+        if (req.body.name !== el) {
+          // 이름 존재 x
+          return res(ctx.status(400), ctx.json({ message: 'checkName' }));
+        }
+      });
+    }
+    return res(
+      ctx.json({
+        user: {
+          name: '홍길동',
+          account_id: 'abc123',
+          role: 'user',
+          email: 'gildong123@naver.com',
+          department: '개발팀',
+          position: '팀장',
+          yearly: 30,
+          duty: false,
+        },
+      })
+    );
+  }),
+
   // 로그인 유저 정보
   rest.get('/user/login', (req, res, ctx) => {
     return res(
