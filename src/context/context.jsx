@@ -14,31 +14,26 @@ export const color = {
 
 export function ApiProvider({ children }) {
   const [user, setUser] = useState({});
-  const [selectedUser, setSelectedUser] = useState([]); // 클릭해서 담은 값
 
   const service = new Service();
 
-  const [schedule, setSchedule] = useState({});
-
-  useEffect(() => {
-    axios.get('/user/schedule').then(res => setSchedule(res.data.users));
-  }, []);
+  // useEffect(() => {
+  //   axios.get('/user/userLogin.json').then(res => setUser(res));
+  // }, []);
 
   // console.log(user);
 
-  useEffect(() => {
-    if (user.length > 0) {
-      const newUser = schedule.filter(
-        user => user.Schedule.account_id === user.accountId
-      );
-      setUser(newUser);
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user.length > 0) {
+  //     const newUser = schedule.filter(
+  //       user => user.Schedule.account_id === user.accountId
+  //     );
+  //     setUser(newUser);
+  //   }
+  // }, [user]);
 
   return (
-    <ApiContext.Provider
-      value={{ service, user, selectedUser, setSelectedUser, color, setUser }}
-    >
+    <ApiContext.Provider value={{ service, user, color, setUser }}>
       {children}
     </ApiContext.Provider>
   );
