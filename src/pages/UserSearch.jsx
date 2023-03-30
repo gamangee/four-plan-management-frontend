@@ -203,7 +203,7 @@ const Checkbox = styled.input`
     border: 2px solid ${props => props.theme.style.text};
     border-radius: 4px;
     vertical-align: middle;
-  margin-left :10px;
+    margin-left :10px;
   }
 
   &:checked + Label:before{

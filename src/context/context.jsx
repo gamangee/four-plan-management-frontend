@@ -14,7 +14,6 @@ export const color = {
 
 export function ApiProvider({ children }) {
   const [user, setUser] = useState({});
-  const [selectedUser, setSelectedUser] = useState([]); // 클릭해서 담은 값
 
   const service = new Service();
 
@@ -23,9 +22,7 @@ export function ApiProvider({ children }) {
   }, []);
 
   return (
-    <ApiContext.Provider
-      value={{ service, user, selectedUser, setSelectedUser, color }}
-    >
+    <ApiContext.Provider value={{ service, user, color }}>
       {children}
     </ApiContext.Provider>
   );
