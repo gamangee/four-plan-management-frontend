@@ -5,6 +5,7 @@ import { AiOutlineCalendar } from 'react-icons/ai';
 import { useService } from '../context/context';
 import AdminPage from './AdminPage';
 import UserMyPage from './UserMyPage';
+import TodayDuty from '../pages/TodayDuty';
 
 export default function SideBar() {
   const navigate = useNavigate();
