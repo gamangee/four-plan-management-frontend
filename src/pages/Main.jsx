@@ -61,7 +61,7 @@ export default function Main() {
         });
       }
       return users
-        .filter(user => selected.includes(user.Schedule.account_id))
+        .filter(user => selected.includes(user.Schedule.accountId))
         .map(user => ({
           ...user,
           title: user.name,
