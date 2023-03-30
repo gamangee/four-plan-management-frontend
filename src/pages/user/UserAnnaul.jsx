@@ -13,6 +13,8 @@ export default function UserAnnaul() {
     endDay: convertToKoreanTime(ANNUAL_DATA?.end_date),
   });
 
+  const [yearDay, setYearDay] = useState('');
+
   if (formatDay.endDay === '1970년 1월 1일 (목)') {
     setFormatDay(prev => ({
       ...prev,
@@ -39,11 +41,7 @@ export default function UserAnnaul() {
       <Tab>연차 관리</Tab>
       <AnnualInput>
         <Label htmlFor="register">연차 등록일</Label>
-        <Input
-          id="register"
-          value={`${formatDay.startDay || ''}  ~  ${formatDay.endDay || ''}`}
-          readOnly
-        />
+        <Input id="register" value={yearDay} readOnly />
         <BtnAlign>
           <RegisterBtn
             selected={selected}
@@ -72,6 +70,7 @@ export default function UserAnnaul() {
         setFormatDay={setFormatDay}
         value={value}
         selected={selected}
+        setYearDay={setYearDay}
       />
     </UserInfoContainer>
   );

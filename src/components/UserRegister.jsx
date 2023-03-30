@@ -14,6 +14,7 @@ export default function UserRegister({
   setFormatDay,
   value,
   selected,
+  setYearDay,
 }) {
   const { service } = useService();
 
@@ -66,9 +67,15 @@ export default function UserRegister({
           id: value.id,
         })
         .then(res => setStatus(res))
+
         .catch(() => setFetchError(true));
     }
 
+    if (selected !== '삭제') {
+      setYearDay(`${formatDay.startDay} ~ ${formatDay.endDay}`);
+    } else {
+      setYearDay('');
+    }
     setAnnualDays('');
     setIsOpen(true);
     setIsChecked(false);
