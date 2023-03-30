@@ -92,8 +92,7 @@ export default function Main() {
     }
   };
 
-  // console.log(schedule);
-  // console.log(selected);
+  // console.log('스케쥴 :', schedule);
 
   return (
     <Container>

@@ -40,7 +40,7 @@ export const handlers = [
           duty: true,
           Schedule: {
             id: 1,
-            account_id: 'nico123',
+            accountId: 'nico123',
             type: 'duty',
             content: null,
             start_date: '2023-03-22T18:00:00Z',
@@ -95,7 +95,7 @@ export const handlers = [
             duty: true,
             Schedule: {
               id: '2',
-              accountId: 'abc123',
+              accountId: 'abc123asdwdadasd',
               type: 'DUTY',
               content: null,
               start_date: '2023-03-28T00:00:00Z',
@@ -110,7 +110,7 @@ export const handlers = [
             position: '사원',
             Schedule: {
               id: 3,
-              account_id: 'glen_a',
+              accountId: 'glen_a',
               type: 'duty',
               content: null,
               start_date: '2023-03-22T14:30:00Z',
@@ -125,7 +125,7 @@ export const handlers = [
             position: '사원',
             Schedule: {
               id: 4,
-              account_id: 'Benjamin35',
+              accountId: 'Benjamin35',
               type: 'plan',
               content: '주제 : 해고',
               start_date: '2023-03-07T09:00:00Z',
@@ -140,7 +140,7 @@ export const handlers = [
             position: '팀장',
             Schedule: {
               id: 5,
-              account_id: '409ac',
+              accountId: '409ac',
               type: 'plan',
               content: 'design meeting',
               start_date: '2023-03-06T09:30:00Z',
@@ -155,7 +155,7 @@ export const handlers = [
             position: '사원',
             Schedule: {
               id: 6,
-              account_id: 'brian756',
+              accountId: 'brian756',
               type: 'annual',
               content: null,
               start_date: '2023-03-14T09:00:00Z',
@@ -170,7 +170,7 @@ export const handlers = [
             position: '팀장',
             Schedule: {
               id: 7,
-              account_id: 'liquid1935',
+              accountId: 'liquid1935',
               type: 'plan',
               content: 'Welfare related meeting',
               start_date: '2023-03-22T10:30:00Z',
@@ -185,7 +185,7 @@ export const handlers = [
             position: '사원',
             Schedule: {
               id: 8,
-              account_id: 'david1409',
+              accountId: 'david1409',
               type: 'plan',
               content: 'Web application development meeting',
               start_date: '2023-03-17T13:00:00Z',
@@ -200,7 +200,7 @@ export const handlers = [
             position: '사원',
             Schedule: {
               id: 9,
-              account_id: 'kimyoung1208',
+              accountId: 'kimyoung1208',
               type: 'annual',
               content: null,
               start_date: '2023-03-22T09:00:00Z',
@@ -215,7 +215,7 @@ export const handlers = [
             position: '사원',
             Schedule: {
               id: 10,
-              account_id: 'mark619',
+              accountId: 'mark619',
               type: 'annual',
               content: null,
               start_date: '2023-03-22T09:00:00Z',

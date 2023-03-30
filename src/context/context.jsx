@@ -48,7 +48,7 @@ export function ApiProvider({ children }) {
 
   return (
     <ApiContext.Provider
-      value={{ service, user, selectedUser, setSelectedUser, color }}
+      value={{ service, user, selectedUser, setSelectedUser, color, setUser }}
     >
       {children}
     </ApiContext.Provider>

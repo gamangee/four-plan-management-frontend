@@ -14,7 +14,7 @@ export default class Service {
     });
   }
   async schedule() {
-    // console.log('Fetching!!!!!!!!🔥');
+    console.log('Fetching!!!!!!!!🔥');
     return this.client.get(`/user/schedule`).then(res => res.data.users);
   }
 

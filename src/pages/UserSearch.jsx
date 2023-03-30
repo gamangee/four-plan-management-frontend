@@ -24,7 +24,7 @@ export default function UserSearch({
   useEffect(() => {
     if (selectedUser.length > 0) {
       const list = schedule.filter(user =>
-        selectedUser.includes(user.Schedule.account_id)
+        selectedUser.includes(user.Schedule.accountId)
       );
       setUserList(list);
     }
@@ -87,12 +87,12 @@ export default function UserSearch({
                 <Li key={user.start + user.end + user.title}>
                   <Checkbox
                     type="checkbox"
-                    id={user.Schedule.account_id}
-                    data-id={user.Schedule.account_id}
+                    id={user.Schedule.accountId}
+                    data-id={user.Schedule.accountId}
                     onChange={handleChecked}
-                    checked={selectedUser.includes(user.Schedule.account_id)}
+                    checked={selectedUser.includes(user.Schedule.accountId)}
                   />
-                  <Label htmlFor={user.Schedule.account_id}>
+                  <Label htmlFor={user.Schedule.accountId}>
                     <Name> 이름 : {user.name}</Name>
                     <Info>
                       <Department>부서 : {user.department}</Department>
