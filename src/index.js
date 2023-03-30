@@ -14,6 +14,12 @@ import Main from './pages/Main';
 import Management from './pages/admin/Management';
 import AdminLogin from './pages/admin/AdminLogin';
 
+import { worker } from './mocks/worker';
+
+if (process.env.NODE_ENV === 'development') {
+  worker.start();
+}
+
 const router = createBrowserRouter([
   {
     path: '/',

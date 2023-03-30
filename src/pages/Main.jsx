@@ -5,8 +5,9 @@ import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { useService } from '../context/context';
 import UserSearch from './UserSearch';
+import { useLocation } from 'react-router-dom';
 
-// export const AUTH_TYPE = {
+// export const D = {
 //   PAGE_LIST: "PAGE_LIST",
 //   PAGE_EXCEL: "PAGE_EXCEL",
 //   PAGE_REGISTER: "PAGE_REGISTER",
@@ -17,15 +18,19 @@ import UserSearch from './UserSearch';
 export default function Main() {
   const [selected, setSelected] = useState('전체');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState([]); // 클릭해서 담은 값
 
   const colorArray = ['#D3D3D3', '#FF9AA2', '#B5EAD7', '#C7CEEA', '#FFB7B2'];
-  const { service } = useService();
+  const { service, setUser } = useService();
   const options = {
     staleTime: 60 * 1000,
   };
 
-  // js 데이터 객체 지역에 맞춰서 (시간))
+  // user 정보 설정
+  const { state: user } = useLocation();
+  if (user) setUser(user);
 
+  // js 데이터 객체 지역에 맞춰서 (시간))
   function scheduleList() {
     return service.schedule().then(users => {
       if (selected === '전체') {
@@ -61,7 +66,7 @@ export default function Main() {
         });
       }
       return users
-        .filter(user => selected.includes(user.Schedule.account_id))
+        .filter(user => selected.includes(user.Schedule.accountId))
         .map(user => ({
           ...user,
           title: user.name,
@@ -69,44 +74,30 @@ export default function Main() {
           end: user.Schedule.end_date.substr(0, 10),
           color: colorArray[colorSelect(user)],
         }));
-
-      // return users
-      //   .filter(user => {
-      //     return user.Schedule.account_id.includes(
-      //       selected === '유저' ? '' : selected.Schedule.account_id
-      //     );
-      //   })
-      //   .map(user => {
-      //     return {
-      //       ...user,
-      //       title: user.name,
-      //       start: user.Schedule.start_date.substr(0, 10),
-      //       end: user.Schedule.end_date.substr(0, 10),
-      //       color: colorArray[colorSelect(user)],
-      //     };
-      //   });
     });
   }
 
   const { data: schedule } = useQuery(
     ['schedule', selected],
     () => scheduleList(),
+
     options
   );
 
   const selectFilter = e => {
-    console.log('selectFilter');
-    if (e.target.textContent !== '유저') {
-      setSelected(e.target.textContent);
+    // console.log('selectFilter');
+    const textContent = e.target.textContent;
+    if (textContent !== '유저') {
+      setSelected(textContent);
       setIsModalOpen(false);
     } else {
-      setSelected(e.target.textContent);
+      setSelected(textContent);
+      setSelectedUser(selectedUser);
       return setIsModalOpen(true);
     }
   };
 
-  console.log(schedule);
-  console.log(selected);
+  // console.log('스케쥴 :', schedule);
 
   return (
     <Container>
@@ -133,6 +124,9 @@ export default function Main() {
             scheduleList={scheduleList}
             schedule={schedule}
             setSelected={setSelected}
+            selectedUser={selectedUser}
+            setSelectedUser={setSelectedUser}
+            isModalOpen={isModalOpen}
           />
         )}
       </FlexContainer1>

@@ -3,16 +3,18 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
+import { setCookie } from '../../cookie';
+import { useService } from '../../context/context';
 
 export default function SignUp() {
+  // context
+  const { service } = useService();
   // url 이동
   const navigate = useNavigate();
   // pw 보이기
   const [isVisiblePw, setIsVisiblePw] = useState(false);
   // pwCheck 보이기
   const [isVisiblePwCheck, setIsVisiblePwCheck] = useState(false);
-  // 회원가입 한 user data
-  const [userSignup, setUserSignup] = useState();
   // 회원가입 완료 여부
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -28,7 +30,7 @@ export default function SignUp() {
 
   // onValid : 검사
   const onValid = data => {
-    if (data.pw !== data.pwCheck) {
+    if (data.password !== data.pwCheck) {
       setError('pwCheck', {
         message: '비밀번호가 일치하지 않습니다.',
       });
@@ -39,20 +41,45 @@ export default function SignUp() {
     }
   };
 
-  // ******
   // onSubmit : 등록
   const onSubmit = data => {
-    // console.log('signUp onSubmit', data);
-    setUserSignup(data);
+    // data : 회원가입 한 user data
+    service
+      .signup({
+        accountId: data.accountId,
+        password: data.password,
+        name: data.name,
+        email: data.email,
+      })
+      .then(res => {
+        if (res.status === 200) {
+          const accessToken = res.data.accessToken;
+          setCookie('accessToken', accessToken);
+          setIsSuccess(true);
+          // navigate('/', { state: res.data.code });
+        }
+      })
+      .catch(e => {
+        const message = e.response.data.message;
+        if (message === 'existId' || message === 'duplicateId') {
+          setError('accountId', {
+            message: '이미 존재하는 아이디 입니다.',
+          });
+        } else if (message === 'checkEmail' || message === 'checkName') {
+          setError('email', {
+            message: '일치하는 사용자 정보가 없습니다. 인사과에 문의하세요.',
+          });
+        } else {
+          setError('pwCheck', {
+            message: '내용 확인 후, 다시 작성 부탁드립니다.',
+          });
+        }
+      });
   };
 
-  // API 연결하기
-  // userSignup 데이터 => API 전송 {accountId, password, name, email}
-  //      => statuscode 200 && status success => setIsSuccess(true)
-
   return (
-    <SignUpBackground style={{ backgroundImage: 'url(./images/bg3.jpg' }}>
-      <SignUpSection>
+    <Wrapper style={{ backgroundImage: 'url(./images/bg3.jpg' }}>
+      <SignUpContainer>
         <SimpleLogo src="/images/logo_simple.svg" alt="log_simple" />
         <InfoPhrase>
           When you complete your sign up process,
@@ -77,9 +104,9 @@ export default function SignUp() {
           {/* id */}
           <SignUpInput
             type="text"
-            name="id"
+            name="accountId"
             placeholder="Please enter your ID"
-            {...register('id', {
+            {...register('accountId', {
               required: '필수 입력 항목입니다.',
               pattern: {
                 value: /^[a-zA-Z0-9]+$/,
@@ -95,10 +122,12 @@ export default function SignUp() {
               },
             })}
           />
-          {errors.id && <WarningPhrase>{errors.id.message}</WarningPhrase>}
+          {errors.accountId && (
+            <WarningPhrase>{errors.accountId.message}</WarningPhrase>
+          )}
           {/* email */}
           <SignUpInput
-            type="text"
+            type="email"
             name="email"
             placeholder="Please enter your E-mail"
             {...register('email', {
@@ -117,9 +146,9 @@ export default function SignUp() {
           <Div>
             <SignUpInput
               type={isVisiblePw ? 'text' : 'password'}
-              name="pw"
+              name="password"
               placeholder="Please enter your Password"
-              {...register('pw', {
+              {...register('password', {
                 required: '필수 입력 항목입니다.',
                 minLength: {
                   value: 8,
@@ -135,7 +164,9 @@ export default function SignUp() {
               {isVisiblePw ? <AiFillEye /> : <AiFillEyeInvisible />}
             </Icon>
           </Div>
-          {errors.pw && <WarningPhrase>{errors.pw.message}</WarningPhrase>}
+          {errors.password && (
+            <WarningPhrase>{errors.password.message}</WarningPhrase>
+          )}
           {/* check password */}
           <Div>
             <SignUpInput
@@ -155,26 +186,35 @@ export default function SignUp() {
           )}
           <SignUpBtn disabled={isSubmitting}>Sign Up</SignUpBtn>
         </Form>
-      </SignUpSection>
-    </SignUpBackground>
+      </SignUpContainer>
+      {isSuccess && (
+        <ModalContainer>
+          <Modal>
+            가입완료
+            <AcceptBtn onClick={() => navigate('/')}>확인</AcceptBtn>
+          </Modal>
+        </ModalContainer>
+      )}
+    </Wrapper>
   );
 }
 
-export const SignUpBackground = styled.div`
+export const Wrapper = styled.div`
   // 전체 화면 채우기
-  min-width: 100%;
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
   ${props => props.theme.variables.flex('', 'center', 'center')};
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 1;
 `;
 
-export const SignUpSection = styled.section`
+export const SignUpContainer = styled.section`
   width: 500px;
   padding: 30px 10px;
   margin: 0 auto;
@@ -251,5 +291,52 @@ export const SignUpBtn = styled.button`
   transition: 0.3s ease;
   &:hover {
     background-color: ${props => props.theme.style.text};
+  }
+`;
+
+export const ModalContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  z-index: 9;
+`;
+
+export const Modal = styled.div`
+  width: 300px;
+  height: 150px;
+  ${props => props.theme.variables.flex('column', '', 'center')};
+  text-align: center;
+  line-height: 100px;
+  color: ${props => props.theme.style.text};
+  font-size: ${props => props.theme.style.textmd};
+  font-weight: 600;
+  background-color: ${props => props.theme.style.white};
+  border: 5px solid ${props => props.theme.style.skyblue};
+  border-radius: ${props => props.theme.style.BtnborderRadius};
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+`;
+
+export const AcceptBtn = styled.button`
+  width: 80px;
+  height: 30px;
+  border-radius: ${props => props.theme.style.BtnborderRadius};
+  background-color: ${props => props.theme.style.text};
+  font-size: ${props => props.theme.style.textsm};
+  color: ${props => props.theme.style.white};
+  border: 0;
+  position: absolute;
+  bottom: 15px;
+
+  &:hover {
+    background-color: ${props => props.theme.style.blue};
   }
 `;

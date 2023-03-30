@@ -33,7 +33,6 @@ export default function AnnualDatePicker({ setOriginalDay, setFormatDay }) {
     // 연차일수 계산용
     setOriginalDay({ startDay: start, endDay: end });
   };
-
   return (
     <DatePicker
       inline
