@@ -1,96 +1,123 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import getDayOff from '../utility/dayOff';
 import AnnualDatePicker from './AnnualDatePicker';
 import { useService } from '../context/context';
+import UserModal from './UserModal';
 
-// 1. 총 연차 일수 -> end_date 누르기 전에 이전 값을 계산하여 -(마이너스)가 나온다.
-// 2. 연차시작일/종료일/연차일수 -> 버튼 클릭시 input 창 초기화
-// 3. '위의 내용을 확인하였습니다.' 체크박스&라벨 클릭 후 버튼 활성화
+// 모달창이 열리면 SelectDates 컴포넌트가 움직이는 이슈
 
 export default function UserRegister({
-  startDay,
-  setStartDay,
-  endDay,
-  setEndDay,
   originalDay,
   setOriginalDay,
-  selected,
+  formatDay,
+  setFormatDay,
   value,
+  selected,
 }) {
   const { service } = useService();
+
+  const [status, setStatus] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const [fetchError, setFetchError] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
+  const [annualDays, setAnnualDays] = useState(
+    getDayOff(originalDay.startDay, originalDay.endDay)
+  );
+
   const onClickChecked = () => {
-    if (startDay === undefined || endDay === undefined) {
+    if (formatDay.startDay === undefined || formatDay.endDay === undefined) {
       setIsChecked(false);
       return;
     }
     setIsChecked(prev => !prev);
   };
 
+  useEffect(() => {
+    setAnnualDays(getDayOff(originalDay.startDay, originalDay.endDay));
+  }, [originalDay]);
+
   const handleSubmit = () => {
     if (selected === '등록') {
-      service.registerSchedule({
-        start_date: value.start_date,
-        end_date: value.end,
-        scheduleType: value.scheduleType,
-      });
+      service
+        .registerSchedule({
+          start_date: value.start_date,
+          end_date: value.end,
+          scheduleType: value.scheduleType,
+        })
+        .then(res => setStatus(res))
+        .catch(() => setFetchError(true));
     }
     if (selected === '수정') {
-      service.updateSchedule(value.id, {
-        id: value.id,
-        start_date: value.start_date,
-        end_date: value.end,
-        scheduleType: value.scheduleType,
-      });
+      service
+        .updateSchedule(value.id, {
+          id: value.id,
+          start_date: value.start_date,
+          end_date: value.end,
+          scheduleType: value.scheduleType,
+        })
+        .then(res => setStatus(res))
+        .catch(() => setFetchError(true));
     }
     if (selected === '삭제') {
-      service.deleteSchedule({
-        id: value.id,
-      });
+      service
+        .deleteSchedule({
+          id: value.id,
+        })
+        .then(res => setStatus(res))
+        .catch(() => setFetchError(true));
     }
+
+    setAnnualDays('');
+    setIsOpen(true);
+    setIsChecked(false);
+    setSubmitted(true);
+    setFormatDay({
+      startDay: '',
+      endDay: '',
+    });
   };
 
   return (
-    <AnnualRegister selected={selected}>
+    <AnnualRegister selected={selected} isChecked={isChecked}>
       <DisabledClick type={selected}>
         <AnnualDatePicker
-          setStartDay={setStartDay}
-          setEndDay={setEndDay}
           setOriginalDay={setOriginalDay}
+          setFormatDay={setFormatDay}
         />
       </DisabledClick>
       <SelectDates>
         <SelectDate>
           <DateLabel>연차 시작일 :</DateLabel>
-          <Input value={startDay || ''} readOnly />
+          <Input value={formatDay.startDay || ''} readOnly />
         </SelectDate>
         <SelectDate>
           <DateLabel>연차 종료일 :</DateLabel>
-          <Input value={endDay || ''} readOnly />
+          <Input value={formatDay.endDay || ''} readOnly />
         </SelectDate>
         <SelectDate>
           <DateLabel>총 연차 일수 :</DateLabel>
-          <Input
-            readOnly
-            value={getDayOff(originalDay.startDay, originalDay.endDay) || ''}
-          />
+          <Input value={annualDays || ''} readOnly />
         </SelectDate>
         <Check>
           <CheckInput
             type="checkbox"
-            id="checked"
+            id="check"
             disabled={isChecked ? '' : 'disabled'}
           />
           <CheckLabel
-            htmlFor="checked"
+            htmlFor="check"
             isChecked={isChecked}
+            disabled={isChecked ? '' : 'disabled'}
             onClick={onClickChecked}
           >
             위의 내용을 확인하였습니다.
           </CheckLabel>
         </Check>
         <Btn
+          disabled={isChecked ? '' : 'disabled'}
+          isChecked={isChecked}
           selected={selected}
           onClick={() => {
             handleSubmit();
@@ -99,6 +126,29 @@ export default function UserRegister({
           {selected + '하기'}
         </Btn>
       </SelectDates>
+      {submitted && (
+        <UserModal
+          isOpen={isOpen}
+          onClose={() => {
+            setIsOpen(false);
+            setStatus('');
+            setSubmitted(false);
+            setFetchError(false);
+          }}
+          status={status}
+        />
+      )}
+      {fetchError && (
+        <UserModal
+          isOpen={isOpen}
+          onClose={() => {
+            setIsOpen(false);
+            setSubmitted(false);
+            setFetchError(false);
+          }}
+          status={status}
+        />
+      )}
     </AnnualRegister>
   );
 }
@@ -108,9 +158,11 @@ const AnnualRegister = styled.div`
   border: 8px solid ${props => props.theme.style.skyblue};
   border: 8px solid
     ${props =>
-      (props.selected === '등록' && props.theme.style.skyblue) ||
-      (props.selected === '수정' && props.theme.style.text) ||
-      (props.selected === '삭제' && props.theme.style.warning)};
+      props.isChecked
+        ? (props.selected === '등록' && props.theme.style.skyblue) ||
+          (props.selected === '수정' && props.theme.style.text) ||
+          (props.selected === '삭제' && props.theme.style.warning)
+        : props.theme.style.lightGray};
   border-radius: ${props => props.theme.style.borderRadius};
   color: ${props => props.theme.style.text};
   width: 1000px;
@@ -119,6 +171,7 @@ const AnnualRegister = styled.div`
   position: fixed;
   top: 300px;
   left: 380px;
+  transition: all 0.4s ease-in-out;
 `;
 
 const DisabledClick = styled.div`
@@ -184,13 +237,17 @@ const CheckLabel = styled.label`
 
 const Btn = styled.button`
   background-color: ${props =>
-    (props.selected === '등록' && props.theme.style.skyblue) ||
-    (props.selected === '수정' && props.theme.style.text) ||
-    (props.selected === '삭제' && props.theme.style.warning)};
+    props.isChecked
+      ? (props.selected === '등록' && props.theme.style.skyblue) ||
+        (props.selected === '수정' && props.theme.style.text) ||
+        (props.selected === '삭제' && props.theme.style.warning)
+      : props.theme.style.lightGray};
   border-radius: ${props => props.theme.style.BtnborderRadius};
   color: ${props =>
-    (props.selected === '등록' && props.theme.style.text) ||
-    props.theme.style.white};
+    props.isChecked
+      ? (props.selected === '등록' && props.theme.style.text) ||
+        props.theme.style.white
+      : props.theme.style.white};
   font-size: ${props => props.theme.style.textmd};
   width: 120px;
   height: 50px;

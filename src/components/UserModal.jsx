@@ -6,18 +6,22 @@ export default function UserModal({ isOpen, onClose, status }) {
   if (!isOpen) return null;
 
   return (
-    <>
-      <Container onClick={onClose} />
-      <ModalWrapper>
-        <TextAlign>
-          <Text>{status}</Text>
-          <Btn onClick={onClose}>확인</Btn>
-        </TextAlign>
-        <CloseBtn>
-          <IoIosClose onClick={onClose} />
-        </CloseBtn>
-      </ModalWrapper>
-    </>
+    <div>
+      {status && (
+        <>
+          <Container onClick={onClose} />
+          <ModalWrapper>
+            <TextAlign>
+              <Text>{status}</Text>
+              <Btn onClick={onClose}>확인</Btn>
+            </TextAlign>
+            <CloseBtn>
+              <IoIosClose onClick={onClose} />
+            </CloseBtn>
+          </ModalWrapper>
+        </>
+      )}
+    </div>
   );
 }
 

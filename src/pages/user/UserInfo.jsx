@@ -6,8 +6,7 @@ import { useService } from '../../context/context';
 import UserModal from '../../components/UserModal';
 
 // 1. 프로필 사진 -> context에서 관리하기
-// 2. 통신 성공/실패 여부 -> UserModal 사용하기
-// 3. input type password/text 리팩토링
+// 2. input type password/text 리팩토링
 
 const randomNums = () => {
   let result = Math.floor(Math.random() * 10 + 1);
@@ -48,7 +47,7 @@ export default function UserInfo() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors },
     setError,
     reset,
   } = useForm();
@@ -67,13 +66,21 @@ export default function UserInfo() {
     onSubmit(data);
   };
 
+  const [status, setStatus] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const [fetchError, setFetchError] = useState(false);
+
   const onSubmit = data => {
-    service.updateUserInfo({
-      accountId: user.accountId,
-      email: data.email,
-      password: data.currentPassword,
-      newPassword: data.newPassword,
-    });
+    service
+      .updateUserInfo({
+        accountId: user.accountId,
+        email: data.emailsss,
+        password: data.currentPassword,
+        newPassword: data.newPassword,
+      })
+      .then(res => setStatus(res))
+      .catch(() => setFetchError(true));
+    setSubmitted(true);
   };
 
   return (
@@ -155,13 +162,20 @@ export default function UserInfo() {
           <Btn>수정하기</Btn>
         </ProfileContents>
       </UserInformation>
-      {/* {isSubmitSuccessful && (
+      {submitted && (
         <UserModal
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
-          status="성공"
+          status={status}
         />
-      )} */}
+      )}
+      {fetchError && (
+        <UserModal
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          status={status}
+        />
+      )}
     </UserInfoContainer>
   );
 }

@@ -8,12 +8,17 @@ export default function UserAnnaul() {
   const { user } = useService();
   const ANNUAL_DATA = user.Schedule;
 
-  const [startDay, setStartDay] = useState(
-    convertToKoreanTime(ANNUAL_DATA?.start_date)
-  );
-  const [endDay, setEndDay] = useState(
-    convertToKoreanTime(ANNUAL_DATA?.end_date)
-  );
+  const [formatDay, setFormatDay] = useState({
+    startDay: convertToKoreanTime(ANNUAL_DATA?.start_date),
+    endDay: convertToKoreanTime(ANNUAL_DATA?.end_date),
+  });
+
+  if (formatDay.endDay === '1970년 1월 1일 (목)') {
+    setFormatDay(prev => ({
+      ...prev,
+      endDay: '',
+    }));
+  }
 
   const [originalDay, setOriginalDay] = useState({
     startDay: ANNUAL_DATA?.start_date,
@@ -24,8 +29,8 @@ export default function UserAnnaul() {
 
   const [value, setValue] = useState({
     id: user?.Schedule.id || '123',
-    start_date: startDay,
-    end_date: endDay,
+    start_date: originalDay.startDay,
+    end_date: originalDay.endDay,
     scheduleType: 'YEARLY',
   });
 
@@ -36,7 +41,7 @@ export default function UserAnnaul() {
         <Label htmlFor="register">연차 등록일</Label>
         <Input
           id="register"
-          value={`${startDay || ''}  ~  ${endDay || ''}`}
+          value={`${formatDay.startDay || ''}  ~  ${formatDay.endDay || ''}`}
           readOnly
         />
         <BtnAlign>
@@ -61,14 +66,12 @@ export default function UserAnnaul() {
         </BtnAlign>
       </AnnualInput>
       <UserRegister
-        startDay={startDay}
-        setStartDay={setStartDay}
-        endDay={endDay}
-        setEndDay={setEndDay}
         originalDay={originalDay}
         setOriginalDay={setOriginalDay}
-        selected={selected}
+        formatDay={formatDay}
+        setFormatDay={setFormatDay}
         value={value}
+        selected={selected}
       />
     </UserInfoContainer>
   );

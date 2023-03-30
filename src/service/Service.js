@@ -21,36 +21,40 @@ export default class Service {
   async updateUserInfo(data) {
     try {
       await this.client.post(`/account/update/${data.accountId}`, data, config);
-      return alert('개인 정보 수정 완료');
+      return '개인 정보 수정 완료';
     } catch (error) {
-      return alert(error);
+      console.error(error);
+      return `${error}`;
     }
   }
 
   async registerSchedule(data) {
     try {
       await this.client.post('/schedule/save', data, config);
-      return alert('등록 성공');
+      return '등록 성공';
     } catch (error) {
-      return alert(error);
+      console.error(error);
+      return `${error}`;
     }
   }
 
   async updateSchedule(dataId, data) {
     try {
       await this.client.post(`/schedule/update/${dataId}`, data, config);
-      return alert('수정 성공');
+      return '수정 성공';
     } catch (error) {
-      return alert(error);
+      console.error(error);
+      return `${error}`;
     }
   }
 
   async deleteSchedule(data) {
     try {
       await this.client.post(`/schedule/delete/${data.id}`, data, config);
-      return alert('삭제 성공');
+      return '삭제 성공';
     } catch (error) {
-      return alert(error);
+      console.error(error);
+      return `${error}`;
     }
   }
 }
