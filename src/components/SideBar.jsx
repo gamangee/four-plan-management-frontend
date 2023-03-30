@@ -1,21 +1,36 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { FiUser, FiCalendar } from 'react-icons/fi';
-import { MdLogout } from 'react-icons/md';
+import { AiOutlineCalendar } from 'react-icons/ai';
 import { useService } from '../context/context';
+import AdminPage from './AdminPage';
+import UserMyPage from './UserMyPage';
 
 export default function SideBar() {
   const navigate = useNavigate();
 
+  const [select, setSelect] = useState('main');
+
   const { user } = useService();
+
+  function selectItem(e) {
+    const data = e.target.parentNode.dataset.id;
+    setSelect(data);
+    if (data !== '') {
+      navigate(`/${user.role === 'admin' ? 'admin/' : ''}${data}`);
+    } else {
+      navigate(`/${user.role === 'admin' ? 'admin' : ''}`);
+    }
+  }
 
   return (
     <Container>
       <LogoImg
         src="/images/logo_origin.svg"
         alt="logo"
-        onClick={() => navigate('/main')}
+        onClick={() =>
+          user.role === 'user' ? navigate('/main') : navigate('/admin/main')
+        }
       />
       <UserInfo>
         <Content>
@@ -27,27 +42,21 @@ export default function SideBar() {
         </Content>
         <RestYear>남은 연차 : XX일</RestYear>
       </UserInfo>
-      <Calendar>
+      <Title>
         <div>Calendar</div>
-        <HighLight />
-      </Calendar>
-      <MyPage>
-        <div>My Page</div>
-        <MyPageItems>
-          <Item onClick={() => navigate('/userinfo')}>
-            <FiUser />
-            <ItemText>내 정보 수정</ItemText>
+        <HighLight className={select === 'main' ? 'active' : ''} />
+        <PageItems onClick={selectItem}>
+          <Item data-id="main">
+            <AiOutlineCalendar />
+            <ItemText>Calendar</ItemText>
           </Item>
-          <Item onClick={() => navigate('/userannaul')}>
-            <FiCalendar />
-            <ItemText>연차 관리</ItemText>
-          </Item>
-          <LogOut onClick={() => navigate('/')}>
-            <MdLogout />
-            <ItemText>로그 아웃</ItemText>
-          </LogOut>
-        </MyPageItems>
-      </MyPage>
+        </PageItems>
+      </Title>
+      {user.role === 'user' ? (
+        <UserMyPage selectItem={selectItem} select={select} />
+      ) : (
+        <AdminPage selectItem={selectItem} select={select} />
+      )}
     </Container>
   );
 }
@@ -99,6 +108,12 @@ const UserInfoContainer = styled.div`
   margin-left: 8px;
 `;
 
+const PageItems = styled.ul`
+  width: 90px;
+  display: absolute;
+  text-align: left;
+  margin: 10px 0 0 30px;
+`;
 const UserName = styled.div`
   margin-bottom: 6px;
   font-size: 18px;
@@ -112,44 +127,30 @@ const RestYear = styled.div`
   font-size: 18px;
 `;
 
-const Calendar = styled.div`
+const Title = styled.div`
   position: relative;
   width: 230px;
   height: 33px;
   background-color: ${props => props.theme.style.skyblue};
   border-radius: ${props => props.theme.style.borderRadius};
-  margin: 33px 0 33px 0;
+  margin: 33px 0 63px 0;
   line-height: 36px;
+  }
 `;
 
 const HighLight = styled.div`
   position: absolute;
   top: 7px;
-  right: 60px;
+  right: 40px;
   width: 19px;
   height: 19px;
-  background-color: #81d923;
+  background-color: ${props =>
+    props.className === 'active' ? '#81d923' : props.theme.style.skyblue};
   border-radius: 50%;
-  margin-left: 5px;
-`;
-
-const MyPage = styled.div`
-  position: relative;
-  width: 230px;
-  height: 33px;
-  background-color: ${props => props.theme.style.skyblue};
-  border-radius: ${props => props.theme.style.borderRadius};
-  line-height: 36px;
-`;
-
-const MyPageItems = styled.ul`
-  display: absolute;
-  text-align: left;
-  margin: 10px 0 0 30px;
 `;
 
 const Item = styled.li`
-  ${props => props.theme.variables.flex('row', 'c', 'center')}
+  ${props => props.theme.variables.flex('row', '', 'center')}
   cursor: pointer;
 `;
 
@@ -157,11 +158,4 @@ const ItemText = styled.div`
   position: relative;
   top: 2px;
   margin-left: 10px;
-`;
-
-const LogOut = styled.li`
-  ${props => props.theme.variables.flex('row', '', 'center')}
-  position : absolute;
-  bottom: -410px;
-  cursor: pointer;
 `;

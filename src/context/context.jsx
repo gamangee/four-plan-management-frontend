@@ -17,12 +17,12 @@ export function ApiProvider({ children }) {
 
   const service = new Service();
 
-  useEffect(() => {
-    axios.get('/user/userLogin.json').then(res => setUser(res));
-  }, []);
+  // useEffect(() => {
+  //   axios.get('/user/userLogin.json').then(res => setUser(res));
+  // }, []);
 
   return (
-    <ApiContext.Provider value={{ service, user, color }}>
+    <ApiContext.Provider value={{ service, user, color, setUser }}>
       {children}
     </ApiContext.Provider>
   );

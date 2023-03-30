@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import styled from 'styled-components';
@@ -20,10 +20,15 @@ export default function Main() {
   const [selectedUser, setSelectedUser] = useState([]); // 클릭해서 담은 값
 
   const colorArray = ['#D3D3D3', '#FF9AA2', '#B5EAD7', '#C7CEEA', '#FFB7B2'];
-  const { service } = useService();
+  const { service, user, setUser } = useService();
   const options = {
     staleTime: 60 * 1000,
   };
+
+  useEffect(() => {
+    console.log('확인용');
+    setUser({ ...user, role: 'admin' });
+  }, []);
 
   // js 데이터 객체 지역에 맞춰서 (시간))
   function scheduleList() {
