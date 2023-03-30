@@ -21,6 +21,8 @@ export default function UserSearch({
     setSearchUser(value);
   };
 
+  console.log(schedule);
+  // 모달창을 다시 열었을때 리스트를 다시 가져옴
   useEffect(() => {
     if (selectedUser.length > 0) {
       const list = schedule.filter(user =>
@@ -33,7 +35,18 @@ export default function UserSearch({
   useEffect(() => {
     if (searchUser.length > 0) {
       const list = schedule.filter(user => user.name.includes(searchUser));
-      setUserList(list);
+      const newArray = [];
+      for (let i = 0; i < list.length; i++) {
+        const current = list[i];
+        const nextIndex = (i + 1) % list.length;
+        const next = list[nextIndex];
+        if (current.Schedule.accountId !== next.Schedule.accountId) {
+          console.log(current);
+          newArray.push(current);
+        }
+      }
+      console.log(list);
+      setUserList(newArray);
     }
   }, [searchUser]);
 
@@ -84,7 +97,7 @@ export default function UserSearch({
           <UserList>
             {userList &&
               userList.map((user, i) => (
-                <Li key={user.start + user.end + user.title}>
+                <Li key={user.start + user.end + user.title + i}>
                   <Checkbox
                     type="checkbox"
                     id={user.Schedule.accountId}
