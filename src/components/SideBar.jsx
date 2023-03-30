@@ -10,11 +10,11 @@ import axios from 'axios';
 export default function SideBar() {
   const navigate = useNavigate();
 
-  const { setUser } = useService();
+  // const { setUser } = useService();
 
-  useEffect(() => {
-    axios.get('/userlogin').then(res => setUser(res.data.user));
-  }, []);
+  // useEffect(() => {
+  //   axios.get('/user/login').then(res => setUser(res.data.user));
+  // }, [setUser]);
 
   return (
     <Container>

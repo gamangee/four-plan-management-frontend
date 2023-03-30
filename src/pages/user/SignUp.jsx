@@ -3,10 +3,12 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
-import axios from 'axios';
 import { setCookie } from '../../cookie';
+import { useService } from '../../context/context';
 
 export default function SignUp() {
+  // context
+  const { service } = useService();
   // url 이동
   const navigate = useNavigate();
   // pw 보이기
@@ -41,27 +43,20 @@ export default function SignUp() {
 
   // onSubmit : 등록
   const onSubmit = data => {
-    // console.log(data);
     // data : 회원가입 한 user data
-    axios({
-      url: 'https://87ab77be-f720-47c5-a4cc-e60ae02ad69f.mock.pstmn.io/signup', // ***** API연결하기 !
-      method: 'POST',
-      data: {
+    service
+      .signup({
         accountId: data.accountId,
         password: data.password,
         name: data.name,
         email: data.email,
-      },
-      // headers: { Authorization: 'Bearer [JWT token]' },
-      // withCredentials: true,
-    })
+      })
       .then(res => {
-        // console.log(res);
-        if (res.data.code === '200') {
+        if (res.status === 200) {
           const accessToken = res.data.accessToken;
           setCookie('accessToken', accessToken);
           setIsSuccess(true);
-          // navigate('/main', { state: res.data.code });
+          // navigate('/', { state: res.data.code });
         }
       })
       .catch(e => {
@@ -70,13 +65,9 @@ export default function SignUp() {
           setError('accountId', {
             message: '이미 존재하는 아이디 입니다.',
           });
-        } else if (message === 'checkEmail') {
+        } else if (message === 'checkEmail' || message === 'checkName') {
           setError('email', {
-            message: message,
-          });
-        } else if (message === 'checkName') {
-          setError('name', {
-            message: message,
+            message: '일치하는 사용자 정보가 없습니다. 인사과에 문의하세요.',
           });
         } else {
           setError('pwCheck', {
@@ -136,7 +127,7 @@ export default function SignUp() {
           )}
           {/* email */}
           <SignUpInput
-            type="text"
+            type="email"
             name="email"
             placeholder="Please enter your E-mail"
             {...register('email', {
@@ -198,28 +189,29 @@ export default function SignUp() {
       </SignUpContainer>
       {isSuccess && (
         <ModalContainer>
-          <Modal>가입완료</Modal>
+          <Modal>
+            가입완료
+            <AcceptBtn onClick={() => navigate('/')}>확인</AcceptBtn>
+          </Modal>
         </ModalContainer>
       )}
-      {/* <ModalContainer>
-        <Modal>가입완료</Modal>
-      </ModalContainer> */}
     </Wrapper>
   );
 }
 
 export const Wrapper = styled.div`
   // 전체 화면 채우기
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   ${props => props.theme.variables.flex('', 'center', 'center')};
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   position: fixed;
-  // top: 0;
-  // left: 0;
-  z-index: 8;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
 `;
 
 export const SignUpContainer = styled.section`
@@ -303,18 +295,48 @@ export const SignUpBtn = styled.button`
 `;
 
 export const ModalContainer = styled.div`
-  // position: fixed;
+  width: 100%;
+  height: 100%;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100%;
-  min-height: 100vh;
   background-color: rgba(0, 0, 0, 0.6);
-  z-index: 9;
   display: flex;
+  z-index: 9;
 `;
 
 export const Modal = styled.div`
+  width: 300px;
+  height: 150px;
+  ${props => props.theme.variables.flex('column', '', 'center')};
+  text-align: center;
+  line-height: 100px;
+  color: ${props => props.theme.style.text};
+  font-size: ${props => props.theme.style.textmd};
+  font-weight: 600;
+  background-color: ${props => props.theme.style.white};
+  border: 5px solid ${props => props.theme.style.skyblue};
+  border-radius: ${props => props.theme.style.BtnborderRadius};
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 10;
+`;
+
+export const AcceptBtn = styled.button`
+  width: 80px;
+  height: 30px;
+  border-radius: ${props => props.theme.style.BtnborderRadius};
+  background-color: ${props => props.theme.style.text};
+  font-size: ${props => props.theme.style.textsm};
+  color: ${props => props.theme.style.white};
+  border: 0;
+  position: absolute;
+  bottom: 15px;
+
+  &:hover {
+    background-color: ${props => props.theme.style.blue};
+  }
 `;

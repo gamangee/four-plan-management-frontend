@@ -29,7 +29,6 @@ export default function AnnualDatePicker({ setStartDay, setEndDay }) {
     );
     setEndDay(end?.toLocaleDateString('ko-kr', options).replaceAll('. ', '-'));
   };
-
   return (
     <DatePicker
       inline

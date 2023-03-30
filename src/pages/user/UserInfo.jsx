@@ -2,6 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
 import styled from 'styled-components';
+import { useService } from '../../context/context';
+import UserModal from '../../components/UserModal';
+
+// 1. 프로필 사진 -> context에서 관리하기
+// 2. 통신 성공/실패 여부 -> UserModal 사용하기
+// 3. input type password/text 리팩토링
 
 const randomNums = () => {
   let result = Math.floor(Math.random() * 10 + 1);
@@ -12,23 +18,30 @@ const randomNums = () => {
 };
 
 export default function UserInfo() {
+  const { user, service } = useService();
+
   const [index, setIndex] = useState(10);
-  const [isVisibleA, setIsVisibleA] = useState(false);
-  const [isVisibleB, setIsVisibleB] = useState(false);
-  const [isVisibleC, setIsVisibleC] = useState(false);
-  const [formData, setFormData] = useState({});
+
+  const [isVisible, setIsVisible] = useState({ A: false, B: false, C: false });
 
   const changeTypeA = () => {
-    setIsVisibleA(prev => !prev);
+    const newObj = { ...isVisible, A: !isVisible.A };
+    setIsVisible(newObj);
   };
 
   const changeTypeB = () => {
-    setIsVisibleB(prev => !prev);
+    const newObj = { ...isVisible, B: !isVisible.B };
+    setIsVisible(newObj);
   };
 
   const changeTypeC = () => {
-    setIsVisibleC(prev => !prev);
+    const newObj = { ...isVisible, C: !isVisible.C };
+    setIsVisible(newObj);
   };
+
+  const [isOpen, setIsOpen] = useState(true);
+
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     setIndex(randomNums());
@@ -39,7 +52,7 @@ export default function UserInfo() {
     handleSubmit,
     formState: { errors },
     setError,
-    setValue,
+    reset,
   } = useForm();
 
   const onValid = data => {
@@ -52,12 +65,24 @@ export default function UserInfo() {
         { shouldFocus: true }
       );
     }
-    setValue('email', '');
-    setValue('currentPassword', '');
-    setValue('newPassword', '');
-    setValue('checkPassword', '');
-    setFormData(data);
+    reset();
+    onSubmit(data);
   };
+
+  const [status, setStatus] = useState('');
+
+  const onSubmit = data => {
+    service
+      .updateUserInfo({
+        accountId: user.accountId,
+        email: data.email,
+        password: data.currentPassword,
+        newPassword: data.newPassword,
+      })
+      .then(res => setStatus(res));
+    setSubmitted(true);
+  };
+
   return (
     <UserInfoContainer>
       <Tab>내 정보 수정</Tab>
@@ -89,7 +114,6 @@ export default function UserInfo() {
               type="email"
               placeholder="user2023@fourplanner.com"
             />
-            <Btn>수정</Btn>
           </Align>
           <ErrorMessage>{errors?.email?.message}</ErrorMessage>
           <Label htmlFor="currentPassword">비밀번호</Label>
@@ -97,12 +121,11 @@ export default function UserInfo() {
             <Input
               {...register('currentPassword', { required: true })}
               id="currentPassword"
-              type={isVisibleA ? 'text' : 'password'}
+              type={isVisible.A ? 'text' : 'password'}
               placeholder="•••••••••"
             />
-            <Btn>수정</Btn>
-            <Icon onClick={changeTypeA} isVisible={isVisibleA}>
-              {isVisibleA ? <AiFillEye /> : <AiFillEyeInvisible />}
+            <Icon onClick={changeTypeA} isVisible={isVisible.A}>
+              {isVisible.A ? <AiFillEye /> : <AiFillEyeInvisible />}
             </Icon>
           </Align>
           <ErrorMessage>{errors?.currentPassword?.message}</ErrorMessage>
@@ -117,10 +140,10 @@ export default function UserInfo() {
                 },
               })}
               id="newPassword"
-              type={isVisibleB ? 'text' : 'password'}
+              type={isVisible.B ? 'text' : 'password'}
             />
-            <Icon onClick={changeTypeB} isVisible={isVisibleB}>
-              {isVisibleB ? <AiFillEye /> : <AiFillEyeInvisible />}
+            <Icon onClick={changeTypeB} isVisible={isVisible.B}>
+              {isVisible.B ? <AiFillEye /> : <AiFillEyeInvisible />}
             </Icon>
           </Align>
           <ErrorMessage>{errors?.newPassword?.message}</ErrorMessage>
@@ -129,24 +152,32 @@ export default function UserInfo() {
             <Input
               {...register('checkPassword', { required: true })}
               id="checkPassword"
-              type={isVisibleC ? 'text' : 'password'}
+              type={isVisible.C ? 'text' : 'password'}
             />
-            <Icon onClick={changeTypeC} isVisible={isVisibleC}>
-              {isVisibleC ? <AiFillEye /> : <AiFillEyeInvisible />}
+            <Icon onClick={changeTypeC} isVisible={isVisible.C}>
+              {isVisible.C ? <AiFillEye /> : <AiFillEyeInvisible />}
             </Icon>
           </Align>
           <ErrorMessage>{errors?.checkPassword?.message}</ErrorMessage>
+          <Btn>수정하기</Btn>
         </ProfileContents>
       </UserInformation>
+      {submitted && (
+        <UserModal
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          status={status}
+        />
+      )}
     </UserInfoContainer>
   );
 }
 
 const UserInfoContainer = styled.div`
   ${props => props.theme.variables.flex('column', 'center', 'center')};
-  height: inherit;
-  min-width: 600px;
-  padding: 50px;
+  width: 1050px;
+  height: 100%;
+  margin-left: 25px;
   position: relative;
 `;
 
@@ -155,17 +186,16 @@ const Tab = styled.div`
   background-color: ${props => props.theme.style.skyblue};
   border-radius: ${props => props.theme.style.borderRadius};
   color: ${props => props.theme.style.text};
-  width: 230px;
+  width: 200px;
   height: 40px;
   font-weight: 700;
-  position: absolute;
+  position: fixed;
   top: 50px;
-  left: 50px;
+  left: 380px;
 `;
 
 const UserInformation = styled.div`
   ${props => props.theme.variables.flex('', 'center', 'center')};
-  width: 100%;
 `;
 
 const ProfileImg = styled.div`
@@ -221,7 +251,7 @@ const Label = styled.label`
   color: ${props => props.theme.style.text};
   font-size: ${props => props.theme.style.textmd};
   font-weight: 600;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 `;
 
 const Input = styled.input`
@@ -230,7 +260,6 @@ const Input = styled.input`
   border-radius: ${props => props.theme.style.BtnborderRadius};
   outline: none;
   width: 450px;
-  margin-right: 20px;
   padding: 10px 20px;
   transition: all 0.4s ease;
 
@@ -251,10 +280,11 @@ const Btn = styled.button`
   font-size: ${props => props.theme.style.textmd};
   outline: none;
   border: none;
-  width: 80px;
-  height: 40px;
+  width: 200px;
+  height: 60px;
   white-space: nowrap;
   transition: all 0.4s ease;
+  margin-left: auto;
 
   &:hover {
     background-color: ${props => props.theme.style.text};
