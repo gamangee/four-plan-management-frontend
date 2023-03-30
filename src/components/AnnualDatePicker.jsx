@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import convertToKoreanTime from '../utility/koreanTime';
 
-export default function AnnualDatePicker({ setStartDay, setEndDay }) {
+export default function AnnualDatePicker({ setOriginalDay, setFormatDay }) {
   const date = new Date();
 
   const isWeekday = date => {
@@ -10,24 +11,27 @@ export default function AnnualDatePicker({ setStartDay, setEndDay }) {
     return day !== 0 && day !== 6;
   };
 
-  const [startDate, setStartDate] = useState(date);
-  const [endDate, setEndDate] = useState(null);
-
-  let options = {
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-    weekday: 'short',
-  };
+  const [datepickerDate, setDatepicker] = useState({
+    startDate: date,
+    endDate: null,
+  });
 
   const onChange = dates => {
     const [start, end] = dates;
-    setStartDate(start);
-    setEndDate(end);
-    setStartDay(
-      start?.toLocaleDateString('ko-kr', options).replaceAll('. ', '-')
-    );
-    setEndDay(end?.toLocaleDateString('ko-kr', options).replaceAll('. ', '-'));
+    // 데이트 피거용
+    setDatepicker({
+      startDate: start,
+      endDate: end,
+    });
+
+    // input창에 한국 시간 표시용
+    setFormatDay({
+      startDay: convertToKoreanTime(start),
+      endDay: convertToKoreanTime(end),
+    });
+
+    // 연차일수 계산용
+    setOriginalDay({ startDay: start, endDay: end });
   };
   return (
     <DatePicker
@@ -35,8 +39,8 @@ export default function AnnualDatePicker({ setStartDay, setEndDay }) {
       selectsRange
       disabledKeyboardNavigation
       onChange={onChange}
-      startDate={startDate}
-      endDate={endDate}
+      startDate={datepickerDate.startDate}
+      endDate={datepickerDate.endDate}
       filterDate={isWeekday}
     />
   );

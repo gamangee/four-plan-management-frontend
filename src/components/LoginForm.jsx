@@ -47,7 +47,9 @@ export default function LoginForm() {
           const accessToken = res.data.user.accessToken;
           // 세선쿠키
           setCookie('accessToken', accessToken);
-          navigate('/main', { state: res.data.user });
+          res.data.user.role === 'ROLE_USER'
+            ? navigate('/main', { state: res.data.user })
+            : navigate('/admin/main', { state: res.data.user });
         }
       })
       .catch(() => {
@@ -111,7 +113,7 @@ export const LoginInput = styled.input`
   padding: 10px;
   margin-bottom: 20px;
   color: ${props => props.theme.style.text};
-  fontsize: ${props => props.theme.style.textMedium};
+  font-size: ${props => props.theme.style.textMedium};
   border: 0;
   border-radius: ${props => props.theme.style.BtnborderRadius};
   outline: none;
@@ -150,7 +152,7 @@ export const SignInBtn = styled.button`
   height: 50px;
   padding: 5px;
   margin-bottom: 20px;
-  fontsize: ${props => props.theme.style.textMedium};
+  font-size: ${props => props.theme.style.textMedium};
   color: ${props => props.theme.style.white};
   background-color: ${props => props.theme.style.blue};
   border: 0;

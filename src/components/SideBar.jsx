@@ -14,13 +14,14 @@ export default function SideBar() {
 
   const { user } = useService();
 
+  console.log(user.role);
   function selectItem(e) {
     const data = e.target.parentNode.dataset.id;
     setSelect(data);
     if (data !== '') {
-      navigate(`/${user.role === 'admin' ? 'admin/' : ''}${data}`);
+      navigate(`/${user.role === 'ROLE_ADMIN' ? 'admin/' : ''}${data}`);
     } else {
-      navigate(`/${user.role === 'admin' ? 'admin' : ''}`);
+      navigate(`/${user.role === 'ROLE_ADMIN' ? 'admin' : ''}`);
     }
   }
 
@@ -31,7 +32,9 @@ export default function SideBar() {
         src="/images/logo_origin.svg"
         alt="logo"
         onClick={() =>
-          user.role === 'user' ? navigate('/main') : navigate('/admin/main')
+          user.role === 'ROLE_USER'
+            ? navigate('/main')
+            : navigate('/admin/main')
         }
       />
       <UserInfo>
@@ -54,7 +57,7 @@ export default function SideBar() {
           </Item>
         </PageItems>
       </Title>
-      {user.role === 'user' ? (
+      {user.role === 'ROLE_USER' ? (
         <UserMyPage selectItem={selectItem} select={select} />
       ) : (
         <AdminPage selectItem={selectItem} select={select} />

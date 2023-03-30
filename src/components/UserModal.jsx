@@ -6,18 +6,22 @@ export default function UserModal({ isOpen, onClose, status }) {
   if (!isOpen) return null;
 
   return (
-    <>
-      <Container onClick={onClose} />
-      <ModalWrapper>
-        <TextAlign>
-          <Text>{status}</Text>
-          <Btn onClick={onClose}>확인</Btn>
-        </TextAlign>
-        <CloseBtn>
-          <IoIosClose onClick={onClose} />
-        </CloseBtn>
-      </ModalWrapper>
-    </>
+    <div>
+      {status && (
+        <>
+          <Container onClick={onClose} />
+          <ModalWrapper>
+            <TextAlign>
+              <Text>{status}</Text>
+              <Btn onClick={onClose}>확인</Btn>
+            </TextAlign>
+            <CloseBtn>
+              <IoIosClose onClick={onClose} />
+            </CloseBtn>
+          </ModalWrapper>
+        </>
+      )}
+    </div>
   );
 }
 
@@ -66,9 +70,10 @@ const Btn = styled.div`
   border: none;
   width: 120px;
   height: 50px;
+  text-align: center;
+  line-height: 50px;
   white-space: nowrap;
   transition: all 0.4s ease;
-  margin-left: auto;
 
   &:hover {
     background-color: ${props => props.theme.style.text};

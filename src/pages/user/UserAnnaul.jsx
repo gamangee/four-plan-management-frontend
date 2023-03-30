@@ -2,57 +2,73 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useService } from '../../context/context';
 import UserRegister from '../../components/UserRegister';
-import { useEffect } from 'react';
+import convertToKoreanTime from '../../utility/koreanTime';
 
 export default function UserAnnaul() {
   const { user } = useService();
-  const [startDay, setStartDay] = useState();
-  const [endDay, setEndDay] = useState();
+  const ANNUAL_DATA = user.Schedule;
+  const [formatDay, setFormatDay] = useState({
+    startDay: convertToKoreanTime(ANNUAL_DATA?.start_date),
+    endDay: convertToKoreanTime(ANNUAL_DATA?.end_date),
+  });
+  const [yearDay, setYearDay] = useState('');
 
-  // console.log(user);
+  if (formatDay.endDay === '1970년 1월 1일 (목)') {
+    setFormatDay(prev => ({
+      ...prev,
+      endDay: '',
+    }));
+  }
+
+  const [originalDay, setOriginalDay] = useState({
+    startDay: ANNUAL_DATA?.start_date,
+    endDay: ANNUAL_DATA?.end_date,
+  });
 
   const [selected, setSelected] = useState('등록');
 
   const [value, setValue] = useState({
-    // id: user.Schedule.id,
-    start_date: startDay,
-    end_date: endDay,
+    id: user?.Schedule?.id,
+    start_date: originalDay.startDay,
+    end_date: originalDay.endDay,
     scheduleType: 'YEARLY',
   });
-
-  // useEffect(() => {
-  //   setValue({
-  //     id: user.id,
-  //     start_date: startDay,
-  //     end_date: endDay,
-  //     scheduleType: 'YEARLY',
-  //   });
-  // }, []);
 
   return (
     <UserInfoContainer>
       <Tab>연차 관리</Tab>
       <AnnualInput>
         <Label htmlFor="register">연차 등록일</Label>
-        <Input
-          id="register"
-          value={`${startDay || ''} ~ ${endDay || ''}`}
-          readOnly
-        />
+        <Input id="register" value={yearDay} readOnly />
         <BtnAlign>
-          <Btn onClick={e => setSelected(e.target.textContent)}>등록</Btn>
-          <Btn onClick={e => setSelected(e.target.textContent)}>수정</Btn>
-          <Btn onClick={e => setSelected(e.target.textContent)}>삭제</Btn>
+          <RegisterBtn
+            selected={selected}
+            onClick={e => setSelected(e.target.textContent)}
+          >
+            등록
+          </RegisterBtn>
+          <UpdateBtn
+            selected={selected}
+            onClick={e => setSelected(e.target.textContent)}
+          >
+            수정
+          </UpdateBtn>
+          <DeleteBtn
+            selected={selected}
+            onClick={e => setSelected(e.target.textContent)}
+          >
+            삭제
+          </DeleteBtn>
         </BtnAlign>
       </AnnualInput>
       <UserRegister
-        startDay={startDay}
-        setStartDay={setStartDay}
-        endDay={endDay}
-        setEndDay={setEndDay}
-        selected={selected}
-        setSelected={setSelected}
+        originalDay={originalDay}
+        setOriginalDay={setOriginalDay}
+        formatDay={formatDay}
+        setFormatDay={setFormatDay}
         value={value}
+        selected={selected}
+        setYearDay={setYearDay}
       />
     </UserInfoContainer>
   );
@@ -104,9 +120,11 @@ const Input = styled.input`
   margin: 10px 0 20px;
   transition: all 0.4s ease;
   text-align: center;
+
   &:focus {
     border: 2px solid ${props => props.theme.style.text};
   }
+
   &::placeholder {
     color: ${props => props.theme.style.lightGray};
     letter-spacing: 1px;
@@ -128,8 +146,16 @@ const Btn = styled.button`
   border: none;
   white-space: nowrap;
   transition: all 0.4s ease;
-  &:hover {
-    background-color: ${props => props.theme.style.text};
-    color: ${props => props.theme.style.white};
-  }
+`;
+
+const RegisterBtn = styled(Btn)``;
+
+const UpdateBtn = styled(Btn)`
+  background-color: ${props => props.theme.style.text};
+  color: ${props => props.theme.style.white};
+`;
+
+const DeleteBtn = styled(Btn)`
+  background-color: ${props => props.theme.style.warning};
+  color: ${props => props.theme.style.white};
 `;

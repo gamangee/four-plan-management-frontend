@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { resolveConfig } from 'prettier';
 
 const config = {
   headers: {
@@ -46,25 +45,37 @@ export default class Service {
   async registerSchedule(data) {
     try {
       await this.client.post('/schedule/save', data, config);
-      return alert('등록 성공');
+      return '등록 성공';
     } catch (error) {
-      return alert(error);
+      console.error(error);
+      return `${error.response.data.message}`;
     }
   }
 
   // 연차수정
   async updateSchedule(dataId, data) {
-    return this.client
-      .post(`/schedule/update/${dataId}`, data, config)
-      .then(() => alert('수정 성공'))
-      .catch(error => alert(error));
+    try {
+      await this.client.post(`/schedule/update/${dataId}`, data, config);
+      return '수정 성공';
+    } catch (error) {
+      console.error(error);
+      return `${error.response.data.message}`;
+    }
   }
 
   // 연차삭제
   async deleteSchedule(data) {
-    return this.client
-      .post(`/schedule/delete/${data.id}`, data, config)
-      .then(() => alert('삭제 성공'))
-      .catch(error => alert(error));
+    try {
+      await this.client.post(`/schedule/delete/${data.id}`, data, config);
+      return '삭제 성공';
+    } catch (error) {
+      console.error(error);
+      return `${error.response.data.message}`;
+    }
+  }
+
+  // 오늘의 당직
+  async todayDuty() {
+    return this.client.get('/schedule/today-duty').then(res => res.data);
   }
 }
