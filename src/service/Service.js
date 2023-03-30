@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { resolveConfig } from 'prettier';
 
 const config = {
   headers: {
@@ -13,15 +14,35 @@ export default class Service {
       baseURL: 'http://localhost:3000/',
     });
   }
+
+  // 로그인
+  async login(data) {
+    return this.client.post('/login', data, config);
+  }
+
+  // 회원가입
+  async signup(data) {
+    return this.client.post('/signup', data, config).then(res => res.status);
+  }
+
+  // 전체 스케쥴
   async schedule() {
-    console.log('Fetching!!!!!!!!🔥');
-    return this.client.get(`/user/schedule`).then(res => res.data.users);
+    // console.log('Fetching!!!!!!!!🔥');
+    return this.client.get(`/schedule`).then(res => res.data.users);
   }
 
-  updateUserInfo(data) {
-    return this.client.post(`/account/update/${data.accountId}`, data, config);
+  // 개인정보수정
+  async updateUserInfo(data) {
+    try {
+      await this.client.post(`/account/update/${data.accountId}`, data, config);
+      return '개인 정보 수정 완료';
+    } catch (error) {
+      console.error(error);
+      return `${error.response.data.message}`;
+    }
   }
 
+  // 연차등록
   async registerSchedule(data) {
     try {
       await this.client.post('/schedule/save', data, config);
@@ -31,6 +52,7 @@ export default class Service {
     }
   }
 
+  // 연차수정
   async updateSchedule(dataId, data) {
     return this.client
       .post(`/schedule/update/${dataId}`, data, config)
@@ -38,6 +60,7 @@ export default class Service {
       .catch(error => alert(error));
   }
 
+  // 연차삭제
   async deleteSchedule(data) {
     return this.client
       .post(`/schedule/delete/${data.id}`, data, config)

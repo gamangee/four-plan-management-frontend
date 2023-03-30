@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { useService } from '../context/context';
 import UserSearch from './UserSearch';
+import { useLocation } from 'react-router-dom';
 
 // export const D = {
 //   PAGE_LIST: "PAGE_LIST",
@@ -20,10 +21,14 @@ export default function Main() {
   const [selectedUser, setSelectedUser] = useState([]); // 클릭해서 담은 값
 
   const colorArray = ['#D3D3D3', '#FF9AA2', '#B5EAD7', '#C7CEEA', '#FFB7B2'];
-  const { service } = useService();
+  const { service, setUser } = useService();
   const options = {
     staleTime: 60 * 1000,
   };
+
+  // user 정보 설정
+  const { state: user } = useLocation();
+  if (user) setUser(user);
 
   // js 데이터 객체 지역에 맞춰서 (시간))
   function scheduleList() {
@@ -80,7 +85,7 @@ export default function Main() {
   );
 
   const selectFilter = e => {
-    console.log('selectFilter');
+    // console.log('selectFilter');
     const textContent = e.target.textContent;
     if (textContent !== '유저') {
       setSelected(textContent);

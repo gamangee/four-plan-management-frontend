@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
 import styled from 'styled-components';
 import getDayOff from '../utility/dayOff';
 import AnnualDatePicker from './AnnualDatePicker';
@@ -23,28 +22,6 @@ export default function UserRegister({
     }
     setIsChecked(prev => !prev);
   };
-
-  // const { mutate, isSuccess, isError } = useMutation(() => {
-  //   switch (selected) {
-  //     case '등록':
-  //       return service.registerSchedule({
-  //         start_date: value.start_date,
-  //         end_date: value.end,
-  //         scheduleType: value.scheduleType,
-  //       });
-  //     case '수정':
-  //       return service.updateSchedule({
-  //         id: value.id,
-  //         start_date: value.start_date,
-  //         end_date: value.end,
-  //         scheduleType: value.scheduleType,
-  //       });
-  //     case '삭제':
-  //       return service.deleteSchedule({ id: value.id });
-  //     default:
-  //       throw new Error('Invalid action');
-  //   }
-  // });
 
   const handleSubmit = () => {
     if (selected === '등록') {

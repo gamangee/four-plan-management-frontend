@@ -3,10 +3,12 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
-import axios from 'axios';
 import { setCookie } from '../../cookie';
+import { useService } from '../../context/context';
 
 export default function SignUp() {
+  // context
+  const { service } = useService();
   // url 이동
   const navigate = useNavigate();
   // pw 보이기
@@ -41,20 +43,14 @@ export default function SignUp() {
 
   // onSubmit : 등록
   const onSubmit = data => {
-    // console.log(data);
     // data : 회원가입 한 user data
-    axios({
-      url: 'https://87ab77be-f720-47c5-a4cc-e60ae02ad69f.mock.pstmn.io/signup', // ***** API연결하기 !
-      method: 'POST',
-      data: {
+    service
+      .signup({
         accountId: data.accountId,
         password: data.password,
         name: data.name,
         email: data.email,
-      },
-      // headers: { Authorization: 'Bearer [JWT token]' },
-      // withCredentials: true,
-    })
+      })
       .then(res => {
         // console.log(res);
         if (res.data.code === '200') {

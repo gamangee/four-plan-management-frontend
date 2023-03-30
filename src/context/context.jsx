@@ -18,22 +18,13 @@ export function ApiProvider({ children }) {
 
   const service = new Service();
 
-  // const [value, setValue] = useState({
-  //   id: user.id,
-  //   start_date: startDay,
-  //   end_date: endDay,
-  //   scheduleType: 'YEARLY',
-  // });
-
   const [schedule, setSchedule] = useState({});
 
   useEffect(() => {
-    axios.get('/user/login').then(res => setUser(res.data.user));
     axios.get('/user/schedule').then(res => setSchedule(res.data.users));
   }, []);
-  // useEffect(() => {
-  //   axios.get('/user/userLogin.json').then(res => setUser(res));
-  // }, []);
+
+  // console.log(user);
 
   useEffect(() => {
     if (user.length > 0) {
@@ -43,8 +34,6 @@ export function ApiProvider({ children }) {
       setUser(newUser);
     }
   }, [user]);
-
-  // console.log(user);
 
   return (
     <ApiContext.Provider

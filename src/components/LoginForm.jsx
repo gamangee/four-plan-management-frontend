@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
 import { setCookie } from '../cookie';
+import { useService } from '../context/context';
 
 export default function LoginForm() {
+  // context
+  const { service } = useService();
   // url 이동
   const navigate = useNavigate();
   // pw 보이기
@@ -35,20 +37,17 @@ export default function LoginForm() {
 
   // onSubmit : 등록
   const onSubmit = data => {
-    // data : 입력한 user 로그인 데이터
-    axios({
-      url: '/login', // ***** API연결하기 !
-      method: 'POST',
-      data: data,
-      // headers: { Authorization: 'Bearer [JWT token]' },
-      // withCredentials: true,
-    })
+    service
+      .login({
+        accountId: data.accountId,
+        password: data.password,
+      })
       .then(res => {
-        // console.log(res);
-        if (res.data.code === '200') {
-          const accessToken = res.data.accessToken;
+        if (res.status === 200) {
+          const accessToken = res.data.user.accessToken;
+          // 세선쿠키
           setCookie('accessToken', accessToken);
-          navigate('/main');
+          navigate('/main', { state: res.data.user });
         }
       })
       .catch(() => {
