@@ -67,7 +67,6 @@ export default function UserRegister({
           id: value.id,
         })
         .then(res => setStatus(res))
-
         .catch(() => setFetchError(true));
     }
 
