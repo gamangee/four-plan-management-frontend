@@ -2,32 +2,71 @@ import { rest } from 'msw'; // msw package import
 
 const accountId = 'abc123';
 const password = 'testabc123';
+const adminId = 'pika123';
+const adminPassword = 'pipipipi';
 
 export const handlers = [
   // 로그인
   rest.post('/login', (req, res, ctx) => {
-    if (accountId !== req.body.accountId) {
-      // 아이디가 일치 x
-      return res(ctx.status(401), ctx.json({ message: '로그인실패' }));
+    // 유저 아이디
+    if (req.body.accountId !== accountId) {
+      // 관리자 아이디
+      if (req.body.accountId !== adminId) {
+        // 아이디가 일치 x
+        return res(ctx.status(401), ctx.json({ message: '로그인실패' }));
+      }
     }
-    if (password !== req.body.password) {
-      // 비밀번호가 일치 x
-      return res(ctx.status(401), ctx.json({ message: '로그인실패' }));
+    // 유저 비밀번호
+    if (req.body.password !== password) {
+      // 관리자 비밀번호
+      if (req.body.password !== adminPassword) {
+        // 비밀번호가 일치 x
+        return res(ctx.status(401), ctx.json({ message: '로그인실패' }));
+      }
+    }
+    // 관리자 로그인
+    if (req.body.accountId === adminId) {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          user: {
+            id: '1',
+            name: '피카츄',
+            accountId: 'pika123',
+            role: 'ROLE_ADMIN',
+            email: 'pipipi@gmail.com',
+            department: '인사과',
+            position: '팀장',
+            yearly: 24,
+            duty: true,
+            Schedule: {
+              id: 15,
+              accountId: 'pika123',
+              type: 'duty',
+              content: null,
+              start_date: '2023-03-31T18:00:00Z',
+              end_date: '2023-03-31',
+              created_at: null,
+              modified_at: null,
+            },
+            accessToken: 'pipipipipssdkfasfsas11222asfeeddd',
+          },
+        })
+      );
     }
     return res(
       ctx.status(200),
       ctx.json({
         user: {
-          id: '123',
-          name: 'Nicolas Serrano Arevalo',
+          id: '1',
+          name: '홍길동',
           accountId: 'abc123',
-          password: 'niconiconi',
-          role: 'user',
-          email: 'nico321@gmail.com',
+          role: 'ROLE_USER',
+          email: 'dong123@gmail.com',
           department: '개발팀',
           position: '팀장',
           yearly: 24,
-          duty: true,
+          duty: false,
           Schedule: {
             id: 1,
             accountId: 'nico123',
