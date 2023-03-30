@@ -67,4 +67,12 @@ export default class Service {
       .then(() => alert('삭제 성공'))
       .catch(error => alert(error));
   }
+
+  // 유저정보검색
+  async searchUserList(data) {
+    return this.client
+      .post(`/account/search?name=길동`, data, config)
+      .then(res => console.log(res))
+      .catch(error => alert(error));
+  }
 }

@@ -47,7 +47,9 @@ export default function LoginForm() {
           const accessToken = res.data.user.accessToken;
           // 세선쿠키
           setCookie('accessToken', accessToken);
-          navigate('/main', { state: res.data.user });
+          res.data.user.role === 'ROLE_USER'
+            ? navigate('/main', { state: res.data.user })
+            : navigate('/admin/main', { state: res.data.user });
         }
       })
       .catch(() => {

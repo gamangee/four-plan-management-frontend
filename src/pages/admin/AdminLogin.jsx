@@ -20,15 +20,16 @@ export default function AdminLogin() {
 
 export const LoginBackground = styled.div`
   // 전체 화면 채우기
-  min-width: 100%;
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
   ${props => props.theme.variables.flex('', 'center', 'center')};
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 1;
 `;
 
