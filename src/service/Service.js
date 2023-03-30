@@ -74,4 +74,9 @@ export default class Service {
       return `${error.response.data.message}`;
     }
   }
+
+  // (관리자) 연차/당직 조회 요청
+  async checkSchedule(id) {
+    return this.client.get(`/schedule/${id}`);
+  }
 }

@@ -20,7 +20,6 @@ export default function UserRegister({
 
   const [status, setStatus] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const [fetchError, setFetchError] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
   const [annualDays, setAnnualDays] = useState(
@@ -47,8 +46,7 @@ export default function UserRegister({
           end_date: value.end,
           scheduleType: value.scheduleType,
         })
-        .then(res => setStatus(res))
-        .catch(() => setFetchError(true));
+        .then(res => setStatus(res));
     }
     if (selected === '수정') {
       service
@@ -58,16 +56,14 @@ export default function UserRegister({
           end_date: value.end,
           scheduleType: value.scheduleType,
         })
-        .then(res => setStatus(res))
-        .catch(() => setFetchError(true));
+        .then(res => setStatus(res));
     }
     if (selected === '삭제') {
       service
         .deleteSchedule({
           id: value.id,
         })
-        .then(res => setStatus(res))
-        .catch(() => setFetchError(true));
+        .then(res => setStatus(res));
     }
 
     if (selected !== '삭제') {
@@ -139,18 +135,6 @@ export default function UserRegister({
             setIsOpen(false);
             setStatus('');
             setSubmitted(false);
-            setFetchError(false);
-          }}
-          status={status}
-        />
-      )}
-      {fetchError && (
-        <UserModal
-          isOpen={isOpen}
-          onClose={() => {
-            setIsOpen(false);
-            setSubmitted(false);
-            setFetchError(false);
           }}
           status={status}
         />

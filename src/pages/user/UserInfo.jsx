@@ -68,7 +68,6 @@ export default function UserInfo() {
 
   const [status, setStatus] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const [fetchError, setFetchError] = useState(false);
 
   const onSubmit = data => {
     service
@@ -78,9 +77,17 @@ export default function UserInfo() {
         password: data.currentPassword,
         newPassword: data.newPassword,
       })
-      .then(res => setStatus(res))
-      .catch(() => setFetchError(true));
+      .then(res => {
+        setStatus(res);
+      });
+
     setSubmitted(true);
+    setIsOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+    setSubmitted(false);
   };
 
   return (
@@ -163,18 +170,7 @@ export default function UserInfo() {
         </ProfileContents>
       </UserInformation>
       {submitted && (
-        <UserModal
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          status={status}
-        />
-      )}
-      {fetchError && (
-        <UserModal
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          status={status}
-        />
+        <UserModal isOpen={isOpen} onClose={handleClose} status={status} />
       )}
     </UserInfoContainer>
   );

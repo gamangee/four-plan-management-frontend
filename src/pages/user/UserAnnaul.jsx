@@ -7,12 +7,10 @@ import convertToKoreanTime from '../../utility/koreanTime';
 export default function UserAnnaul() {
   const { user } = useService();
   const ANNUAL_DATA = user.Schedule;
-
   const [formatDay, setFormatDay] = useState({
     startDay: convertToKoreanTime(ANNUAL_DATA?.start_date),
     endDay: convertToKoreanTime(ANNUAL_DATA?.end_date),
   });
-
   const [yearDay, setYearDay] = useState('');
 
   if (formatDay.endDay === '1970년 1월 1일 (목)') {
@@ -30,7 +28,7 @@ export default function UserAnnaul() {
   const [selected, setSelected] = useState('등록');
 
   const [value, setValue] = useState({
-    id: user?.Schedule.id || '123',
+    id: user?.Schedule?.id,
     start_date: originalDay.startDay,
     end_date: originalDay.endDay,
     scheduleType: 'YEARLY',
