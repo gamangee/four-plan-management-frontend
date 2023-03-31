@@ -11,7 +11,7 @@ export default function UserSearch({
   isModalOpen,
 }) {
   const [searchUser, setSearchUser] = useState([]); // 모달에서 입력한 값
-  const [userList, setUserList] = useState(); // searchUser를 통해서 정렬 값
+  const [userList, setUserList] = useState(); // 이름 검색후 들어가있는 값.
   const ref = useRef();
   const inputRef = useRef();
 
@@ -22,13 +22,27 @@ export default function UserSearch({
   };
 
   console.log(schedule);
-  // 모달창을 다시 열었을때 리스트를 다시 가져옴
+
+  // 모달창을 다시 열었을때 기존에 체크된 리스트를 다시 가져옴
   useEffect(() => {
+    //selectedUser :  체크가 되어있는 유저들의 accountId
+
     if (selectedUser.length > 0) {
-      const list = schedule.filter(user =>
+      const uniqueUsers = [];
+      const accountIds = new Set();
+      //체크가 되어있는 유저들의 accountId를 포함한 user의 정보
+      const users = schedule.filter(user =>
         selectedUser.includes(user.Schedule.accountId)
       );
-      setUserList(list);
+
+      for (const user of users) {
+        if (!accountIds.has(user.Schedule.accountId)) {
+          uniqueUsers.push(user);
+          accountIds.add(user.Schedule.accountId);
+        }
+      }
+      console.log(uniqueUsers);
+      setUserList(uniqueUsers);
     }
   }, [isModalOpen]);
 
@@ -53,6 +67,7 @@ export default function UserSearch({
   const handleChecked = e => {
     const accountId = e.target.dataset.id;
 
+    console.log(accountId);
     const index = selectedUser.findIndex(e => e === accountId);
     if (index > -1) {
       const filter = selectedUser.filter(user => user !== accountId);
