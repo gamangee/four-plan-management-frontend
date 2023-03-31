@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import TodayDuty from '../pages/TodayDuty';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -6,15 +6,25 @@ import { AiOutlineCalendar } from 'react-icons/ai';
 import { useService } from '../context/context';
 import AdminPage from './AdminPage';
 import UserMyPage from './UserMyPage';
+import Service from '../service/Service';
+import { useQuery } from '@tanstack/react-query';
 
 export default function SideBar() {
+  const service = new Service();
+
+  // 오늘의 당직 연결
+  const { data: dutyList } = useQuery(['dutyList'], () => {
+    return service.todayDuty();
+  });
+  // console.log(dutyList);
+
   const navigate = useNavigate();
 
   const [select, setSelect] = useState('main');
 
   const { user } = useService();
 
-  console.log(user.role);
+  // console.log(user.role);
   function selectItem(e) {
     const data = e.target.parentNode.dataset.id;
     setSelect(data);
@@ -27,7 +37,7 @@ export default function SideBar() {
 
   return (
     <Container>
-      <TodayDuty />
+      <TodayDuty dutyList={dutyList} />
       <LogoImg
         src="/images/logo_origin.svg"
         alt="logo"

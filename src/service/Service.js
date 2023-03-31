@@ -76,7 +76,7 @@ export default class Service {
 
   // 오늘의 당직
   async todayDuty() {
-    return this.client.get('/schedule/today-duty').then(res => res.data);
+    return this.client.get('/schedule/today-duty').then(res => res.data.data);
   }
 
   async changeRole(data) {
