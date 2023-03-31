@@ -1,23 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import AdminAnnual from '../../components/AdminAnnual';
-import { useService } from '../../context/context';
+import AdminDuty from '../../components/AdminDuty';
 
 export default function Management() {
-  const { user, service } = useService();
-  const [schedule, setSchedule] = useState([]);
-
-  useEffect(() => {
-    fetch('/user/checkSchedule.json')
-      .then(res => res.json())
-      .then(data => setSchedule(data.Schedule));
-  }, []);
-
-  // const filterSchedule = schedule?.filter(user => user.type === 'YEARLY');
-  // setSchedule(filterSchedule);
-
   return (
     <Container>
+      <AdminDuty />
       <AdminAnnual />
     </Container>
   );

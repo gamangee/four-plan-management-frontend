@@ -7,20 +7,13 @@ import { useService } from '../context/context';
 import UserModal from './UserModal';
 
 export default function AdminAnnual() {
-  const date = new Date();
   const { service } = useService();
 
-  const [datepickerDate, setDatepicker] = useState({
-    startDate: date,
-    endDate: null,
-  });
+  const [startDate, setStartDate] = useState(new Date());
 
-  const [formatDay, setFormatDay] = useState({
-    startDay: convertToKoreanTime(datepickerDate?.startDate),
-    endDay: convertToKoreanTime(datepickerDate?.endDate),
-  });
+  const [formatDay, setFormatDay] = useState(convertToKoreanTime(startDate));
 
-  const [yearDay, setYearDay] = useState('');
+  const [dutyDay, setDutyDay] = useState('');
   const [status, setStatus] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
@@ -29,8 +22,7 @@ export default function AdminAnnual() {
     // id: user?.Schedule?.id,
     id: '123',
     start_date: '',
-    end_date: '',
-    scheduleType: 'YEARLY',
+    scheduleType: 'DUTY',
   });
 
   const isWeekday = date => {
@@ -38,50 +30,25 @@ export default function AdminAnnual() {
     return day !== 0 && day !== 6;
   };
 
-  if (formatDay.endDay === '1970년 1월 1일 (목)') {
-    setFormatDay(prev => ({
-      ...prev,
-      endDay: '',
-    }));
-  }
-
-  const onChange = dates => {
-    const [start, end] = dates;
-    // 데이트 피거용
-    setDatepicker({
-      startDate: start,
-      endDate: end,
-    });
-
-    // input창에 한국 시간 표시용
-    setFormatDay({
-      startDay: convertToKoreanTime(start),
-      endDay: convertToKoreanTime(end),
-    });
-
-    // data 담기
-    setValue({
-      id: '123',
-      start_date: start,
-      end_date: end,
-      scheduleType: 'YEARLY',
-    });
+  const onChange = date => {
+    setStartDate(date);
+    setFormatDay(convertToKoreanTime(date));
   };
 
   const handleSubmit = select => {
-    // 연차 수정
+    // 당직 수정
     if (select === '수정') {
       service
         .updateSchedule(value.id, {
           id: value.id,
           start_date: value.start_date,
-          end_date: value.end,
+          end_date: value.start_date,
           scheduleType: value.scheduleType,
         })
         .then(res => setStatus(res));
     }
 
-    // 연차 삭제
+    // 당직 삭제
     if (select === '삭제') {
       service
         .deleteSchedule({
@@ -91,23 +58,20 @@ export default function AdminAnnual() {
     }
 
     if (select !== '삭제') {
-      setYearDay(`${formatDay.startDay} ~ ${formatDay.endDay}`);
+      setDutyDay(formatDay);
     } else {
-      setYearDay('');
+      setDutyDay('');
     }
 
     setIsOpen(true);
     setSubmitted(true);
-    setFormatDay({
-      startDay: '',
-      endDay: '',
-    });
+    setFormatDay('');
   };
 
   return (
     <ManagementAnnual>
-      <ManagementTab>연차관리</ManagementTab>
-      <Input readOnly value={yearDay} />
+      <ManagementTab>당직관리</ManagementTab>
+      <Input readOnly value={dutyDay} />
       <BtnAlign>
         <Btn
           onClick={e => {
@@ -127,11 +91,9 @@ export default function AdminAnnual() {
       <StyleDatePicker>
         <DatePicker
           inline
-          selectsRange
           disabledKeyboardNavigation
+          selected={startDate}
           onChange={onChange}
-          startDate={datepickerDate.startDate}
-          endDate={datepickerDate.endDate}
           filterDate={isWeekday}
         />
       </StyleDatePicker>
