@@ -18,5 +18,7 @@ export default function getDayOff(startDay, endDay) {
   let result;
   result = diffInDays - weekends;
 
+  if (result < 0) return;
+
   return result + 1;
 }

@@ -79,9 +79,15 @@ export default class Service {
     return this.client.get('/schedule/today-duty').then(res => res.data.data);
   }
 
+  // 권한 변경
   async changeRole(data) {
     return this.client
       .post(`/admin/role/${data.id}`, data, config)
       .then(res => res.data.message);
+  }
+
+  // (관리자) 연차/당직 조회 요청
+  async checkSchedule(id) {
+    return this.client.get(`/schedule/${id}`);
   }
 }

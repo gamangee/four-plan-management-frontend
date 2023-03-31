@@ -6,8 +6,7 @@ import { useService } from '../../context/context';
 import UserModal from '../../components/UserModal';
 
 // 1. 프로필 사진 -> context에서 관리하기
-// 2. 통신 성공/실패 여부 -> UserModal 사용하기
-// 3. input type password/text 리팩토링
+// 2. input type password/text 리팩토링
 
 const randomNums = () => {
   let result = Math.floor(Math.random() * 10 + 1);
@@ -41,8 +40,6 @@ export default function UserInfo() {
 
   const [isOpen, setIsOpen] = useState(true);
 
-  const [submitted, setSubmitted] = useState(false);
-
   useEffect(() => {
     setIndex(randomNums());
   }, []);
@@ -70,17 +67,27 @@ export default function UserInfo() {
   };
 
   const [status, setStatus] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
   const onSubmit = data => {
     service
       .updateUserInfo({
         accountId: user.accountId,
-        email: data.email,
+        email: data.emailsss,
         password: data.currentPassword,
         newPassword: data.newPassword,
       })
-      .then(res => setStatus(res));
+      .then(res => {
+        setStatus(res);
+      });
+
     setSubmitted(true);
+    setIsOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+    setSubmitted(false);
   };
 
   return (
@@ -163,11 +170,7 @@ export default function UserInfo() {
         </ProfileContents>
       </UserInformation>
       {submitted && (
-        <UserModal
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          status={status}
-        />
+        <UserModal isOpen={isOpen} onClose={handleClose} status={status} />
       )}
     </UserInfoContainer>
   );
