@@ -1,7 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useService } from '../context/context';
 
 export default function TodayDuty({ dutyList }) {
+  const { service } = useService();
+
+  console.log(service.client.defaults.headers);
   return (
     <Container>
       <Title>오늘의 당직 😊</Title>

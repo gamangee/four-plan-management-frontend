@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import Service from '../service/Service';
 
 export const ApiContext = createContext();
@@ -14,28 +13,14 @@ export const color = {
 
 export function ApiProvider({ children }) {
   const [user, setUser] = useState({});
+  const [index, setIndex] = useState(10);
 
   const service = new Service();
 
-  // useEffect(() => {
-  //   axios.get('/user/userLogin.json').then(res => setUser(res));
-  // }, []);
-
-  // console.log(user);
-
-  // useEffect(() => {
-  //   if (user.length > 0) {
-  //     const newUser = schedule.filter(
-  //       user => user.Schedule.account_id === user.accountId
-  //     );
-  //     setUser(newUser);
-  //   }
-  // }, [user]);
-
-  // console.log(user);
-
   return (
-    <ApiContext.Provider value={{ service, user, color, setUser }}>
+    <ApiContext.Provider
+      value={{ service, user, color, setUser, setIndex, index }}
+    >
       {children}
     </ApiContext.Provider>
   );

@@ -157,13 +157,13 @@ const ModalContainer = styled.div`
 `;
 
 const Modal = styled.div`
-  width: 300px;
-  height: 150px;
+  width: 400px;
+  height: 200px;
   ${props => props.theme.variables.flex('column', '', 'center')};
   text-align: center;
   line-height: 100px;
   color: ${props => props.theme.style.text};
-  font-size: ${props => props.theme.style.textmd};
+  font-size: ${props => props.theme.style.textlg};
   font-weight: 600;
   background-color: ${props => props.theme.style.white};
   border: 8px solid ${props => props.theme.style.skyblue};
@@ -176,15 +176,15 @@ const Modal = styled.div`
 `;
 
 const AcceptBtn = styled.button`
-  width: 80px;
-  height: 30px;
+  width: 120px;
+  height: 50px;
   border-radius: ${props => props.theme.style.BtnborderRadius};
   background-color: ${props => props.theme.style.text};
   font-size: ${props => props.theme.style.textsm};
   color: ${props => props.theme.style.white};
   border: 0;
   position: absolute;
-  bottom: 15px;
+  bottom: 30px;
   transition: 0.3s ease;
   &:hover {
     background-color: ${props => props.theme.style.blue};

@@ -42,8 +42,9 @@ export default function LoginForm() {
         password: data.password,
       })
       .then(res => {
+        // console.log(res);
         if (res.status === 200) {
-          const accessToken = res.data.user.accessToken;
+          const accessToken = res.data.accessToken;
           // 세선쿠키
           setCookie('accessToken', accessToken);
           res.data.user.role === 'ROLE_USER'
@@ -51,7 +52,7 @@ export default function LoginForm() {
             : navigate('/admin/main', { state: res.data.user });
         }
       })
-      .catch(() => {
+      .catch(e => {
         setValue('password', '');
         setError('password', {
           message: '아이디 또는 비밀번호가 일치하지 않습니다.',

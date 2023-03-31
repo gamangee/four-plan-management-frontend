@@ -1,25 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
 import styled from 'styled-components';
 import { useService } from '../../context/context';
 import UserModal from '../../components/UserModal';
 
-// 1. 프로필 사진 -> context에서 관리하기
 // 2. input type password/text 리팩토링
 
-const randomNums = () => {
-  let result = Math.floor(Math.random() * 10 + 1);
-  if (result < 10) {
-    result = '0' + result;
-  }
-  return result;
-};
-
 export default function UserInfo() {
-  const { user, service } = useService();
-
-  const [index, setIndex] = useState(10);
+  const { user, service, index } = useService();
 
   const [isVisible, setIsVisible] = useState({ A: false, B: false, C: false });
 
@@ -39,10 +28,6 @@ export default function UserInfo() {
   };
 
   const [isOpen, setIsOpen] = useState(true);
-
-  useEffect(() => {
-    setIndex(randomNums());
-  }, []);
 
   const {
     register,
@@ -99,11 +84,17 @@ export default function UserInfo() {
             src={`/images/profile/profile_img_${index}.jpg`}
             alt="profile_img"
           />
-          <UserName>홍길동</UserName>
-          <UserDepartment>(개발팀/팀장)</UserDepartment>
+          <UserName>{user.name}</UserName>
+          <UserDepartment>
+            ({user.department} / {user.position})
+          </UserDepartment>
           <BorderLine />
-          <Infos>• 남은 연차 : XX일</Infos>
-          <Infos>• 오늘은 당직 날이 아닙니다.</Infos>
+          <Infos>• 남은 연차 : {user.yearly}일</Infos>
+          {user.duty ? (
+            <Infos>• 오늘은 당직 날입니다.</Infos>
+          ) : (
+            <Infos>• 오늘은 당직 날이 아닙니다.</Infos>
+          )}
         </ProfileImg>
         <ProfileContents onSubmit={handleSubmit(onValid)}>
           <Label htmlFor="email">이메일</Label>

@@ -19,15 +19,15 @@ export default function UserMyPage({ selectItem, select }) {
       <MyPageItems onClick={selectItem}>
         <Item data-id="userinfo">
           <FiUser />
-          <ItemText>내 정보 수정</ItemText>
+          <ItemText>Update UserInfo</ItemText>
         </Item>
         <Item data-id="userannaul">
           <FiCalendar />
-          <ItemText>연차 관리</ItemText>
+          <ItemText>Annual Management</ItemText>
         </Item>
         <LogOut data-id="">
           <MdLogout />
-          <ItemText>로그 아웃</ItemText>
+          <ItemText>LOGOUT</ItemText>
         </LogOut>
       </MyPageItems>
     </MyPage>

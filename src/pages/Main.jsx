@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useService } from '../context/context';
 import UserSearch from './UserSearch';
 import { useLocation } from 'react-router-dom';
+import { getCookie } from '../cookie';
 
 // export const D = {
 //   PAGE_LIST: "PAGE_LIST",
@@ -26,11 +27,12 @@ export default function Main() {
     staleTime: 60 * 1000,
   };
 
-  const { state } = useLocation();
+  service.setAuthToken(getCookie('accessToken'));
 
+  const { state } = useLocation();
   useEffect(() => {
     if (state) {
-      console.log(state);
+      // console.log(state);
       setUser(state);
     }
   }, []);

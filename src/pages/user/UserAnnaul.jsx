@@ -5,7 +5,7 @@ import UserRegister from '../../components/UserRegister';
 import convertToKoreanTime from '../../utility/koreanTime';
 
 export default function UserAnnaul() {
-  const { user } = useService();
+  const { user, service } = useService();
   const ANNUAL_DATA = user.Schedule;
   const [formatDay, setFormatDay] = useState({
     startDay: convertToKoreanTime(ANNUAL_DATA?.start_date),
@@ -20,6 +20,8 @@ export default function UserAnnaul() {
     }));
   }
 
+  // console.log(service.client.defaults.headers);
+
   const [originalDay, setOriginalDay] = useState({
     startDay: ANNUAL_DATA?.start_date,
     endDay: ANNUAL_DATA?.end_date,
@@ -28,7 +30,7 @@ export default function UserAnnaul() {
   const [selected, setSelected] = useState('등록');
 
   const [value, setValue] = useState({
-    id: user?.Schedule?.id,
+    id: user?.schedule?.id,
     start_date: originalDay.startDay,
     end_date: originalDay.endDay,
     scheduleType: 'YEARLY',

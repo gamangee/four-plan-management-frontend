@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TodayDuty from '../pages/TodayDuty';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -10,6 +10,21 @@ import Service from '../service/Service';
 import { useQuery } from '@tanstack/react-query';
 
 export default function SideBar() {
+  // 프로필 사진
+  const { setIndex, index } = useService();
+
+  const randomNums = () => {
+    let result = Math.floor(Math.random() * 10 + 1);
+    if (result < 10) {
+      result = '0' + result;
+    }
+    return result;
+  };
+
+  useEffect(() => {
+    setIndex(randomNums());
+  }, []);
+
   const service = new Service();
 
   // 오늘의 당직 연결
@@ -49,13 +64,19 @@ export default function SideBar() {
       />
       <UserInfo>
         <Content>
-          <UserProfile src="/images/profile/profile_img_06.jpg" />
+          {user.role === 'ROLE_ADMIN' ? (
+            <UserProfile src="/images/profile/admin_profile.jpg" />
+          ) : (
+            <UserProfile src={`/images/profile/profile_img_${index}.jpg`} />
+          )}
           <UserInfoContainer>
-            <UserName>홍길동</UserName>
-            <Department>(개발팀 / 팀장)</Department>
+            <UserName>{user.name}</UserName>
+            <Department>
+              ({user.department}/ {user.position})
+            </Department>
           </UserInfoContainer>
         </Content>
-        <RestYear>남은 연차 : XX일</RestYear>
+        <RestYear>남은 연차 : {user.yearly}일</RestYear>
       </UserInfo>
       <Title>
         <div>Calendar</div>

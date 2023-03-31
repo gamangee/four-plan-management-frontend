@@ -15,7 +15,7 @@ export default function UserMyPage({ selectItem, select }) {
         </Item>
         <LogOut data-id="">
           <MdLogout />
-          <ItemText>로그 아웃</ItemText>
+          <ItemText>LOGOUT</ItemText>
         </LogOut>
       </AdminPageItems>
     </Title>
