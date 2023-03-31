@@ -6,13 +6,13 @@ import convertToKoreanTime from '../utility/koreanTime';
 import { useService } from '../context/context';
 import UserModal from './UserModal';
 
-export default function AdminAnnual() {
+export default function AdminAnnual({ yearly }) {
   const date = new Date();
   const { service } = useService();
 
   const [datepickerDate, setDatepicker] = useState({
-    startDate: date,
-    endDate: null,
+    startDate: new Date(yearly.start_date),
+    endDate: new Date(yearly.end_date),
   });
 
   const [formatDay, setFormatDay] = useState({
@@ -20,14 +20,18 @@ export default function AdminAnnual() {
     endDay: convertToKoreanTime(datepickerDate?.endDate),
   });
 
-  const [yearDay, setYearDay] = useState('');
+  const [yearDay, setYearDay] = useState(
+    `${convertToKoreanTime(yearly.start_date)} ~ ${convertToKoreanTime(
+      yearly.end_date
+    )}`
+  );
+
   const [status, setStatus] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
 
   const [value, setValue] = useState({
-    // id: user?.Schedule?.id,
-    id: '123',
+    id: yearly.id,
     start_date: '',
     end_date: '',
     scheduleType: 'YEARLY',
@@ -58,6 +62,10 @@ export default function AdminAnnual() {
       startDay: convertToKoreanTime(start),
       endDay: convertToKoreanTime(end),
     });
+
+    setYearDay(`
+      ${convertToKoreanTime(start)} ~ ${convertToKoreanTime(end)}
+    `);
 
     // data 담기
     setValue({

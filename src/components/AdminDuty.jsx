@@ -6,22 +6,20 @@ import convertToKoreanTime from '../utility/koreanTime';
 import { useService } from '../context/context';
 import UserModal from './UserModal';
 
-export default function AdminAnnual() {
+export default function AdminAnnual({ duty }) {
   const { service } = useService();
-
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date(duty.start_date));
 
   const [formatDay, setFormatDay] = useState(convertToKoreanTime(startDate));
 
-  const [dutyDay, setDutyDay] = useState('');
+  const [dutyDay, setDutyDay] = useState(convertToKoreanTime(duty.start_date));
   const [status, setStatus] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
 
   const [value, setValue] = useState({
-    // id: user?.Schedule?.id,
-    id: '123',
-    start_date: '',
+    id: duty.id,
+    start_date: startDate,
     scheduleType: 'DUTY',
   });
 
@@ -33,6 +31,7 @@ export default function AdminAnnual() {
   const onChange = date => {
     setStartDate(date);
     setFormatDay(convertToKoreanTime(date));
+    setDutyDay(convertToKoreanTime(date));
   };
 
   const handleSubmit = select => {
