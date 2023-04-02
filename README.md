@@ -13,7 +13,8 @@
 
 | 홍성민 | 장문정 | 이정재 | + 백엔드 |
 | -----  |  ----- | ------ | ------- |
-|<a href="https://github.com/dragong-sm">  <img width="70" height="70" src="https://avatars.githubusercontent.com/u/117700630?v=4" alt="Dragong"></a>  |<a href="https://github.com/gamangee"> <img width="70" height="70" src="https://user-images.githubusercontent.com/98649953/225550633-b6975a18-4b45-44d2-84be-4a7d95beb9ff.png"> </a>  |<a href="https://github.com/j-plum">  <img width="70" src ="https://user-images.githubusercontent.com/98649953/225549031-a4a69541-3845-4569-88ac-c7a5033a76a1.png"> </a> |<a href="https://github.com/minh0518">  <img width="70" src ="https://user-images.githubusercontent.com/117700630/229362021-be4aa445-048d-46fc-b7f5-dd0b27b86824.png"> </a> |<a href="https://github.com/moon-July5/Mini_Project_4">
+|<a href="https://github.com/dragong-sm">  <img width="70" height="70" src="https://avatars.githubusercontent.com/u/117700630?v=4" alt="Dragong"></a>  |<a href="https://github.com/gamangee"> <img width="70" height="70" src="https://user-images.githubusercontent.com/98649953/225550633-b6975a18-4b45-44d2-84be-4a7d95beb9ff.png"> </a>  |<a href="https://github.com/j-plum">  <img width="70" src ="https://user-images.githubusercontent.com/98649953/225549031-a4a69541-3845-4569-88ac-c7a5033a76a1.png"> </a> |<a href="https://github.com/moon-July5/Mini_Project_4"> <img width="70" src ="https://user-images.githubusercontent.com/117700630/229362021-be4aa445-048d-46fc-b7f5-dd0b27b86824.png"> </a> |
+
 
 ## ✍🏻 역할
 
