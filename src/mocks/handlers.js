@@ -428,7 +428,7 @@ export const handlers = [
       ctx.json({
         code: '200',
         status: 'success',
-        uasers: [
+        users: [
           {
             id: '1',
             name: '홍길동',

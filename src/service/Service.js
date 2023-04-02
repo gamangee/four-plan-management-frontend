@@ -6,7 +6,8 @@ const accessToken = getCookie('accessToken');
 export default class Service {
   constructor() {
     this.client = axios.create({
-      baseURL: 'http://54.180.182.33:8080/',
+      // baseURL: 'http://54.180.182.33:8080/',
+      baseURL: 'http://localhost:3000/',
       headers: {},
     });
   }

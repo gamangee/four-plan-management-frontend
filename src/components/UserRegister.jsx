@@ -145,7 +145,6 @@ export default function UserRegister({
 
 const AnnualRegister = styled.div`
   ${props => props.theme.variables.flex('', 'space-between', 'center')};
-  // border: 8px solid ${props => props.theme.style.skyblue};
   border: 8px solid
     ${props =>
       props.isChecked
