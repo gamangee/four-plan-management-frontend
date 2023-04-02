@@ -94,4 +94,11 @@ export default class Service {
   async checkSchedule(id) {
     return this.client.get(`/schedule/${id}`);
   }
+
+  // 유저정보검색
+  async searchUserList(data) {
+    return this.client
+      .get('/account/search?name=길동')
+      .then(res => res.data.users);
+  }
 }

@@ -39,6 +39,7 @@ export default function SideBar() {
 
   const { user } = useService();
 
+  console.log(user.role);
   // console.log(user.role);
   function selectItem(e) {
     const data = e.target.parentNode.dataset.id;
@@ -94,6 +95,47 @@ export default function SideBar() {
         <AdminPage selectItem={selectItem} select={select} />
       )}
     </Container>
+    <div>
+      {user && (
+        <Container>
+          <TodayDuty />
+          <LogoImg
+            src="/images/logo_origin.svg"
+            alt="logo"
+            onClick={() =>
+              user.role === 'ROLE_USER'
+                ? navigate('/main')
+                : navigate('/admin/main')
+            }
+          />
+          <UserInfo>
+            <Content>
+              <UserProfile src="/images/profile/profile_img_06.jpg" />
+              <UserInfoContainer>
+                <UserName>홍길동</UserName>
+                <Department>(개발팀 / 팀장)</Department>
+              </UserInfoContainer>
+            </Content>
+            <RestYear>남은 연차 : XX일</RestYear>
+          </UserInfo>
+          <Title>
+            <div>Calendar</div>
+            <HighLight className={select === 'main' ? 'active' : ''} />
+            <PageItems onClick={selectItem}>
+              <Item data-id="main">
+                <AiOutlineCalendar />
+                <ItemText>Calendar</ItemText>
+              </Item>
+            </PageItems>
+          </Title>
+          {user.role === 'ROLE_USER' ? (
+            <UserMyPage selectItem={selectItem} select={select} />
+          ) : (
+            <AdminPage selectItem={selectItem} select={select} />
+          )}
+        </Container>
+      )}
+    </div>
   );
 }
 

@@ -27,12 +27,18 @@ export default function Main() {
     staleTime: 60 * 1000,
   };
 
+  const { state } = useLocation();
+
   service.setAuthToken(getCookie('accessToken'));
 
   const { state } = useLocation();
   useEffect(() => {
     if (state) {
       // console.log(state);
+      setUser(state);
+    }
+    if (state) {
+      console.log(state);
       setUser(state);
     }
   }, []);
