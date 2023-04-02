@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
@@ -8,20 +8,37 @@ import UserModal from './UserModal';
 
 export default function AdminAnnual({ duty }) {
   const { service } = useService();
-  const [startDate, setStartDate] = useState(new Date(duty.start_date));
-
-  const [formatDay, setFormatDay] = useState(convertToKoreanTime(startDate));
-
-  const [dutyDay, setDutyDay] = useState(convertToKoreanTime(duty.start_date));
+  // const [startDate, setStartDate] = useState(new Date(duty.start_date));
+  // const [dutyDay, setDutyDay] = useState(convertToKoreanTime(duty.start_date));
+  const [startDate, setStartDate] = useState('');
+  const [dutyDay, setDutyDay] = useState('');
+  const [formatDay, setFormatDay] = useState('');
+  const [value, setValue] = useState({});
   const [status, setStatus] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
 
-  const [value, setValue] = useState({
-    id: duty.id,
-    start_date: startDate,
-    scheduleType: 'DUTY',
-  });
+  useEffect(() => {
+    if (duty) {
+      setStartDate(new Date(duty.start_date));
+      setDutyDay(convertToKoreanTime(duty.start_date));
+      setFormatDay(convertToKoreanTime(duty.start_date));
+      setValue({
+        id: duty.id,
+        start_date: new Date(duty.start_date),
+        scheduleType: 'DUTY',
+      });
+    } else {
+      setStartDate(new Date());
+      setDutyDay(new Date());
+      setFormatDay(new Date());
+      setValue({
+        id: duty.id,
+        start_date: new Date(),
+        scheduleType: '',
+      });
+    }
+  }, [duty]);
 
   const isWeekday = date => {
     const day = date.getDay(date);
@@ -67,45 +84,53 @@ export default function AdminAnnual({ duty }) {
     setFormatDay('');
   };
 
+  const date = new Date();
+  console.log(duty);
   return (
     <ManagementAnnual>
-      <ManagementTab>당직관리</ManagementTab>
-      <Input readOnly value={dutyDay} />
-      <BtnAlign>
-        <Btn
-          onClick={e => {
-            handleSubmit(e.target.textContent);
-          }}
-        >
-          수정
-        </Btn>
-        <Btn
-          onClick={e => {
-            handleSubmit(e.target.textContent);
-          }}
-        >
-          삭제
-        </Btn>
-      </BtnAlign>
-      <StyleDatePicker>
-        <DatePicker
-          inline
-          disabledKeyboardNavigation
-          selected={startDate}
-          onChange={onChange}
-          filterDate={isWeekday}
-        />
-      </StyleDatePicker>
-      {submitted && (
-        <UserModal
-          isOpen={isOpen}
-          onClose={() => {
-            setIsOpen(false);
-            setStatus('');
-            setSubmitted(false);
-          }}
-          status={status}
-        />
+      {duty && (
+        <>
+          <ManagementTab>당직관리</ManagementTab>
+          <Input readOnly value={dutyDay || ''} />
+          <BtnAlign>
+            <Btn
+              onClick={e => {
+                handleSubmit(e.target.textContent);
+              }}
+            >
+              수정
+            </Btn>
+            <Btn
+              onClick={e => {
+                handleSubmit(e.target.textContent);
+              }}
+            >
+              삭제
+            </Btn>
+          </BtnAlign>
+          <StyleDatePicker>
+            {duty && (
+              <DatePicker
+                inline
+                disabledKeyboardNavigation
+                // selected={new Date()}
+                onChange={onChange}
+                filterDate={isWeekday}
+              />
+            )}
+          </StyleDatePicker>
+          {submitted && (
+            <UserModal
+              isOpen={isOpen}
+              onClose={() => {
+                setIsOpen(false);
+                setStatus('');
+                setSubmitted(false);
+              }}
+              status={status}
+            />
+          )}
+        </>
       )}
     </ManagementAnnual>
   );

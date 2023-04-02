@@ -13,9 +13,7 @@ export default class Service {
   }
 
   setAuthToken(accessToken) {
-    this.client.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${accessToken}`;
+    this.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
   }
 
   // 로그인
@@ -30,8 +28,8 @@ export default class Service {
 
   // 전체 스케쥴
   async schedule() {
-    // console.log('Fetching!!!!!!!!🔥');
-    return this.client.get(`/schedule`).then(res => console.log(res));
+    console.log('Fetching!!!!!!!!🔥');
+    return this.client.get(`/schedule`).then(res => res.data.users);
   }
 
   // 개인정보수정

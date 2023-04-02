@@ -27,8 +27,6 @@ export default function Main() {
     staleTime: 60 * 1000,
   };
 
-  const { state } = useLocation();
-
   service.setAuthToken(getCookie('accessToken'));
 
   const { state } = useLocation();
@@ -51,19 +49,19 @@ export default function Main() {
           return {
             ...user,
             title: user.name,
-            start: user.Schedule.start_date.slice(0, 10),
-            end: user.Schedule.end_date.slice(0, 10),
+            start: user.schedules.start_date.slice(0, 10),
+            end: user.schedules.end_date.slice(0, 10),
             color: colorArray[colorSelect(user)],
           };
         });
       } else if (selected === '부서') {
         return users
-          .filter(user => user.Schedule.type === 'plan')
+          .filter(user => user.schedules.type === 'plan')
           .map(user => {
             return {
-              title: user.department + ' : ' + user.Schedule.content,
-              start: user.Schedule.start_date.replace('Z', ''),
-              end: user.Schedule.end_date.replace('Z', ''),
+              title: user.department + ' : ' + user.schedules.content,
+              start: user.schedules.start_date.replace('Z', ''),
+              end: user.schedules.end_date.replace('Z', ''),
               color: colorArray[colorSelect(user)],
             };
           });
@@ -72,19 +70,19 @@ export default function Main() {
           return {
             ...user,
             title: user.name,
-            start: user.Schedule.start_date.slice(0, 10),
-            end: user.Schedule.end_date.slice(0, 10),
+            start: user.schedules.start_date.slice(0, 10),
+            end: user.schedules.end_date.slice(0, 10),
             color: colorArray[colorSelect(user)],
           };
         });
       }
       return users
-        .filter(user => selected.includes(user.Schedule.accountId))
+        .filter(user => selected.includes(user.schedules.accountId))
         .map(user => ({
           ...user,
           title: user.name,
-          start: user.Schedule.start_date.substr(0, 10),
-          end: user.Schedule.end_date.substr(0, 10),
+          start: user.schedules.start_date.substr(0, 10),
+          end: user.schedules.end_date.substr(0, 10),
           color: colorArray[colorSelect(user)],
         }));
     });
@@ -110,7 +108,7 @@ export default function Main() {
     }
   };
 
-  // console.log('스케쥴 :', schedule);
+  console.log(schedule);
 
   return (
     <Container>
@@ -221,7 +219,7 @@ const Btn = styled.button`
 function colorSelect(user) {
   let index = 0;
 
-  if (user.Schedule.type === 'duty') {
+  if (user.schedules.type === 'duty') {
     index = 1;
   } else if (user.department === '개발팀') {
     index = 2;

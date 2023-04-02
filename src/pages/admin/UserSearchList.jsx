@@ -21,14 +21,14 @@ export default function UserSearchList({
     const selectId = e.target.id;
     const index = userList.findIndex(user => user.id === selectId);
 
-    if (index > -1 && selectedUser.length > 0) {
+    if (index > -1 && selectedUser) {
       const user = userList[index];
-      setSelectedUser(user);
+      console.log(user);
+      setSelectedUser([user]);
     } else {
-      setSelectedUser(userList[index]);
+      setSelectedUser([userList[index]]);
     }
   };
-
   return (
     <Container>
       <SearchUserList>
@@ -60,13 +60,12 @@ export default function UserSearchList({
 const Container = styled.div`
   position: relative;
   width: 1050px;
-  height: inherit;
 `;
 
 const SearchUserList = styled.div`
   ${props => props.theme.variables.flex('column', 'space-between', 'center')}
   position: relative;
-  top: 90px;
+  top: -20px;
   width: 700px;
   height: 195px;
   background-color: ${props => props.theme.style.white};

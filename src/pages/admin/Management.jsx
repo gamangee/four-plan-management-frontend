@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useService } from '../../context/context';
 import ChangeRole from '../../components/ChangeRole';
@@ -11,66 +11,8 @@ export default function Management() {
   const id = 1;
   const role = 'ROLE_USER';
 
-  const [selectedUser, setSelectedUser] = useState({
-    id: '1',
-    name: '홍길동',
-    accountId: 'abc123',
-    role: 'ROLE_USER',
-    email: 'gildong123@naver.com',
-    department: '개발팀',
-    position: '팀장',
-    yearly: '30',
-    duty: false,
-    schedules: [
-      {
-        id: '1',
-        accountId: 'abc123',
-        type: 'YEARLY',
-        content: null,
-        start_date: '2023-03-23T00:00:00Z',
-        end_date: '2023-03-24T00:00:00Z',
-        created_at: '2023-03-15T15:25:00Z',
-        modified_at: '2023-03-15T15:25:00Z',
-      },
-      {
-        id: '2',
-        accountId: 'abc123',
-        type: 'DUTY',
-        content: null,
-        start_date: '2023-03-30T00:00:00Z',
-        end_date: '2023-03-30T23:59:59Z',
-        created_at: '2023-03-20T15:25:00Z',
-        modified_at: '2023-03-20T15:25:00Z',
-      },
-    ],
-  });
-
-  const yearly = selectedUser.schedules.filter(
-    schedule => schedule.type === 'YEARLY'
-  )[0];
-
-  const duty = selectedUser.schedules.filter(
-    schedule => schedule.type === 'DUTY'
-  )[0];
-
-  return (
-    <Container>
-      <div>안녕안녕</div>
-      <div>안녕안녕</div>
-      <div>안녕안녕</div>
-      <div>안녕안녕</div>
-      <div>안녕안녕</div>
-      <div>안녕안녕</div>
-      <Div>
-        <AdminDuty duty={duty} />
-        <AdminAnnual yearly={yearly} />
-      </Div>
-      <ChangeRole role={role} id={id} />
-    </Container>
-
-
-export default function Management() {
-  const [selectedUser, setSelectedUser] = useState({});
+  const [selectedUser, setSelectedUser] = useState();
+  const [schedule, setSchedule] = useState({});
 
   const { service, user } = useService();
 
@@ -78,81 +20,37 @@ export default function Management() {
     return service.searchUserList('길동');
   });
 
-  console.log(selectedUser);
+  const [duty, setDuty] = useState({});
+
+  useEffect(() => {
+    if (selectedUser) {
+      setDuty(
+        selectedUser[0].schedules.filter(user => user.type === 'DUTY')[0]
+      );
+    } else {
+      setDuty({});
+    }
+  }, [selectedUser]);
+
+  console.log(duty);
   return (
     <>
       {user.role === 'ROLE_ADMIN' && (
         <Container>
-          <ContentName>Management</ContentName>
           <UserSearchList
             userList={userList}
             selectedUser={selectedUser} //나중에 지워야함
             setSelectedUser={setSelectedUser}
           />
+          <Div>
+            <AdminDuty duty={duty} />
+            <AdminAnnual annual={duty} />
+          </Div>
+          <ChangeRole role={role} id={id} />
         </Container>
       )}
       {user.role !== 'ROLE_ADMIN' && <Container>너 누구야</Container>}
     </>
-  );
-  const id = 1;
-  const role = 'ROLE_USER';
-
-  const [selectedUser, setSelectedUser] = useState({
-    id: '1',
-    name: '홍길동',
-    accountId: 'abc123',
-    role: 'ROLE_USER',
-    email: 'gildong123@naver.com',
-    department: '개발팀',
-    position: '팀장',
-    yearly: '30',
-    duty: false,
-    schedules: [
-      {
-        id: '1',
-        accountId: 'abc123',
-        type: 'YEARLY',
-        content: null,
-        start_date: '2023-03-23T00:00:00Z',
-        end_date: '2023-03-24T00:00:00Z',
-        created_at: '2023-03-15T15:25:00Z',
-        modified_at: '2023-03-15T15:25:00Z',
-      },
-      {
-        id: '2',
-        accountId: 'abc123',
-        type: 'DUTY',
-        content: null,
-        start_date: '2023-03-30T00:00:00Z',
-        end_date: '2023-03-30T23:59:59Z',
-        created_at: '2023-03-20T15:25:00Z',
-        modified_at: '2023-03-20T15:25:00Z',
-      },
-    ],
-  });
-
-  const yearly = selectedUser.schedules.filter(
-    schedule => schedule.type === 'YEARLY'
-  )[0];
-
-  const duty = selectedUser.schedules.filter(
-    schedule => schedule.type === 'DUTY'
-  )[0];
-
-  return (
-    <Container>
-      <div>안녕안녕</div>
-      <div>안녕안녕</div>
-      <div>안녕안녕</div>
-      <div>안녕안녕</div>
-      <div>안녕안녕</div>
-      <div>안녕안녕</div>
-      <Div>
-        <AdminDuty duty={duty} />
-        <AdminAnnual yearly={yearly} />
-      </Div>
-      <ChangeRole role={role} id={id} />
-    </Container>
   );
 }
 
@@ -166,6 +64,8 @@ const Container = styled.div`
 `;
 
 const Div = styled.div`
+  position: relative;
+  top: 8px;
   width: 100%;
   ${props => props.theme.variables.flex('', 'space-between', '')};
   margin-bottom: 30px;

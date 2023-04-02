@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
@@ -6,32 +6,50 @@ import convertToKoreanTime from '../utility/koreanTime';
 import { useService } from '../context/context';
 import UserModal from './UserModal';
 
-export default function AdminAnnual({ yearly }) {
-  const date = new Date();
+export default function AdminAnnual({ annual }) {
+  // const date = new Date();
   const { service } = useService();
 
-  const [datepickerDate, setDatepicker] = useState({
-    startDate: new Date(yearly.start_date),
-    endDate: new Date(yearly.end_date),
-  });
+  const [datepickerDate, setDatepicker] = useState({});
 
-  const [formatDay, setFormatDay] = useState({
-    startDay: convertToKoreanTime(datepickerDate?.startDate),
-    endDay: convertToKoreanTime(datepickerDate?.endDate),
-  });
+  const [formatDay, setFormatDay] = useState({});
 
-  const [yearDay, setYearDay] = useState(
-    `${convertToKoreanTime(yearly.start_date)} ~ ${convertToKoreanTime(
-      yearly.end_date
-    )}`
-  );
+  const [yearDay, setYearDay] = useState('');
+
+  useEffect(() => {
+    if (annual) {
+      setDatepicker({
+        startDate: new Date(annual.start_date),
+        endDate: new Date(annual.end_date),
+      });
+      setFormatDay({
+        startDay: convertToKoreanTime(datepickerDate?.startDate),
+        endDay: convertToKoreanTime(datepickerDate?.endDate),
+      });
+      setYearDay(
+        `${convertToKoreanTime(annual.start_date)} ~ ${convertToKoreanTime(
+          annual.end_date
+        )}`
+      );
+    } else {
+      setDatepicker({
+        startDate: '',
+        endDate: '',
+      });
+      setFormatDay({
+        startDay: '',
+        endDay: '',
+      });
+      setYearDay('');
+    }
+  }, [annual]);
 
   const [status, setStatus] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
 
   const [value, setValue] = useState({
-    id: yearly.id,
+    id: annual.id,
     start_date: '',
     end_date: '',
     scheduleType: 'YEARLY',
@@ -114,45 +132,49 @@ export default function AdminAnnual({ yearly }) {
 
   return (
     <ManagementAnnual>
-      <ManagementTab>연차관리</ManagementTab>
-      <Input readOnly value={yearDay} />
-      <BtnAlign>
-        <Btn
-          onClick={e => {
-            handleSubmit(e.target.textContent);
-          }}
-        >
-          수정
-        </Btn>
-        <Btn
-          onClick={e => {
-            handleSubmit(e.target.textContent);
-          }}
-        >
-          삭제
-        </Btn>
-      </BtnAlign>
-      <StyleDatePicker>
-        <DatePicker
-          inline
-          selectsRange
-          disabledKeyboardNavigation
-          onChange={onChange}
-          startDate={datepickerDate.startDate}
-          endDate={datepickerDate.endDate}
-          filterDate={isWeekday}
-        />
-      </StyleDatePicker>
-      {submitted && (
-        <UserModal
-          isOpen={isOpen}
-          onClose={() => {
-            setIsOpen(false);
-            setStatus('');
-            setSubmitted(false);
-          }}
-          status={status}
-        />
+      {annual && (
+        <>
+          <ManagementTab>연차관리</ManagementTab>
+          <Input readOnly value={yearDay} />
+          <BtnAlign>
+            <Btn
+              onClick={e => {
+                handleSubmit(e.target.textContent);
+              }}
+            >
+              수정
+            </Btn>
+            <Btn
+              onClick={e => {
+                handleSubmit(e.target.textContent);
+              }}
+            >
+              삭제
+            </Btn>
+          </BtnAlign>
+          <StyleDatePicker>
+            <DatePicker
+              inline
+              selectsRange
+              disabledKeyboardNavigation
+              onChange={onChange}
+              startDate={datepickerDate.startDate}
+              endDate={datepickerDate.endDate}
+              filterDate={isWeekday}
+            />
+          </StyleDatePicker>
+          {submitted && (
+            <UserModal
+              isOpen={isOpen}
+              onClose={() => {
+                setIsOpen(false);
+                setStatus('');
+                setSubmitted(false);
+              }}
+              status={status}
+            />
+          )}
+        </>
       )}
     </ManagementAnnual>
   );
