@@ -3,11 +3,19 @@ import styled from 'styled-components';
 
 export default function DashBoard({ children }) {
   return (
-    <Container className="test">
-      <DashBoardContainer>{children}</DashBoardContainer>
-    </Container>
+    <Wrapper>
+      <Container className="test">
+        <DashBoardContainer>{children}</DashBoardContainer>
+      </Container>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-color: ${props => props.theme.style.skyblue};
+`;
 
 const Container = styled.div`
   ${props => props.theme.variables.flex('row', 'center', 'center')}

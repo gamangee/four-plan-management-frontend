@@ -56,11 +56,10 @@ export default function SignUp() {
           const accessToken = res.data.accessToken;
           setCookie('accessToken', accessToken);
           setIsSuccess(true);
-          // navigate('/', { state: res.data.code });
         }
       })
       .catch(e => {
-        const message = e.response.data.message;
+        const message = e.response.data;
         if (message === 'existId' || message === 'duplicateId') {
           setError('accountId', {
             message: '이미 존재하는 아이디 입니다.',
@@ -78,7 +77,7 @@ export default function SignUp() {
   };
 
   return (
-    <Wrapper style={{ backgroundImage: 'url(./images/bg3.jpg' }}>
+    <Wrapper style={{ backgroundImage: 'url(./images/bg3.jpg)' }}>
       <SignUpContainer>
         <SimpleLogo src="/images/logo_simple.svg" alt="log_simple" />
         <InfoPhrase>

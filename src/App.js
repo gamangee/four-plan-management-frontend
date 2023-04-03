@@ -1,6 +1,6 @@
 import './App.css';
 import { DarkModeProvider } from './context/DarkModeContext';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import SideBar from './components/SideBar';
 import GlobalStyle from './styles/GlobalStyle';
@@ -13,6 +13,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 const queryClient = new QueryClient();
 
 function App() {
+  const location = useLocation();
   return (
     <ThemeProvider theme={{ style: theme, variables }}>
       <GlobalStyle />
@@ -20,8 +21,16 @@ function App() {
         <ApiProvider>
           <QueryClientProvider client={queryClient}>
             <DashBoard>
-              <SideBar />
-              <Outlet />
+              {location.pathname === '/' ||
+              location.pathname === '/signup' ||
+              location.pathname === '/admin' ? (
+                <Outlet />
+              ) : (
+                <>
+                  <SideBar />
+                  <Outlet />
+                </>
+              )}
             </DashBoard>
           </QueryClientProvider>
         </ApiProvider>
