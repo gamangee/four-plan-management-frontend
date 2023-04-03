@@ -13,7 +13,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 const queryClient = new QueryClient();
 
 function App() {
-  const location = useLocation();
   return (
     <ThemeProvider theme={{ style: theme, variables }}>
       <GlobalStyle />
@@ -21,16 +20,8 @@ function App() {
         <ApiProvider>
           <QueryClientProvider client={queryClient}>
             <DashBoard>
-              {location.pathname === '/' ||
-              location.pathname === '/signup' ||
-              location.pathname === '/admin' ? (
-                <Outlet />
-              ) : (
-                <>
-                  <SideBar />
-                  <Outlet />
-                </>
-              )}
+              <SideBar />
+              <Outlet />
             </DashBoard>
           </QueryClientProvider>
         </ApiProvider>

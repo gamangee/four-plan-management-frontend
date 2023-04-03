@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import TodayDuty from '../pages/TodayDuty';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import { useService } from '../context/context';
@@ -39,48 +39,54 @@ export default function SideBar() {
     }
   }
 
+  const location = useLocation();
+
   return (
     <Container>
-      <TodayDuty />
-      <LogoImg
-        src="/images/logo_origin.svg"
-        alt="logo"
-        onClick={() =>
-          user.role === 'ROLE_USER'
-            ? navigate('/main')
-            : navigate('/admin/main')
-        }
-      />
-      <UserInfo>
-        <Content>
-          {user.role === 'ROLE_ADMIN' ? (
-            <UserProfile src="/images/profile/admin_profile.jpg" />
+      {location.pathname !== ('/' || '/admin' || '/signup') && (
+        <>
+          <TodayDuty />
+          <LogoImg
+            src="/images/logo_origin.svg"
+            alt="logo"
+            onClick={() =>
+              user.role === 'ROLE_USER'
+                ? navigate('/main')
+                : navigate('/admin/main')
+            }
+          />
+          <UserInfo>
+            <Content>
+              {user.role === 'ROLE_ADMIN' ? (
+                <UserProfile src="/images/profile/admin_profile.jpg" />
+              ) : (
+                <UserProfile src={`/images/profile/profile_img_${index}.jpg`} />
+              )}
+              <UserInfoContainer>
+                <UserName>{user.name}</UserName>
+                <Department>
+                  ({user.department}/ {user.position})
+                </Department>
+              </UserInfoContainer>
+            </Content>
+            <RestYear>남은 연차 : {user.yearly}일</RestYear>
+          </UserInfo>
+          <Title>
+            <div>Calendar</div>
+            <HighLight className={select === 'main' ? 'active' : ''} />
+            <PageItems onClick={selectItem}>
+              <Item data-id="main">
+                <AiOutlineCalendar />
+                <ItemText>Calendar</ItemText>
+              </Item>
+            </PageItems>
+          </Title>
+          {user.role === 'ROLE_USER' ? (
+            <UserMyPage selectItem={selectItem} select={select} />
           ) : (
-            <UserProfile src={`/images/profile/profile_img_${index}.jpg`} />
+            <AdminPage selectItem={selectItem} select={select} />
           )}
-          <UserInfoContainer>
-            <UserName>{user.name}</UserName>
-            <Department>
-              ({user.department}/ {user.position})
-            </Department>
-          </UserInfoContainer>
-        </Content>
-        <RestYear>남은 연차 : {user.yearly}일</RestYear>
-      </UserInfo>
-      <Title>
-        <div>Calendar</div>
-        <HighLight className={select === 'main' ? 'active' : ''} />
-        <PageItems onClick={selectItem}>
-          <Item data-id="main">
-            <AiOutlineCalendar />
-            <ItemText>Calendar</ItemText>
-          </Item>
-        </PageItems>
-      </Title>
-      {user.role === 'ROLE_USER' ? (
-        <UserMyPage selectItem={selectItem} select={select} />
-      ) : (
-        <AdminPage selectItem={selectItem} select={select} />
+        </>
       )}
     </Container>
   );
