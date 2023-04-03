@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
@@ -6,32 +6,50 @@ import convertToKoreanTime from '../utility/koreanTime';
 import { useService } from '../context/context';
 import UserModal from './UserModal';
 
-export default function AdminAnnual() {
-  const date = new Date();
+export default function AdminAnnual({ annual }) {
   const { service } = useService();
 
-  const [datepickerDate, setDatepicker] = useState({
-    startDate: date,
-    endDate: null,
-  });
-
-  const [formatDay, setFormatDay] = useState({
-    startDay: convertToKoreanTime(datepickerDate?.startDate),
-    endDay: convertToKoreanTime(datepickerDate?.endDate),
-  });
-
+  const [datepickerDate, setDatepicker] = useState({});
+  const [formatDay, setFormatDay] = useState({});
   const [yearDay, setYearDay] = useState('');
   const [status, setStatus] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
+  const [value, setValue] = useState({});
 
-  const [value, setValue] = useState({
-    // id: user?.Schedule?.id,
-    id: '123',
-    start_date: '',
-    end_date: '',
-    scheduleType: 'YEARLY',
-  });
+  useEffect(() => {
+    if (annual) {
+      setDatepicker({
+        startDate: new Date(annual.start_date),
+        endDate: new Date(annual.end_date),
+      });
+      setFormatDay({
+        startDay: convertToKoreanTime(datepickerDate?.startDate),
+        endDay: convertToKoreanTime(datepickerDate?.endDate),
+      });
+      setYearDay(
+        `${convertToKoreanTime(annual.start_date)} ~ ${convertToKoreanTime(
+          annual.end_date
+        )}`
+      );
+      setValue({
+        id: annual.id,
+        start_date: annual.start_date,
+        end_date: annual.end_date,
+        scheduleType: 'YEARLY',
+      });
+    } else {
+      setDatepicker({
+        startDate: '',
+        endDate: '',
+      });
+      setFormatDay({
+        startDay: '',
+        endDay: '',
+      });
+      setYearDay('');
+    }
+  }, [annual]);
 
   const isWeekday = date => {
     const day = date.getDay(date);
@@ -59,13 +77,20 @@ export default function AdminAnnual() {
       endDay: convertToKoreanTime(end),
     });
 
+    setYearDay(`
+      ${convertToKoreanTime(start)} ~ ${
+      convertToKoreanTime(end) === '1970년 1월 1일 (목)'
+        ? ''
+        : convertToKoreanTime(end)
+    }
+    `);
+
     // data 담기
-    setValue({
-      id: '123',
-      start_date: start,
-      end_date: end,
-      scheduleType: 'YEARLY',
-    });
+    setValue(prev => ({
+      ...prev,
+      start_date: new Date(start).toISOString().slice(0, 19),
+      end_date: new Date(end).toISOString().slice(0, 19),
+    }));
   };
 
   const handleSubmit = select => {
@@ -91,7 +116,11 @@ export default function AdminAnnual() {
     }
 
     if (select !== '삭제') {
-      setYearDay(`${formatDay.startDay} ~ ${formatDay.endDay}`);
+      setYearDay(
+        `${formatDay.startDay} ~ ${
+          formatDay.endDay === '1970년 1월 1일 (목)' ? '' : formatDay.endDay
+        }`
+      );
     } else {
       setYearDay('');
     }
@@ -106,49 +135,60 @@ export default function AdminAnnual() {
 
   return (
     <ManagementAnnual>
-      <ManagementTab>연차관리</ManagementTab>
-      <Input readOnly value={yearDay} />
-      <BtnAlign>
-        <Btn
-          onClick={e => {
-            handleSubmit(e.target.textContent);
-          }}
-        >
-          수정
-        </Btn>
-        <Btn
-          onClick={e => {
-            handleSubmit(e.target.textContent);
-          }}
-        >
-          삭제
-        </Btn>
-      </BtnAlign>
-      <StyleDatePicker>
-        <DatePicker
-          inline
-          selectsRange
-          disabledKeyboardNavigation
-          onChange={onChange}
-          startDate={datepickerDate.startDate}
-          endDate={datepickerDate.endDate}
-          filterDate={isWeekday}
-        />
-      </StyleDatePicker>
-      {submitted && (
-        <UserModal
-          isOpen={isOpen}
-          onClose={() => {
-            setIsOpen(false);
-            setStatus('');
-            setSubmitted(false);
-          }}
-          status={status}
-        />
+      {annual && (
+        <>
+          <ManagementTab>연차관리</ManagementTab>
+          <Input readOnly value={yearDay} />
+          <BtnAlign>
+            <Btn
+              onClick={e => {
+                handleSubmit(e.target.textContent);
+              }}
+            >
+              수정
+            </Btn>
+            <Btn
+              onClick={e => {
+                handleSubmit(e.target.textContent);
+              }}
+            >
+              삭제
+            </Btn>
+          </BtnAlign>
+          <StyleDatePicker>
+            <DatePicker
+              inline
+              selectsRange
+              disabledKeyboardNavigation
+              onChange={onChange}
+              startDate={datepickerDate.startDate}
+              endDate={datepickerDate.endDate}
+              filterDate={isWeekday}
+            />
+          </StyleDatePicker>
+          {submitted && (
+            <UserModal
+              isOpen={isOpen}
+              onClose={() => {
+                setIsOpen(false);
+                setStatus('');
+                setSubmitted(false);
+              }}
+              status={status}
+            />
+          )}
+        </>
       )}
+      {!annual && <NoLeft>연차가 없습니다.</NoLeft>}
     </ManagementAnnual>
   );
 }
+
+const NoLeft = styled.div`
+  ${props => props.theme.variables.flex('', 'center', 'center')};
+  width: 420px;
+  height: 380px;
+`;
 
 const ManagementAnnual = styled.div`
   ${props => props.theme.variables.flex('column', 'center', 'center')};

@@ -35,7 +35,7 @@ export default class Service {
       await this.client.post(`/account/update/${data.accountId}`, data);
       return '개인 정보 수정 완료';
     } catch (error) {
-      console.error(error.response.data);
+      // console.error(error.response.data);
       return `${error.response.data}`;
     }
   }
@@ -47,7 +47,7 @@ export default class Service {
       await this.client.post('/schedule/save', data);
       return '등록 성공';
     } catch (error) {
-      console.error(error.response.data);
+      // console.error(error.response.data);
       return `${error.response.data}`;
     }
   }
@@ -59,7 +59,7 @@ export default class Service {
       return '수정 성공';
     } catch (error) {
       console.error(error);
-      return `${error.response.data.message}`;
+      return `${error.response.data}`;
     }
   }
 
@@ -70,7 +70,7 @@ export default class Service {
       return '삭제 성공';
     } catch (error) {
       console.error(error);
-      return `${error.response.data.message}`;
+      return `${error.response.data}`;
     }
   }
 
@@ -98,10 +98,10 @@ export default class Service {
     return this.client.get(`/schedule/${id}`);
   }
 
-  // 유저정보검색
-  async searchUserList(data) {
+  //(관리자) 유저검색
+  async searchUserList(userName) {
     return this.client
-      .get('/account/search?name=길동')
-      .then(res => res.data.users);
+      .get(`/account/admin/search?name=${userName}`)
+      .then(res => res.data);
   }
 }

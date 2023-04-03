@@ -13,6 +13,7 @@ export default function UserRegister({
   formatDay,
   setFormatDay,
   value,
+  setValue,
   selected,
   setYearDay,
 }) {
@@ -43,7 +44,7 @@ export default function UserRegister({
       service
         .registerSchedule({
           start_date: value.start_date,
-          end_date: value.end,
+          end_date: value.end_date,
           scheduleType: value.scheduleType,
         })
         .then(res => setStatus(res));
@@ -53,7 +54,7 @@ export default function UserRegister({
         .updateSchedule(value.id, {
           id: value.id,
           start_date: value.start_date,
-          end_date: value.end,
+          end_date: value.end_date,
           scheduleType: value.scheduleType,
         })
         .then(res => setStatus(res));
@@ -85,8 +86,11 @@ export default function UserRegister({
     <AnnualRegister selected={selected} isChecked={isChecked}>
       <DisabledClick type={selected}>
         <AnnualDatePicker
+          originalDay={originalDay}
           setOriginalDay={setOriginalDay}
           setFormatDay={setFormatDay}
+          setValue={setValue}
+          setYearDay={setYearDay}
         />
       </DisabledClick>
       <SelectDates>
@@ -145,7 +149,6 @@ export default function UserRegister({
 
 const AnnualRegister = styled.div`
   ${props => props.theme.variables.flex('', 'space-between', 'center')};
-  // border: 8px solid ${props => props.theme.style.skyblue};
   border: 8px solid
     ${props =>
       props.isChecked

@@ -87,7 +87,8 @@ const Container = styled.div`
   height: 125px;
   border: 10px solid ${props => props.theme.style.skyblue};
   border-radius: ${props => props.theme.style.borderRadius};
-  position: relative;
+  position: fixed;
+  bottom: 30px;
 `;
 
 const Title = styled.div`
