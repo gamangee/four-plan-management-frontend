@@ -88,10 +88,9 @@ export default function AdminAnnual({ duty }) {
   };
 
   return (
-    // eslint-disable-next-line react/jsx-no-useless-fragment
-    <>
+    <ManagementAnnual>
       {duty && (
-        <ManagementAnnual>
+        <>
           <ManagementTab>당직관리</ManagementTab>
           <Input readOnly value={dutyDay} />
           <BtnAlign>
@@ -136,11 +135,18 @@ export default function AdminAnnual({ duty }) {
               status={status}
             />
           )}
-        </ManagementAnnual>
+        </>
       )}
-    </>
+      {!duty && <NoLeft>당직이 없습니다.</NoLeft>}
+    </ManagementAnnual>
   );
 }
+
+const NoLeft = styled.div`
+  ${props => props.theme.variables.flex('', 'center', 'center')};
+  width: 420px;
+  height: 380px;
+`;
 
 const ManagementAnnual = styled.div`
   ${props => props.theme.variables.flex('column', 'center', 'center')};

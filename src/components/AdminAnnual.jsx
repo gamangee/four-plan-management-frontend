@@ -134,10 +134,9 @@ export default function AdminAnnual({ annual }) {
   };
 
   return (
-    // eslint-disable-next-line react/jsx-no-useless-fragment
-    <>
+    <ManagementAnnual>
       {annual && (
-        <ManagementAnnual>
+        <>
           <ManagementTab>연차관리</ManagementTab>
           <Input readOnly value={yearDay} />
           <BtnAlign>
@@ -178,11 +177,18 @@ export default function AdminAnnual({ annual }) {
               status={status}
             />
           )}
-        </ManagementAnnual>
+        </>
       )}
-    </>
+      {!annual && <NoLeft>연차가 없습니다.</NoLeft>}
+    </ManagementAnnual>
   );
 }
+
+const NoLeft = styled.div`
+  ${props => props.theme.variables.flex('', 'center', 'center')};
+  width: 420px;
+  height: 380px;
+`;
 
 const ManagementAnnual = styled.div`
   ${props => props.theme.variables.flex('column', 'center', 'center')};
