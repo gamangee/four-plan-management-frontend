@@ -6,12 +6,8 @@ import styled from 'styled-components';
 import AdminAnnual from '../../components/AdminAnnual';
 import AdminDuty from '../../components/AdminDuty';
 import UserSearchList from './UserSearchList';
-import Service from '../../service/Service';
 
 export default function Management() {
-  const id = 1;
-  const role = 'ROLE_USER';
-
   const [selectedUser, setSelectedUser] = useState(); // 선택한 유저 값
   const [schedule, setSchedule] = useState({});
   const [searchUser, setSearchUser] = useState(''); // search에서 검색한 값
@@ -52,10 +48,16 @@ export default function Management() {
             <AdminDuty duty={schedule.dutySchedule} />
             <AdminAnnual annual={schedule.yearlySchedule} />
           </Div>
-          <ChangeRole selectedUser={selectedUser} role={role} id={id} />
+          <ChangeRole selectedUser={selectedUser} />
         </Container>
       )}
-      {user.role !== 'ROLE_ADMIN' && <Container>너 누구야</Container>}
+      {user.role !== 'ROLE_ADMIN' && (
+        <WarnContainer>
+          <P>권한이 없습니다. 로그인 후, 다시 시도해주세요.</P>
+          <Img src="../images/security_icon.png" alt="security icon" />
+          <A href="/admin">If you're an administrator ? Click here !</A>
+        </WarnContainer>
+      )}
     </>
   );
 }
@@ -66,25 +68,38 @@ const Container = styled.div`
   width: 1050px;
   height: 100%;
   margin-left: 25px;
-  padding: 50px;
 `;
 
 const Div = styled.div`
   position: fixed;
-  top: 260px;
+  top: 270px;
   width: inherit;
   ${props => props.theme.variables.flex('', '', '')};
   margin-bottom: 30px;
   color: ${props => props.theme.style.text};
 `;
 
-const ContentName = styled.div`
-  ${props => props.theme.variables.flex('', 'center', 'center')}
-  position : relative;
-  top: 70px;
-  width: 200px;
-  height: 40px;
-  border: none;
-  background-color: ${props => props.theme.style.skyblue};
+const WarnContainer = styled.div`
+  ${props => props.theme.variables.flex('column', 'center', 'center')};
+  width: 1450px;
+  height: 900px;
+  background-color: ${props => props.theme.style.white};
   border-radius: ${props => props.theme.style.borderRadius};
+  position: absolute;
+  z-index: 1;
+`;
+
+const Img = styled.img``;
+
+const P = styled.p`
+  color: ${props => props.theme.style.warning};
+  font-weight: 600;
+`;
+
+const A = styled.a`
+  color: ${props => props.theme.style.lightGray};
+  transition: 0.3s ease;
+  &:hover {
+    color: ${props => props.theme.style.text};
+  }
 `;

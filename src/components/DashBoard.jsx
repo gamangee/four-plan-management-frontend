@@ -14,7 +14,7 @@ export default function DashBoard({ children }) {
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
-  background-color: ${props => props.theme.style.skyblue};
+  background-color: ${props => props.theme.style.mainBg};
 `;
 
 const Container = styled.div`

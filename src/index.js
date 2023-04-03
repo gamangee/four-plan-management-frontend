@@ -26,7 +26,7 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: (
       <DarkModeProvider>
-        <NotFound />,
+        <NotFound />
       </DarkModeProvider>
     ),
     children: [
@@ -42,7 +42,7 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: (
       <DarkModeProvider>
-        <NotFound />,
+        <NotFound />
       </DarkModeProvider>
     ),
     children: [

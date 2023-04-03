@@ -44,6 +44,7 @@ export default function UserSearchList({
   return (
     <Container>
       <SearchUserList>
+        <Title>사용자 검색</Title>
         <Form onSubmit={onSubmit}>
           <SearchBox placeholder="search user .." ref={inputRef} />
           <UserList>
@@ -77,7 +78,7 @@ const Container = styled.div`
 const SearchUserList = styled.div`
   ${props => props.theme.variables.flex('column', 'space-between', 'center')}
   position: fixed;
-  top: 30px;
+  top: 50px;
   width: 700px;
   height: 195px;
   background-color: ${props => props.theme.style.white};
@@ -86,6 +87,22 @@ const SearchUserList = styled.div`
   opacity: 1;
   font-size: 20px;
   color: ${props => props.theme.style.text};
+`;
+
+const Title = styled.div`
+  ${props => props.theme.variables.flex('', 'center', 'center')};
+  width: 140px;
+  height: 35px;
+  border-radius: ${props => props.theme.style.borderRadius};
+  background-color: ${props => props.theme.style.text};
+  color: ${props => props.theme.style.white};
+  font-size: ${props => props.theme.style.textmd};
+  text-align: center;
+  font-weight: 600;
+  position: absolute;
+  top: -25px;
+  left: 285px;
+  z-index: 1;
 `;
 
 const Form = styled.form`

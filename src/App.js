@@ -1,6 +1,6 @@
 import './App.css';
 import { DarkModeProvider } from './context/DarkModeContext';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import SideBar from './components/SideBar';
 import GlobalStyle from './styles/GlobalStyle';

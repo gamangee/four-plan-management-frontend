@@ -58,7 +58,7 @@ export default class Service {
       await this.client.post(`/schedule/update/${dataId}`, data);
       return '수정 성공';
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       return `${error.response.data}`;
     }
   }
@@ -69,7 +69,7 @@ export default class Service {
       await this.client.post(`/schedule/delete/${data.id}`, data);
       return '삭제 성공';
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       return `${error.response.data}`;
     }
   }

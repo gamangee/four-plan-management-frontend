@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useService } from '../context/context';
 
-export default function ChangeRole({ role, id }) {
+export default function ChangeRole({ selectedUser }) {
+  const id = 1;
+  // const role = 'ROLE_USER';
+  const role = '';
   const { service } = useService();
   const [status, setStatus] = useState(false);
-  const [checkValue, setCheckValue] = useState(role);
+  const [checkValue, setCheckValue] = useState();
   const [isChange, setIsChange] = useState(false);
 
   // API
@@ -22,52 +25,56 @@ export default function ChangeRole({ role, id }) {
     <div>
       <Container>
         <Title>권한관리</Title>
-        <Form>
-          {/* 일반유저 */}
-          <Radio>
-            <input
-              type="radio"
-              name="role"
-              id="userRadio"
-              value="ROLE_USER"
-              onChange={e => {
-                role !== e.target.value
-                  ? setIsChange(true)
-                  : setIsChange(false);
-                setCheckValue(e.target.value);
+        {role ? (
+          <Form>
+            {/* 일반유저 */}
+            <Radio>
+              <input
+                type="radio"
+                name="role"
+                id="userRadio"
+                value="ROLE_USER"
+                onChange={e => {
+                  role !== e.target.value
+                    ? setIsChange(true)
+                    : setIsChange(false);
+                  setCheckValue(e.target.value);
+                }}
+                checked={checkValue === 'ROLE_USER'}
+              />
+              <Label>일반사용자</Label>
+            </Radio>
+            {/* 관리자 */}
+            <Radio>
+              <input
+                type="radio"
+                name="role"
+                id="adminRadio"
+                value="ROLE_ADMIN"
+                onChange={e => {
+                  //   setIsChange(true);
+                  role !== e.target.value
+                    ? setIsChange(true)
+                    : setIsChange(false);
+                  setCheckValue(e.target.value);
+                }}
+                checked={checkValue === 'ROLE_ADMIN'}
+              />
+              <Label>관리자</Label>
+            </Radio>
+            <Btn
+              onClick={e => {
+                onSubmit(e);
               }}
-              checked={checkValue === 'ROLE_USER'}
-            />
-            <Label>일반사용자</Label>
-          </Radio>
-          {/* 관리자 */}
-          <Radio>
-            <input
-              type="radio"
-              name="role"
-              id="adminRadio"
-              value="ROLE_ADMIN"
-              onChange={e => {
-                //   setIsChange(true);
-                role !== e.target.value
-                  ? setIsChange(true)
-                  : setIsChange(false);
-                setCheckValue(e.target.value);
-              }}
-              checked={checkValue === 'ROLE_ADMIN'}
-            />
-            <Label>관리자</Label>
-          </Radio>
-          <Btn
-            onClick={e => {
-              onSubmit(e);
-            }}
-            disabled={!isChange}
-            id="button"
-          >
-            수정
-          </Btn>
-        </Form>
+              disabled={!isChange}
+              id="button"
+            >
+              수정
+            </Btn>
+          </Form>
+        ) : (
+          <P>권한을 알 수 없습니다.</P>
+        )}
       </Container>
       {/* 모달 */}
       {status && (
@@ -88,17 +95,18 @@ const Container = styled.div`
   border: 10px solid ${props => props.theme.style.skyblue};
   border-radius: ${props => props.theme.style.borderRadius};
   position: fixed;
-  bottom: 30px;
+  bottom: 45px;
 `;
 
 const Title = styled.div`
-  width: 120px;
-  height: 30px;
+  ${props => props.theme.variables.flex('', 'center', 'center')};
+  width: 140px;
+  height: 35px;
   border-radius: ${props => props.theme.style.borderRadius};
   background-color: ${props => props.theme.style.text};
   color: ${props => props.theme.style.white};
+  font-size: ${props => props.theme.style.textmd};
   text-align: center;
-  line-height: 30px;
   font-weight: 600;
   position: absolute;
   top: -20px;
@@ -143,6 +151,14 @@ const Btn = styled.button`
       props.disabled ? null : props.theme.style.blue};
     color: ${props => (props.disabled ? null : props.theme.style.white)};
   }
+`;
+
+const P = styled.p`
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  line-height: 115px;
+  color: ${props => props.theme.style.text};
 `;
 
 const ModalContainer = styled.div`

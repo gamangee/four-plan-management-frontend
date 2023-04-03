@@ -33,7 +33,7 @@ export default function Main() {
 
   useEffect(() => {
     if (state) {
-      console.log(state);
+      // console.log(state);
       setUser(state);
     }
   }, []);
@@ -93,7 +93,7 @@ export default function Main() {
   );
 
   const selectFilter = e => {
-    console.log('selectFilter');
+    // console.log('selectFilter');
     const textContent = e.target.textContent;
     if (textContent !== '유저') {
       setSelected(textContent);
@@ -105,7 +105,7 @@ export default function Main() {
     }
   };
 
-  console.log('스케쥴 :', schedule);
+  // console.log('스케쥴 :', schedule);
 
   return (
     <Container>

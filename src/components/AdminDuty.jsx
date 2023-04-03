@@ -89,9 +89,9 @@ export default function AdminAnnual({ duty }) {
 
   return (
     <ManagementAnnual>
+      <ManagementTab>당직관리</ManagementTab>
       {duty && (
         <>
-          <ManagementTab>당직관리</ManagementTab>
           <Input readOnly value={dutyDay} />
           <BtnAlign>
             <Btn
@@ -163,13 +163,13 @@ const ManagementTab = styled.div`
   background-color: ${props => props.theme.style.text};
   color: ${props => props.theme.style.white};
   border-radius: ${props => props.theme.style.borderRadius};
-  font-size: ${props => props.theme.style.textlg};
+  font-size: ${props => props.theme.style.textmd};
   position: absolute;
   top: -25px;
   left: 50%;
   transform: translateX(-50%);
-  width: 150px;
-  height: 46px;
+  width: 140px;
+  height: 40px;
   font-weight: 600;
   z-index: 1;
 `;
