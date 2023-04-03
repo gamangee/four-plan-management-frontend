@@ -67,9 +67,21 @@
 
 ## 🎬 구현 영상
 
-✅
+✅로그인 & 회원가입
+
+<img width="450" src="https://user-images.githubusercontent.com/117700630/229467254-fcaf1a0f-1871-42d5-84aa-63a7695d90cf.gif" />  <img width="450" src="https://user-images.githubusercontent.com/117700630/229467634-b069d83d-5286-4123-a584-9e3ad7c8707c.gif" />
+
+✅ 전체 스케쥴
+
+ <img width="600" src="https://user-images.githubusercontent.com/117700630/229467851-dcc223b7-2303-435c-9fa3-6e763597cd1e.gif" />
+
+✅ navigate & 로그아웃
+
+ <img width="600" src="https://user-images.githubusercontent.com/117700630/229467969-6abaeb99-7837-4168-91cb-1b94c1b06cf1.gif" />
+ 
 
 ## 🤔 고찰
+
 1️⃣
 
 2️⃣ 
