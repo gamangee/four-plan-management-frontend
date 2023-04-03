@@ -1,20 +1,16 @@
 import axios from 'axios';
-import { getCookie } from '../cookie';
-
-const accessToken = getCookie('accessToken');
 
 export default class Service {
   constructor() {
     this.client = axios.create({
       baseURL: 'http://54.180.182.33:8080/',
+      // baseURL: 'http://localhost:3000/',
       headers: {},
     });
   }
 
   setAuthToken(accessToken) {
-    this.client.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${accessToken}`;
+    this.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
   }
 
   // 로그인
@@ -30,7 +26,7 @@ export default class Service {
   // 전체 스케쥴
   async schedule() {
     // console.log('Fetching!!!!!!!!🔥');
-    return this.client.get(`/schedule`).then(res => console.log(res));
+    return this.client.get(`/schedule/all `).then(res => res.data.users);
   }
 
   // 개인정보수정
@@ -39,19 +35,20 @@ export default class Service {
       await this.client.post(`/account/update/${data.accountId}`, data);
       return '개인 정보 수정 완료';
     } catch (error) {
-      console.error(error);
-      return `${error.response.data.message}`;
+      console.error(error.response.data);
+      return `${error.response.data}`;
     }
   }
 
   // 연차등록
   async registerSchedule(data) {
+    // console.log(data);
     try {
       await this.client.post('/schedule/save', data);
       return '등록 성공';
     } catch (error) {
-      console.error(error);
-      return `${error.response.data.message}`;
+      console.error(error.response.data);
+      return `${error.response.data}`;
     }
   }
 
@@ -79,18 +76,32 @@ export default class Service {
 
   // 오늘의 당직
   async todayDuty() {
-    return this.client.get('/schedule/today-duty').then(res => res.data.data);
+    return this.client
+      .get('/schedule/today-duty', {
+        params: {
+          start_date: new Date().toISOString().slice(0, 10),
+        },
+      })
+      .then(res => res.data)
+      .catch(e => null);
   }
 
   // 권한 변경
   async changeRole(data) {
     return this.client
-      .post(`/admin/role/${data.id}`, data)
+      .post(`/account/admin/role/${data.id}`, data)
       .then(res => res.data.message);
   }
 
   // (관리자) 연차/당직 조회 요청
   async checkSchedule(id) {
     return this.client.get(`/schedule/${id}`);
+  }
+
+  // 유저정보검색
+  async searchUserList(data) {
+    return this.client
+      .get('/account/search?name=길동')
+      .then(res => res.data.users);
   }
 }

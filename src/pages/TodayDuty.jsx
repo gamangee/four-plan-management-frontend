@@ -1,11 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useService } from '../context/context';
+import { useQuery } from '@tanstack/react-query';
 
-export default function TodayDuty({ dutyList }) {
+export default function TodayDuty() {
   const { service } = useService();
 
-  console.log(service.client.defaults.headers);
+  // 오늘의 당직 연결
+  const { data: dutyList } = useQuery(['dutyList'], () => {
+    return service.todayDuty();
+  });
+
   return (
     <Container>
       <Title>오늘의 당직 😊</Title>

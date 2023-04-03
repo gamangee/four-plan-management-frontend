@@ -39,7 +39,7 @@ export const handlers = [
             position: '팀장',
             yearly: 24,
             duty: true,
-            Schedule: {
+            schedules: {
               id: 15,
               accountId: 'pika123',
               type: 'duty',
@@ -67,7 +67,7 @@ export const handlers = [
           position: '팀장',
           yearly: 24,
           duty: false,
-          Schedule: {
+          schedules: {
             id: 1,
             accountId: 'nico123',
             type: 'duty',
@@ -137,7 +137,7 @@ export const handlers = [
   //         position: '팀장',
   //         yearly: 24,
   //         duty: true,
-  //         Schedule: {
+  //         schedules: {
   //           id: 1,
   //           accountId: 'nico123',
   //           type: 'duty',
@@ -186,7 +186,7 @@ export const handlers = [
   }),
 
   // 전체 스케쥴
-  rest.get('/schedule', (req, res, ctx) => {
+  rest.get('/schedule/all', (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -200,7 +200,7 @@ export const handlers = [
             position: '팀장',
             yearly: '30',
             duty: false,
-            Schedule: {
+            schedules: {
               id: '1',
               accountId: 'abc123',
               type: 'YEARLY',
@@ -220,9 +220,9 @@ export const handlers = [
             position: '사원',
             yearly: '15',
             duty: true,
-            Schedule: {
+            schedules: {
               id: '2',
-              accountId: 'abc123asdwdadasd',
+              accountId: 'dongdong123',
               type: 'DUTY',
               content: null,
               start_date: '2023-03-28T00:00:00Z',
@@ -235,7 +235,7 @@ export const handlers = [
             name: 'Glen A. Schofield',
             department: '개발팀',
             position: '사원',
-            Schedule: {
+            schedules: {
               id: 3,
               accountId: 'glen_a',
               type: 'duty',
@@ -250,7 +250,7 @@ export const handlers = [
             name: 'Benjamin W. Lee',
             department: '인사팀',
             position: '사원',
-            Schedule: {
+            schedules: {
               id: 4,
               accountId: 'Benjamin35',
               type: 'plan',
@@ -265,7 +265,7 @@ export const handlers = [
             name: 'Andrew Chambers',
             department: '디자인팀',
             position: '팀장',
-            Schedule: {
+            schedules: {
               id: 5,
               accountId: '409ac',
               type: 'plan',
@@ -280,7 +280,7 @@ export const handlers = [
             name: 'Brian Kindregan',
             department: '인사팀',
             position: '사원',
-            Schedule: {
+            schedules: {
               id: 6,
               accountId: 'brian756',
               type: 'annual',
@@ -295,7 +295,7 @@ export const handlers = [
             name: 'Ben Walker',
             department: '인사팀',
             position: '팀장',
-            Schedule: {
+            schedules: {
               id: 7,
               accountId: 'liquid1935',
               type: 'plan',
@@ -310,7 +310,7 @@ export const handlers = [
             name: 'David Curtis Hill',
             department: '개발팀',
             position: '사원',
-            Schedule: {
+            schedules: {
               id: 8,
               accountId: 'david1409',
               type: 'plan',
@@ -325,7 +325,7 @@ export const handlers = [
             name: 'Jim Yong Kim',
             department: '개발팀',
             position: '사원',
-            Schedule: {
+            schedules: {
               id: 9,
               accountId: 'kimyoung1208',
               type: 'annual',
@@ -340,7 +340,7 @@ export const handlers = [
             name: 'Mark James',
             department: '개발팀',
             position: '사원',
-            Schedule: {
+            schedules: {
               id: 10,
               accountId: 'mark619',
               type: 'annual',
@@ -349,6 +349,26 @@ export const handlers = [
               end_date: '2023-03-23T14:30:00Z',
               created_at: '2023-03-21T16:30:00Z',
               modified_at: null,
+            },
+          },
+          {
+            name: '홍길동',
+            accountId: 'dongdong123',
+            role: 'ROLE_USER',
+            email: 'dongdong22@gmail.com',
+            department: '디자인팀',
+            position: '사원',
+            yearly: '15',
+            duty: true,
+            schedules: {
+              id: '11',
+              accountId: 'dongdong123',
+              type: 'annaul',
+              content: null,
+              start_date: '2023-03-28T00:00:00Z',
+              end_date: '2023-03-28T23:59:59Z',
+              created_at: '2023-03-20T15:25:00Z',
+              modified_at: '2023-03-20T15:25:00Z',
             },
           },
         ],
@@ -398,24 +418,20 @@ export const handlers = [
   rest.get('/schedule/today-duty', (req, res, ctx) => {
     return res(
       ctx.status(200),
-      ctx.json({
-        code: '200',
-        status: 'success',
-        data: [
-          {
-            name: '홍길동',
-            department: '디자인팀',
-            position: '사원',
-            duty: true,
-          },
-          {
-            name: '펭수',
-            department: '인사팀',
-            position: '팀장',
-            duty: true,
-          },
-        ],
-      })
+      ctx.json([
+        {
+          name: '홍길동',
+          department: '디자인팀',
+          position: '사원',
+          duty: true,
+        },
+        {
+          name: '펭수',
+          department: '인사팀',
+          position: '팀장',
+          duty: true,
+        },
+      ])
     );
   }),
 
@@ -428,7 +444,7 @@ export const handlers = [
       ctx.json({
         code: '200',
         status: 'success',
-        uasers: [
+        users: [
           {
             id: '1',
             name: '홍길동',
@@ -439,14 +455,14 @@ export const handlers = [
             position: '팀장',
             yearly: '30',
             duty: false,
-            Schedule: [
+            schedules: [
               {
                 id: '1',
                 accountId: 'abc123',
                 type: 'YEARLY',
                 content: null,
-                start_date: '2023-03-23T00:00:00Z',
-                end_date: '2023-03-24T00:00:00Z',
+                start_date: '2023-04-02T00:00:00Z',
+                end_date: '2023-04-04T00:00:00Z',
                 created_at: '2023-03-15T15:25:00Z',
                 modified_at: '2023-03-15T15:25:00Z',
               },
@@ -472,7 +488,7 @@ export const handlers = [
             position: '사원',
             yearly: '15',
             duty: true,
-            Schedule: [
+            schedules: [
               {
                 id: '3',
                 accountId: 'abc123',
@@ -495,7 +511,7 @@ export const handlers = [
             position: '팀장',
             yearly: '20',
             duty: false,
-            Schedule: null,
+            schedules: null,
           },
         ],
       })
@@ -518,7 +534,7 @@ export const handlers = [
           position: '팀장',
           yearly: '30',
           duty: false,
-          Schedule: [
+          schedules: [
             {
               id: '1',
               accountId: 'abc123',
@@ -554,7 +570,7 @@ export const handlers = [
         position: '사원',
         yearly: '15',
         duty: true,
-        Schedule: [
+        schedules: [
           {
             id: '3',
             accountId: 'abc123',
