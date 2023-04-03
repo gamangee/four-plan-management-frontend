@@ -28,9 +28,9 @@ export default function SideBar() {
   const service = new Service();
 
   // 오늘의 당직 연결
-  const { data: dutyList } = useQuery(['dutyList'], () => {
-    return service.todayDuty();
-  });
+  // const { data: dutyList } = useQuery(['dutyList'], () => {
+  // return service.todayDuty();
+  // });
   // console.log(dutyList);
 
   const navigate = useNavigate();
@@ -53,7 +53,7 @@ export default function SideBar() {
 
   return (
     <Container>
-      <TodayDuty dutyList={dutyList} />
+      {/* <TodayDuty dutyList={dutyList} /> */}
       <LogoImg
         src="/images/logo_origin.svg"
         alt="logo"

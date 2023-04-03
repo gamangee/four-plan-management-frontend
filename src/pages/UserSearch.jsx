@@ -32,13 +32,13 @@ export default function UserSearch({
       const accountIds = new Set();
       //체크가 되어있는 유저들의 accountId를 포함한 user의 정보
       const users = schedule.filter(user =>
-        selectedUser.includes(user.Schedule.accountId)
+        selectedUser.includes(user.schedule.accountId)
       );
 
       for (const user of users) {
-        if (!accountIds.has(user.Schedule.accountId)) {
+        if (!accountIds.has(user.schedule.accountId)) {
           uniqueUsers.push(user);
-          accountIds.add(user.Schedule.accountId);
+          accountIds.add(user.schedule.accountId);
         }
       }
       console.log(uniqueUsers);
@@ -49,18 +49,35 @@ export default function UserSearch({
   useEffect(() => {
     if (searchUser.length > 0) {
       const list = schedule.filter(user => user.name.includes(searchUser));
-      const newArray = [];
-      for (let i = 0; i < list.length; i++) {
-        const current = list[i];
-        const nextIndex = (i + 1) % list.length;
-        const next = list[nextIndex];
-        if (current.Schedule.accountId !== next.Schedule.accountId) {
-          console.log(current);
-          newArray.push(current);
+      console.log(list);
+      const uniqueUsers = [];
+      const accountIds = new Set();
+      //체크가 되어있는 유저들의 accountId를 포함한 user의 정보
+
+      for (const user of list) {
+        if (!accountIds.has(user.schedule.accountId)) {
+          uniqueUsers.push(user);
+          accountIds.add(user.schedule.accountId);
         }
       }
-      console.log(list);
-      setUserList(newArray);
+
+      console.log(uniqueUsers);
+      setUserList(uniqueUsers);
+      // const list = schedule.filter(user => user.name.includes(searchUser));
+
+      // console.log(list);
+      // const newArray = [];
+      // for (let i = 0; i < list.length; i++) {
+      //   const current = list[i];
+      //   const nextIndex = (i + 1) % list.length;
+      //   const next = list[nextIndex];
+      //   if (current.schedule.accountId !== next.schedule.accountId) {
+      //     console.log(current);
+      //     newArray.push(current);
+      //   }
+      // }
+      // console.log(list);
+      // setUserList(newArray);
     }
   }, [searchUser]);
 
@@ -115,12 +132,12 @@ export default function UserSearch({
                 <Li key={user.start + user.end + user.title + i}>
                   <Checkbox
                     type="checkbox"
-                    id={user.Schedule.accountId}
-                    data-id={user.Schedule.accountId}
+                    id={user.schedule.accountId}
+                    data-id={user.schedule.accountId}
                     onChange={handleChecked}
-                    checked={selectedUser.includes(user.Schedule.accountId)}
+                    checked={selectedUser.includes(user.schedule.accountId)}
                   />
-                  <Label htmlFor={user.Schedule.accountId}>
+                  <Label htmlFor={user.schedule.accountId}>
                     <Name> 이름 : {user.name}</Name>
                     <Info>
                       <Department>부서 : {user.department}</Department>
@@ -159,7 +176,6 @@ const SearchUser = styled.div`
   background-color: ${props => props.theme.style.white};
   border: 10px solid ${props => props.theme.style.skyblue};
   border-radius: ${props => props.theme.style.borderRadius};
-
   z-index: 10;
   opacity: 1;
   font-size: 20px;
@@ -182,7 +198,6 @@ const InputBox = styled.input`
   text-indent: 12px;
   font-size: ${props => props.theme.style.textMedium};
   color: ${props => props.theme.style.text};
-
   &:focus {
     border-color: ${props => props.theme.style.text};
   }
@@ -211,16 +226,13 @@ const Btn = styled.button`
 
 const Checkbox = styled.input`
   display: none;
-
   & + Label {
     cursor: pointer;
   }
-
   & + Label > div {
     vertical-align: middle;
     padding-left: 5px;
   }
-
   & + Label:before {
     position : absolute;
     left : 5px;
@@ -233,7 +245,6 @@ const Checkbox = styled.input`
     vertical-align: middle;
     margin-left :10px;
   }
-
   &:checked + Label:before{
   width: 17px;
   height: 17px;

@@ -18,7 +18,7 @@ export default function AdminAnnual({ duty }) {
   const [submitted, setSubmitted] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
 
-  console.log(duty);
+  // console.log(duty);
   useEffect(() => {
     if (duty) {
       setStartDate(new Date(duty.start_date));
@@ -81,8 +81,8 @@ export default function AdminAnnual({ duty }) {
     setSubmitted(true);
     setFormatDay('');
   };
-  console.log(typeof startDate);
-  console.log(startDate);
+  // console.log(typeof startDate);
+  // console.log(startDate);
   return (
     <ManagementAnnual>
       {duty && (

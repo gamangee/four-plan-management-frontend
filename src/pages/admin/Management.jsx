@@ -6,21 +6,24 @@ import styled from 'styled-components';
 import AdminAnnual from '../../components/AdminAnnual';
 import AdminDuty from '../../components/AdminDuty';
 import UserSearchList from './UserSearchList';
+import Service from '../../service/Service';
 
 export default function Management() {
   const id = 1;
   const role = 'ROLE_USER';
 
-  const [selectedUser, setSelectedUser] = useState();
+  const [selectedUser, setSelectedUser] = useState(); // 선택한 유저 값
   const [schedule, setSchedule] = useState({});
+  const [searchUser, setSearchUser] = useState(''); // search에서 검색한 값
+  const { service } = useService();
 
-  const { service, user } = useService();
-
-  const { data: userList } = useQuery(['userList'], () => {
-    return service.searchUserList('길동');
+  const { data: userList } = useQuery(['userList', searchUser], () => {
+    return service.searchUserList(searchUser);
   });
 
+  const { user } = useService();
   useEffect(() => {
+    console.log(selectedUser);
     if (selectedUser) {
       setSchedule(
         selectedUser[0].schedules.filter(user => user.type === 'DUTY')[0]
@@ -38,15 +41,12 @@ export default function Management() {
             userList={userList}
             selectedUser={selectedUser} //나중에 지워야함
             setSelectedUser={setSelectedUser}
+            searchUser={searchUser}
+            setSearchUser={setSearchUser}
           />
-          {/* 권한은 무조건 띄워야하며, 당직, 휴가는 있는거만 띄우는가..?  둘중에 하나라도 있으면 띄우는가? */}
           <Div>
-            {selectedUser && (
-              <>
-                <AdminDuty duty={schedule} />
-                <AdminAnnual annual={schedule} />
-              </>
-            )}
+            {/* <AdminDuty duty={schedule} />
+            <AdminAnnual annual={schedule} /> */}
           </Div>
           <ChangeRole selectedUser={selectedUser} role={role} id={id} />
         </Container>

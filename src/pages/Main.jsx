@@ -30,11 +30,8 @@ export default function Main() {
   service.setAuthToken(getCookie('accessToken'));
 
   const { state } = useLocation();
+
   useEffect(() => {
-    if (state) {
-      // console.log(state);
-      setUser(state);
-    }
     if (state) {
       console.log(state);
       setUser(state);
@@ -49,19 +46,19 @@ export default function Main() {
           return {
             ...user,
             title: user.name,
-            start: user.schedules.start_date.slice(0, 10),
-            end: user.schedules.end_date.slice(0, 10),
+            start: user.schedule.start_date.slice(0, 10),
+            end: user.schedule.end_date.slice(0, 10),
             color: colorArray[colorSelect(user)],
           };
         });
       } else if (selected === '부서') {
         return users
-          .filter(user => user.schedules.type === 'plan')
+          .filter(user => user.schedule.type === 'PLAN')
           .map(user => {
             return {
-              title: user.department + ' : ' + user.schedules.content,
-              start: user.schedules.start_date.replace('Z', ''),
-              end: user.schedules.end_date.replace('Z', ''),
+              title: user.department + ' : ' + user.schedule.content,
+              start: user.schedule.start_date,
+              end: user.schedule.end_date,
               color: colorArray[colorSelect(user)],
             };
           });
@@ -70,19 +67,19 @@ export default function Main() {
           return {
             ...user,
             title: user.name,
-            start: user.schedules.start_date.slice(0, 10),
-            end: user.schedules.end_date.slice(0, 10),
+            start: user.schedule.start_date,
+            end: user.schedule.end_date,
             color: colorArray[colorSelect(user)],
           };
         });
       }
       return users
-        .filter(user => selected.includes(user.schedules.accountId))
+        .filter(user => selected.includes(user.schedule.accountId))
         .map(user => ({
           ...user,
           title: user.name,
-          start: user.schedules.start_date.substr(0, 10),
-          end: user.schedules.end_date.substr(0, 10),
+          start: user.schedule.start_date,
+          end: user.schedule.end_date,
           color: colorArray[colorSelect(user)],
         }));
     });
@@ -108,7 +105,7 @@ export default function Main() {
     }
   };
 
-  console.log(schedule);
+  console.log('스케쥴 :', schedule);
 
   return (
     <Container>
@@ -219,11 +216,11 @@ const Btn = styled.button`
 function colorSelect(user) {
   let index = 0;
 
-  if (user.schedules.type === 'duty') {
+  if (user.schedule.type === 'DUTY') {
     index = 1;
-  } else if (user.department === '개발팀') {
+  } else if (user.department === '마케팅') {
     index = 2;
-  } else if (user.department === '인사팀') {
+  } else if (user.department === '디자인') {
     index = 3;
   } else {
     index = 4;

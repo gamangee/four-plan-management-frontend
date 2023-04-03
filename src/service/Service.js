@@ -6,8 +6,8 @@ const accessToken = getCookie('accessToken');
 export default class Service {
   constructor() {
     this.client = axios.create({
-      // baseURL: 'http://54.180.182.33:8080/',
-      baseURL: 'http://localhost:3000/',
+      baseURL: 'http://54.180.182.33:8080/',
+      // baseURL: 'http://localhost:3000/',
       headers: {},
     });
   }
@@ -29,7 +29,7 @@ export default class Service {
   // 전체 스케쥴
   async schedule() {
     console.log('Fetching!!!!!!!!🔥');
-    return this.client.get(`/schedule`).then(res => res.data.users);
+    return this.client.get(`/schedule/all`).then(res => res.data.users);
   }
 
   // 개인정보수정
@@ -93,10 +93,10 @@ export default class Service {
     return this.client.get(`/schedule/${id}`);
   }
 
-  // 유저정보검색
-  async searchUserList(data) {
+  //(관리자) 유저검색
+  async searchUserList(userName) {
     return this.client
-      .get('/account/search?name=길동')
-      .then(res => res.data.users);
+      .get(`/account/admin/search?name=${userName}`)
+      .then(res => res.data);
   }
 }

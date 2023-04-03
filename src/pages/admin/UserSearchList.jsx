@@ -1,25 +1,28 @@
-import React, { useRef, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { useService } from '../../context/context';
 
 export default function UserSearchList({
   userList,
   selectedUser,
   setSelectedUser,
+  searchUser,
+  setSearchUser,
 }) {
-  const [searchUser, setSearchUser] = useState(''); // search에서 검색한 값
-  // const [select, setUserList] = useState(); // searchUser를 통해서 정렬 값
-
   const inputRef = useRef();
 
   const onSubmit = e => {
     e.preventDefault();
     const value = inputRef.current.value;
+    console.log(value);
     setSearchUser(value);
   };
 
+  // 민시후
   const handleChecked = e => {
     const selectId = e.target.id;
-    const index = userList.findIndex(user => user.id === selectId);
+    const index = userList.findIndex(user => user.id === Number(selectId));
     const schedule = userList[index].schedules;
     if (!('schedules' in userList[index])) {
       return;
@@ -28,6 +31,7 @@ export default function UserSearchList({
       alert('해당 유저는 스케줄이 없습니다.');
       return;
     }
+
     if (index > -1 && selectedUser) {
       const user = userList[index];
       console.log(user);
@@ -43,7 +47,7 @@ export default function UserSearchList({
         <Form onSubmit={onSubmit}>
           <SearchBox placeholder="search user .." ref={inputRef} />
           <UserList>
-            {searchUser &&
+            {userList &&
               userList.map(user => (
                 <Li key={user.id}>
                   <Checkbox
