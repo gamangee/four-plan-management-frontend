@@ -58,7 +58,7 @@
 >         - 해당 사용자의 연차 / 당직을 확인하고 수정 및 삭제
 >         - 해당 사용자의 권한을 일반유저 or 관리자로 변경
 >
->     ✔️ 사용자
+>     ✔️ 일반사용자
 >         - 인사팀(DB)에 데이터가 등록되어 있는 회사원만 회원가입 & 로그인 가능
 >         - 자신의 개인 정보 (이메일, 비밀번호) 수정
 >         - 연차를 확인하고 원하는 날짜를 선택하여 연차 등록, 수정, 삭제
@@ -67,23 +67,46 @@
 
 ## 🎬 구현 영상
 
-✅로그인 & 회원가입
+✅로그인
 
-<img width="450" src="https://user-images.githubusercontent.com/117700630/229467254-fcaf1a0f-1871-42d5-84aa-63a7695d90cf.gif" />  <img width="450" src="https://user-images.githubusercontent.com/117700630/229467634-b069d83d-5286-4123-a584-9e3ad7c8707c.gif" />
+<img width="300" src="https://user-images.githubusercontent.com/117700630/229610399-2683a485-76ae-4f82-a1fb-e3f9ed60dca6.gif" />
+
+✅ 회원가입  ```일반사용자```
+
+<img width="350" src="https://user-images.githubusercontent.com/117700630/229467634-b069d83d-5286-4123-a584-9e3ad7c8707c.gif" />
 
 ✅ 전체 스케쥴
 
- <img width="600" src="https://user-images.githubusercontent.com/117700630/229467851-dcc223b7-2303-435c-9fa3-6e763597cd1e.gif" />
+ <img width="550" src="https://user-images.githubusercontent.com/117700630/229467851-dcc223b7-2303-435c-9fa3-6e763597cd1e.gif" />
+ 
+✅ 개인 정보 수정 ```일반사용자```
+
+<img width="550" src="https://user-images.githubusercontent.com/117700630/229609091-a2204456-b5a6-4dc1-bb6a-225bf7613673.gif" />  
+
+✅ 개인 연차 관리 ```일반사용자```
+
+<img width="550" src="https://user-images.githubusercontent.com/117700630/229609108-cfd6a95b-93ce-4a15-bb06-566898f7fc88.gif" />
+
+✅ 사용자의 연차 / 당직 / 권한 관리 ```관리자```
+
+<img width="550" src="https://user-images.githubusercontent.com/117700630/229609562-6fb5e20c-3be7-44dc-8e5c-9780bc10ef22.gif" />
 
 ✅ navigate & 로그아웃
 
- <img width="600" src="https://user-images.githubusercontent.com/117700630/229467969-6abaeb99-7837-4168-91cb-1b94c1b06cf1.gif" />
+ <img width="550" src="https://user-images.githubusercontent.com/117700630/229467969-6abaeb99-7837-4168-91cb-1b94c1b06cf1.gif" />
  
 
 ## 🤔 고찰
 
-1️⃣
+> 1️⃣ Mock Server
 
-2️⃣ 
+백엔드와 협업하며, API 완성 속도의 차이로 많은 고민을 하다가 mock server를 알게 되었고 이를 활용하였습니다.  
+처음에는 접근이 쉬운 ```postman```을 이용하였으나, 요청횟수에 제한으로 무한 렌더링 실수로 인해 서버가 다운되었습니다.   
+따라서, API 모킹 라이브러리인 ```mock service worker (msw)```를 사용하여 mock server를 구축하게 되었습니다.  
+mock data 만으로는 ```post, put 등 다양한 처리```를 하기 힘들었는데, mock server의 사용으로 해당 부분도 원활히 진행될 수 있었습니다.  
+그러나 API 명세서를 기반으로 만들면서 ```예외처리```에 많은 어려움을 겪었기 때문에 어떤 방법이 효율적일지 공부가 더 필요한 것 같습니다.   
+또한, mock server 만들 수 있는 다양한 방법이 있는데, 여러 가지를 시도해보며 잘 맞는 것을 찾아 보려고 합니다.
 
-3️⃣ 
+> 2️⃣ 
+
+> 3️⃣ 
