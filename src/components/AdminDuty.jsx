@@ -7,10 +7,10 @@ import { useService } from '../context/context';
 import UserModal from './UserModal';
 
 export default function AdminAnnual({ duty }) {
+  const date = new Date();
   const { service } = useService();
-  // const [startDate, setStartDate] = useState(new Date(duty.start_date));
+  const [startDate, setStartDate] = useState(date);
   // const [dutyDay, setDutyDay] = useState(convertToKoreanTime(duty.start_date));
-  const [startDate, setStartDate] = useState('');
   const [dutyDay, setDutyDay] = useState('');
   const [formatDay, setFormatDay] = useState('');
   const [value, setValue] = useState({});
@@ -18,6 +18,7 @@ export default function AdminAnnual({ duty }) {
   const [submitted, setSubmitted] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
 
+  console.log(duty);
   useEffect(() => {
     if (duty) {
       setStartDate(new Date(duty.start_date));
@@ -29,9 +30,6 @@ export default function AdminAnnual({ duty }) {
         scheduleType: 'DUTY',
       });
     } else {
-      setStartDate(new Date());
-      setDutyDay(new Date());
-      setFormatDay(new Date());
       setValue({
         id: duty.id,
         start_date: new Date(),
@@ -83,15 +81,14 @@ export default function AdminAnnual({ duty }) {
     setSubmitted(true);
     setFormatDay('');
   };
-
-  const date = new Date();
-  console.log(duty);
+  console.log(typeof startDate);
+  console.log(startDate);
   return (
     <ManagementAnnual>
       {duty && (
         <>
           <ManagementTab>당직관리</ManagementTab>
-          <Input readOnly value={dutyDay || ''} />
+          <Input readOnly value={startDate} />
           <BtnAlign>
             <Btn
               onClick={e => {
@@ -113,7 +110,11 @@ export default function AdminAnnual({ duty }) {
               <DatePicker
                 inline
                 disabledKeyboardNavigation
-                // selected={new Date()}
+                selected={
+                  startDate instanceof Date && isNaN(startDate.getTime())
+                    ? new Date()
+                    : startDate
+                }
                 onChange={onChange}
                 filterDate={isWeekday}
               />

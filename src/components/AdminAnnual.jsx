@@ -31,6 +31,12 @@ export default function AdminAnnual({ annual }) {
           annual.end_date
         )}`
       );
+      setValue({
+        id: annual.id,
+        start_date: '',
+        end_date: '',
+        scheduleType: 'YEARLY',
+      });
     } else {
       setDatepicker({
         startDate: '',
@@ -48,12 +54,7 @@ export default function AdminAnnual({ annual }) {
   const [submitted, setSubmitted] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
 
-  const [value, setValue] = useState({
-    id: annual.id,
-    start_date: '',
-    end_date: '',
-    scheduleType: 'YEARLY',
-  });
+  const [value, setValue] = useState({});
 
   const isWeekday = date => {
     const day = date.getDay(date);

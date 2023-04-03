@@ -20,7 +20,14 @@ export default function UserSearchList({
   const handleChecked = e => {
     const selectId = e.target.id;
     const index = userList.findIndex(user => user.id === selectId);
-
+    const schedule = userList[index].schedules;
+    if (!('schedules' in userList[index])) {
+      return;
+    }
+    if (schedule === null) {
+      alert('해당 유저는 스케줄이 없습니다.');
+      return;
+    }
     if (index > -1 && selectedUser) {
       const user = userList[index];
       console.log(user);
@@ -29,6 +36,7 @@ export default function UserSearchList({
       setSelectedUser([userList[index]]);
     }
   };
+
   return (
     <Container>
       <SearchUserList>

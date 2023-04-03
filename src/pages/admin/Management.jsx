@@ -20,19 +20,16 @@ export default function Management() {
     return service.searchUserList('길동');
   });
 
-  const [duty, setDuty] = useState({});
-
   useEffect(() => {
     if (selectedUser) {
-      setDuty(
+      setSchedule(
         selectedUser[0].schedules.filter(user => user.type === 'DUTY')[0]
       );
     } else {
-      setDuty({});
+      setSchedule({});
     }
   }, [selectedUser]);
 
-  console.log(duty);
   return (
     <>
       {user.role === 'ROLE_ADMIN' && (
@@ -42,11 +39,16 @@ export default function Management() {
             selectedUser={selectedUser} //나중에 지워야함
             setSelectedUser={setSelectedUser}
           />
+          {/* 권한은 무조건 띄워야하며, 당직, 휴가는 있는거만 띄우는가..?  둘중에 하나라도 있으면 띄우는가? */}
           <Div>
-            <AdminDuty duty={duty} />
-            <AdminAnnual annual={duty} />
+            {selectedUser && (
+              <>
+                <AdminDuty duty={schedule} />
+                <AdminAnnual annual={schedule} />
+              </>
+            )}
           </Div>
-          <ChangeRole role={role} id={id} />
+          <ChangeRole selectedUser={selectedUser} role={role} id={id} />
         </Container>
       )}
       {user.role !== 'ROLE_ADMIN' && <Container>너 누구야</Container>}
