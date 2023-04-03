@@ -39,7 +39,7 @@ export default class Service {
       return '개인 정보 수정 완료';
     } catch (error) {
       console.error(error);
-      return `${error.response.data.message}`;
+      return `${error.response.data}`;
     }
   }
 
@@ -50,7 +50,7 @@ export default class Service {
       return '등록 성공';
     } catch (error) {
       console.error(error);
-      return `${error.response.data.message}`;
+      return `${error.response.data}`;
     }
   }
 
@@ -61,7 +61,7 @@ export default class Service {
       return '수정 성공';
     } catch (error) {
       console.error(error);
-      return `${error.response.data.message}`;
+      return `${error.response.data}`;
     }
   }
 
@@ -72,20 +72,22 @@ export default class Service {
       return '삭제 성공';
     } catch (error) {
       console.error(error);
-      return `${error.response.data.message}`;
+      return `${error.response.data}`;
     }
   }
 
   // 오늘의 당직
-  async todayDuty() {
-    return this.client.get('/schedule/today-duty').then(res => res.data.data);
+  async todayDuty(date) {
+    return this.client
+      .get(`/schedule/today-duty?start_date=${date}`)
+      .then(res => res.data);
   }
 
   // 권한 변경
   async changeRole(data) {
     return this.client
       .post(`/admin/role/${data.id}`, data)
-      .then(res => res.data.message);
+      .then(res => res.data);
   }
 
   // (관리자) 연차/당직 조회 요청

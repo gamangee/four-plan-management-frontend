@@ -1,17 +1,46 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useService } from '../../context/context';
 import UserRegister from '../../components/UserRegister';
 import convertToKoreanTime from '../../utility/koreanTime';
 
 export default function UserAnnaul() {
-  const { user, service } = useService();
-  const ANNUAL_DATA = user.Schedule;
-  const [formatDay, setFormatDay] = useState({
-    startDay: convertToKoreanTime(ANNUAL_DATA?.start_date),
-    endDay: convertToKoreanTime(ANNUAL_DATA?.end_date),
+  const { user } = useService();
+
+  const [originalDay, setOriginalDay] = useState({
+    startDay: '',
+    endDay: '',
   });
+
+  const [formatDay, setFormatDay] = useState({
+    startDay: '',
+    endDay: '',
+  });
+
   const [yearDay, setYearDay] = useState('');
+  const [selected, setSelected] = useState('등록');
+  const [value, setValue] = useState({});
+
+  useEffect(() => {
+    if (user) {
+      setOriginalDay({
+        startDay: user?.schedule?.start_date,
+        endDay: user?.schedule?.end_date,
+      });
+
+      setFormatDay({
+        startDay: convertToKoreanTime(user?.schedule?.start_date),
+        endDay: convertToKoreanTime(user?.schedule?.end_date),
+      });
+
+      setValue({
+        id: user?.schedule?.id,
+        start_date: user?.schedule?.start_date,
+        end_date: user?.schedule?.end_date,
+        scheduleType: 'YEARLY',
+      });
+    }
+  }, [user]);
 
   if (formatDay.endDay === '1970년 1월 1일 (목)') {
     setFormatDay(prev => ({
@@ -19,22 +48,6 @@ export default function UserAnnaul() {
       endDay: '',
     }));
   }
-
-  // console.log(service.client.defaults.headers);
-
-  const [originalDay, setOriginalDay] = useState({
-    startDay: ANNUAL_DATA?.start_date,
-    endDay: ANNUAL_DATA?.end_date,
-  });
-
-  const [selected, setSelected] = useState('등록');
-
-  const [value, setValue] = useState({
-    id: user?.schedule?.id,
-    start_date: originalDay.startDay,
-    end_date: originalDay.endDay,
-    scheduleType: 'YEARLY',
-  });
 
   return (
     <UserInfoContainer>
@@ -69,6 +82,7 @@ export default function UserAnnaul() {
         formatDay={formatDay}
         setFormatDay={setFormatDay}
         value={value}
+        setValue={setValue}
         selected={selected}
         setYearDay={setYearDay}
       />

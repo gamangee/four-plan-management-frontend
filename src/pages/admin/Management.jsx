@@ -22,12 +22,16 @@ export default function Management() {
   });
 
   const { user } = useService();
+
   useEffect(() => {
-    console.log(selectedUser);
     if (selectedUser) {
-      setSchedule(
-        selectedUser[0].schedules.filter(user => user.type === 'DUTY')[0]
+      const dutySchedule = selectedUser[0].schedules.find(
+        schedule => schedule.type === 'DUTY'
       );
+      const yearlySchedule = selectedUser[0].schedules.find(
+        schedule => schedule.type === 'YEARLY'
+      );
+      setSchedule({ dutySchedule, yearlySchedule });
     } else {
       setSchedule({});
     }
@@ -45,8 +49,8 @@ export default function Management() {
             setSearchUser={setSearchUser}
           />
           <Div>
-            {/* <AdminDuty duty={schedule} />
-            <AdminAnnual annual={schedule} /> */}
+            <AdminDuty duty={schedule.dutySchedule} />
+            <AdminAnnual annual={schedule.yearlySchedule} />
           </Div>
           <ChangeRole selectedUser={selectedUser} role={role} id={id} />
         </Container>
@@ -60,16 +64,16 @@ const Container = styled.div`
   ${props => props.theme.variables.flex('column', 'center', 'flex-start')};
   position: relative;
   width: 1050px;
-  height: inherit;
+  height: 100%;
   margin-left: 25px;
   padding: 50px;
 `;
 
 const Div = styled.div`
-  position: relative;
-  top: 8px;
-  width: 100%;
-  ${props => props.theme.variables.flex('', 'space-between', '')};
+  position: fixed;
+  top: 260px;
+  width: inherit;
+  ${props => props.theme.variables.flex('', '', '')};
   margin-bottom: 30px;
   color: ${props => props.theme.style.text};
 `;

@@ -10,7 +10,6 @@ export default function AdminAnnual({ duty }) {
   const date = new Date();
   const { service } = useService();
   const [startDate, setStartDate] = useState(date);
-  // const [dutyDay, setDutyDay] = useState(convertToKoreanTime(duty.start_date));
   const [dutyDay, setDutyDay] = useState('');
   const [formatDay, setFormatDay] = useState('');
   const [value, setValue] = useState({});
@@ -18,22 +17,23 @@ export default function AdminAnnual({ duty }) {
   const [submitted, setSubmitted] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
 
-  // console.log(duty);
   useEffect(() => {
     if (duty) {
       setStartDate(new Date(duty.start_date));
       setDutyDay(convertToKoreanTime(duty.start_date));
       setFormatDay(convertToKoreanTime(duty.start_date));
       setValue({
-        id: duty.id,
-        start_date: new Date(duty.start_date),
+        id: duty?.id,
+        start_date: duty?.start_date,
+        end_date: duty?.end_date,
         scheduleType: 'DUTY',
       });
     } else {
       setValue({
-        id: duty.id,
-        start_date: new Date(),
-        scheduleType: '',
+        id: duty?.id,
+        start_date: '',
+        end_date: '',
+        scheduleType: 'DUTY',
       });
     }
   }, [duty]);
@@ -47,6 +47,11 @@ export default function AdminAnnual({ duty }) {
     setStartDate(date);
     setFormatDay(convertToKoreanTime(date));
     setDutyDay(convertToKoreanTime(date));
+    setValue(prev => ({
+      ...prev,
+      start_date: new Date(date).toISOString().slice(0, 19),
+      end_date: new Date(date).toISOString().slice(0, 19),
+    }));
   };
 
   const handleSubmit = select => {
@@ -81,14 +86,14 @@ export default function AdminAnnual({ duty }) {
     setSubmitted(true);
     setFormatDay('');
   };
-  // console.log(typeof startDate);
-  // console.log(startDate);
+
   return (
-    <ManagementAnnual>
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    <>
       {duty && (
-        <>
+        <ManagementAnnual>
           <ManagementTab>당직관리</ManagementTab>
-          <Input readOnly value={startDate} />
+          <Input readOnly value={dutyDay} />
           <BtnAlign>
             <Btn
               onClick={e => {
@@ -131,9 +136,9 @@ export default function AdminAnnual({ duty }) {
               status={status}
             />
           )}
-        </>
+        </ManagementAnnual>
       )}
-    </ManagementAnnual>
+    </>
   );
 }
 
@@ -143,6 +148,7 @@ const ManagementAnnual = styled.div`
   border-radius: ${props => props.theme.style.borderRadius};
   position: relative;
   width: 45%;
+  margin-right: 50px;
   padding: 16px;
 `;
 

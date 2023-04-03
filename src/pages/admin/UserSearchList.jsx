@@ -76,15 +76,13 @@ const Container = styled.div`
 
 const SearchUserList = styled.div`
   ${props => props.theme.variables.flex('column', 'space-between', 'center')}
-  position: relative;
-  top: -20px;
+  position: fixed;
+  top: 30px;
   width: 700px;
   height: 195px;
   background-color: ${props => props.theme.style.white};
   border: 10px solid ${props => props.theme.style.skyblue};
   border-radius: ${props => props.theme.style.borderRadius};
-
-  z-index: 10;
   opacity: 1;
   font-size: 20px;
   color: ${props => props.theme.style.text};
@@ -119,8 +117,15 @@ const UserList = styled.ul`
   width: 650px;
   height: 300px;
   border-radius: 10px;
-  overflow: scroll;
+  overflow-y: scroll;
   margin-bottom: 10px;
+
+  /* 스크롤바 없애기 */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
 `;
 
 const Checkbox = styled.input`
