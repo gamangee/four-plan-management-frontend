@@ -43,53 +43,57 @@ export default function SideBar() {
 
   return (
     <Container>
-      {location.pathname !== ('/' || '/admin' || '/signup') && (
-        <>
-          <TodayDuty />
-          <LogoImg
-            src="/images/logo_origin.svg"
-            alt="logo"
-            onClick={() =>
-              user.role === 'ROLE_USER'
-                ? navigate('/main')
-                : navigate('/admin/main')
-            }
-          />
-          <UserInfo>
-            <Content>
-              {user.role === 'ROLE_ADMIN' ? (
-                <UserProfile src="/images/profile/admin_profile.jpg" />
-              ) : (
-                <UserProfile src={`/images/profile/profile_img_${index}.jpg`} />
-              )}
-              <UserInfoContainer>
-                <UserName>{user.name}</UserName>
-                <Department>
-                  ({user.department}/ {user.position})
-                </Department>
-              </UserInfoContainer>
-            </Content>
-            <RestYear>
-              남은 연차 : {user.yearly > 0 ? user.yearly : '0'}일
-            </RestYear>
-          </UserInfo>
-          <Title>
-            <div>Calendar</div>
-            <HighLight className={select === 'main' ? 'active' : ''} />
-            <PageItems onClick={selectItem}>
-              <Item data-id="main">
-                <AiOutlineCalendar />
-                <ItemText>Calendar</ItemText>
-              </Item>
-            </PageItems>
-          </Title>
-          {user.role === 'ROLE_USER' ? (
-            <UserMyPage selectItem={selectItem} select={select} />
-          ) : (
-            <AdminPage selectItem={selectItem} select={select} />
-          )}
-        </>
-      )}
+      {location.pathname !== '/' &&
+        location.pathname !== '/admin' &&
+        location.pathname !== '/signup' && (
+          <>
+            <TodayDuty />
+            <LogoImg
+              src="/images/logo_origin.svg"
+              alt="logo"
+              onClick={() =>
+                user.role === 'ROLE_USER'
+                  ? navigate('/main')
+                  : navigate('/admin/main')
+              }
+            />
+            <UserInfo>
+              <Content>
+                {user.role === 'ROLE_ADMIN' ? (
+                  <UserProfile src="/images/profile/admin_profile.jpg" />
+                ) : (
+                  <UserProfile
+                    src={`/images/profile/profile_img_${index}.jpg`}
+                  />
+                )}
+                <UserInfoContainer>
+                  <UserName>{user.name}</UserName>
+                  <Department>
+                    ({user.department}/ {user.position})
+                  </Department>
+                </UserInfoContainer>
+              </Content>
+              <RestYear>
+                남은 연차 : {user.yearly > 0 ? user.yearly : '0'}일
+              </RestYear>
+            </UserInfo>
+            <Title>
+              <div>Calendar</div>
+              <HighLight className={select === 'main' ? 'active' : ''} />
+              <PageItems onClick={selectItem}>
+                <Item data-id="main">
+                  <AiOutlineCalendar />
+                  <ItemText>Calendar</ItemText>
+                </Item>
+              </PageItems>
+            </Title>
+            {user.role === 'ROLE_USER' ? (
+              <UserMyPage selectItem={selectItem} select={select} />
+            ) : (
+              <AdminPage selectItem={selectItem} select={select} />
+            )}
+          </>
+        )}
     </Container>
   );
 }
