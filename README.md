@@ -23,7 +23,6 @@
 > - ```Management```
 > - CSS 구성
 > - Rest API 호출
-> - useQuery 사용
 > - modal 기능 구성
 
 > **홍성민**
@@ -37,6 +36,7 @@
 > - 개인 정보 수정 폼 생성 및 유효성 검사 ( react-hook-form )
 > - 연차 등록 / 수정 / 삭제 ( react-datepicker )
 > - 관리자 페이지 연차 / 당직 Component 담당
+> - Excel 파일 다운로드 기능 생성 ( react-csv )
 
 > **이정재**
 > - ```Main``` ```SideBar & DashBoard```
@@ -51,6 +51,7 @@
 >     ✔️ 공통
 >       - 오늘의 당직 및 전체 스케쥴 확인
 >       - 스케쥴을 전체, 부서별, 유저별로 필터링 가능
+>       - 스케쥴 목록 Excel 파일 다운로드 
 >       - SideBar 에서 자신의 정보 확인 & 원하는 페이지 선택 및 이동
 >
 >     ✔️ 관리자
@@ -75,9 +76,9 @@
 
 <img width="350" src="https://user-images.githubusercontent.com/117700630/229685058-4b3d6b16-0c8e-4b01-82b3-ced101100bc4.gif" />
 
-✅ 전체 스케쥴
+✅ 전체 스케쥴 (필터링 & 파일 다운로드)
 
- <img width="550" src="https://user-images.githubusercontent.com/117700630/229467851-dcc223b7-2303-435c-9fa3-6e763597cd1e.gif" />
+ <img width="550" src="https://user-images.githubusercontent.com/117700630/229730845-34b0bf78-17cc-44d5-883c-7fd3619f5282.gif" />
  
 ✅ 개인 정보 수정 ```일반사용자```
 
