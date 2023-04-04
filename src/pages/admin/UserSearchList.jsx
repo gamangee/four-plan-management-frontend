@@ -101,8 +101,9 @@ const Title = styled.div`
   text-align: center;
   font-weight: 600;
   position: absolute;
-  top: -25px;
-  left: 255px;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 1;
 `;
 
@@ -188,9 +189,7 @@ const Label = styled.label`
   ${props => props.theme.variables.flex('row', 'center', 'center')}
   width : 630px;
   padding-bottom: 8px;
-  border-bottom: 3px solid ${props => props.theme.style.lightGray};
-  padding-left 30px;
-  }
+  border-bottom: 3px solid ${props => props.theme.style.skyblue};
 `;
 
 const Name = styled.div``;

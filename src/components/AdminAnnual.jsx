@@ -187,7 +187,7 @@ export default function AdminAnnual({ annual }) {
 const NoLeft = styled.div`
   ${props => props.theme.variables.flex('', 'center', 'center')};
   width: 420px;
-  height: 380px;
+  height: 440px;
 `;
 
 const ManagementAnnual = styled.div`
@@ -196,7 +196,7 @@ const ManagementAnnual = styled.div`
   border-radius: ${props => props.theme.style.borderRadius};
   position: relative;
   width: 45%;
-  padding: 16px;
+  height: 440px;
 `;
 
 const ManagementTab = styled.div`
@@ -206,11 +206,11 @@ const ManagementTab = styled.div`
   border-radius: ${props => props.theme.style.borderRadius};
   font-size: ${props => props.theme.style.textmd};
   position: absolute;
-  top: -25px;
+  top: -20px;
   left: 50%;
   transform: translateX(-50%);
   width: 140px;
-  height: 40px;
+  height: 35px;
   font-weight: 600;
   z-index: 1;
 `;

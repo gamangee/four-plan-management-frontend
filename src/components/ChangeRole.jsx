@@ -110,7 +110,8 @@ const Title = styled.div`
   font-weight: 600;
   position: absolute;
   top: -20px;
-  left: 30px;
+  left: 50%;
+  transform: translateX(-50%);
 `;
 
 const Form = styled.form`
