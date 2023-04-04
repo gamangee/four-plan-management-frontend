@@ -39,7 +39,7 @@
 > - 관리자 페이지 연차 / 당직 Component 담당
 
 > **이정재**
-> - ```Main``` ```SideBar & DashBoard``` ```TodayDuty```
+> - ```Main``` ```SideBar & DashBoard```
 > - 라우팅 설정 & 로그아웃 기능 생성
 > - 메인페이지 스케쥴 필터링 / 검색 ( FullCalender )
 > - 관리자 페이지 유저 검색 Component 담당
