@@ -33,6 +33,8 @@ export default function Management() {
     }
   }, [selectedUser]);
 
+  console.log(userList);
+
   return (
     <>
       {user.role === 'ROLE_ADMIN' && (

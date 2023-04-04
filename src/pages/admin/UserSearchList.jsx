@@ -40,6 +40,7 @@ export default function UserSearchList({
       setSelectedUser([userList[index]]);
     }
   };
+  console.log(userList);
 
   return (
     <Container>
@@ -101,7 +102,7 @@ const Title = styled.div`
   font-weight: 600;
   position: absolute;
   top: -25px;
-  left: 285px;
+  left: 255px;
   z-index: 1;
 `;
 
@@ -114,7 +115,7 @@ const SearchBox = styled.input`
   width: 256px;
   height: 50px;
   border: 2px solid white;
-  margin: 20px 0 30px 20px;
+  margin: 20px 0 10px 20px;
   outline: none;
   text-indent: 22px;
   border: none;

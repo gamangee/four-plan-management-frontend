@@ -20,6 +20,7 @@ export default function Main() {
   const [selected, setSelected] = useState('전체');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState([]); // 클릭해서 담은 값
+  const [allUserList, setAllUserList] = useState([]);
 
   const colorArray = ['#D3D3D3', '#FF9AA2', '#B5EAD7', '#C7CEEA', '#FFB7B2'];
   const { service, setUser } = useService();
@@ -40,7 +41,9 @@ export default function Main() {
 
   // js 데이터 객체 지역에 맞춰서 (시간))
   function scheduleList() {
+    console.log('scheduleList', selectedUser, selected);
     return service.schedule().then(users => {
+      setAllUserList(users);
       if (selected === '전체') {
         return users.map(user => {
           return {
@@ -63,30 +66,23 @@ export default function Main() {
             };
           });
       } else if (selected === '유저') {
-        return users.map(user => {
-          return {
-            ...user,
-            title: user.name,
-            start: user.schedule.start_date,
-            end: user.schedule.end_date,
-            color: colorArray[colorSelect(user)],
-          };
-        });
+        return users
+          .filter(user => selectedUser.includes(user.schedule.accountId))
+          .map(user => {
+            return {
+              ...user,
+              title: user.name,
+              start: user.schedule.start_date,
+              end: user.schedule.end_date,
+              color: colorArray[colorSelect(user)],
+            };
+          });
       }
-      return users
-        .filter(user => selected.includes(user.schedule.accountId))
-        .map(user => ({
-          ...user,
-          title: user.name,
-          start: user.schedule.start_date,
-          end: user.schedule.end_date,
-          color: colorArray[colorSelect(user)],
-        }));
     });
   }
 
   const { data: schedule } = useQuery(
-    ['schedule', selected],
+    ['schedule', selected, selectedUser],
     () => scheduleList(),
 
     options
@@ -130,7 +126,7 @@ export default function Main() {
           <UserSearch
             setIsModalOpen={setIsModalOpen}
             scheduleList={scheduleList}
-            schedule={schedule}
+            allUserList={allUserList}
             setSelected={setSelected}
             selectedUser={selectedUser}
             setSelectedUser={setSelectedUser}

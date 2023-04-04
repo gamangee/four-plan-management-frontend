@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 export default function UserSearch({
   setIsModalOpen,
-  schedule,
+  allUserList,
   setSelected,
   selectedUser,
   setSelectedUser,
@@ -21,7 +21,7 @@ export default function UserSearch({
     setSearchUser(value);
   };
 
-  console.log(schedule);
+  console.log(allUserList);
 
   // 모달창을 다시 열었을때 기존에 체크된 리스트를 다시 가져옴
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function UserSearch({
       const uniqueUsers = [];
       const accountIds = new Set();
       //체크가 되어있는 유저들의 accountId를 포함한 user의 정보
-      const users = schedule.filter(user =>
+      const users = allUserList.filter(user =>
         selectedUser.includes(user.schedule.accountId)
       );
 
@@ -48,7 +48,7 @@ export default function UserSearch({
 
   useEffect(() => {
     if (searchUser.length > 0) {
-      const list = schedule.filter(user => user.name.includes(searchUser));
+      const list = allUserList.filter(user => user.name.includes(searchUser));
       console.log(list);
       const uniqueUsers = [];
       const accountIds = new Set();
@@ -89,7 +89,7 @@ export default function UserSearch({
     if (index > -1) {
       const filter = selectedUser.filter(user => user !== accountId);
       console.log(filter);
-      setSelectedUser(filter);
+      setSelectedUser([...filter]);
     } else {
       setSelectedUser(prev => [...prev, accountId]);
     }
@@ -117,7 +117,6 @@ export default function UserSearch({
   function onClickButton() {
     setIsModalOpen(false);
     console.log(selectedUser);
-    setSelected(selectedUser);
   }
 
   return (
@@ -129,7 +128,7 @@ export default function UserSearch({
           <UserList>
             {userList &&
               userList.map((user, i) => (
-                <Li key={user.start + user.end + user.title + i}>
+                <Li key={user.accountId}>
                   <Checkbox
                     type="checkbox"
                     id={user.schedule.accountId}
