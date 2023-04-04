@@ -9,7 +9,7 @@ const variables = {
   absoluteCenter: `
     position: absolute;
     top: 50%;
-   npm install styled-components styled-reset left: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
   `,
 };
