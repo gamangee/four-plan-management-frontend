@@ -438,7 +438,7 @@ export const handlers = [
   // 관리자
 
   // 유저 목록 조회 => (길동 검색)
-  rest.get('/account/search?name=길동', (req, res, ctx) => {
+  rest.get('/account/admin/search?name=길동', (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({

@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useService } from '../context/context';
+import { useEffect } from 'react';
+import { IoIosClose } from 'react-icons/io';
 
 export default function ChangeRole({ selectedUser }) {
-  const id = 1;
-  // const role = 'ROLE_USER';
-  const role = '';
   const { service } = useService();
   const [status, setStatus] = useState(false);
   const [checkValue, setCheckValue] = useState();
   const [isChange, setIsChange] = useState(false);
 
+  useEffect(() => {
+    if (selectedUser) {
+      setCheckValue(selectedUser[0].role);
+    }
+  }, [selectedUser]);
+
   // API
   const onSubmit = e => {
     e.preventDefault();
-    if (checkValue !== role) {
+    if (checkValue !== selectedUser[0].role) {
       service
-        .changeRole({ id: id, role: checkValue })
+        .changeRole({ id: selectedUser[0].id, role: checkValue })
         .then(res => setStatus(res));
     }
   };
@@ -25,7 +30,7 @@ export default function ChangeRole({ selectedUser }) {
     <div>
       <Container>
         <Title>권한관리</Title>
-        {role ? (
+        {selectedUser ? (
           <Form>
             {/* 일반유저 */}
             <Radio>
@@ -35,7 +40,7 @@ export default function ChangeRole({ selectedUser }) {
                 id="userRadio"
                 value="ROLE_USER"
                 onChange={e => {
-                  role !== e.target.value
+                  selectedUser[0].role !== e.target.value
                     ? setIsChange(true)
                     : setIsChange(false);
                   setCheckValue(e.target.value);
@@ -53,7 +58,7 @@ export default function ChangeRole({ selectedUser }) {
                 value="ROLE_ADMIN"
                 onChange={e => {
                   //   setIsChange(true);
-                  role !== e.target.value
+                  selectedUser[0].role !== e.target.value
                     ? setIsChange(true)
                     : setIsChange(false);
                   setCheckValue(e.target.value);
@@ -82,6 +87,9 @@ export default function ChangeRole({ selectedUser }) {
           <Modal>
             {status}
             <AcceptBtn onClick={() => setStatus(false)}>확인</AcceptBtn>
+            <CloseBtn>
+              <IoIosClose onClick={() => setStatus(false)} />
+            </CloseBtn>
           </Modal>
         </ModalContainer>
       )}
@@ -95,7 +103,7 @@ const Container = styled.div`
   border: 10px solid ${props => props.theme.style.skyblue};
   border-radius: ${props => props.theme.style.borderRadius};
   position: fixed;
-  bottom: 45px;
+  bottom: 40px;
 `;
 
 const Title = styled.div`
@@ -110,8 +118,7 @@ const Title = styled.div`
   font-weight: 600;
   position: absolute;
   top: -20px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 30px;
 `;
 
 const Form = styled.form`
@@ -171,6 +178,7 @@ const ModalContainer = styled.div`
   transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
+  z-index: 9;
 `;
 
 const Modal = styled.div`
@@ -178,31 +186,44 @@ const Modal = styled.div`
   height: 200px;
   ${props => props.theme.variables.flex('column', '', 'center')};
   text-align: center;
-  line-height: 100px;
+  line-height: 150px;
   color: ${props => props.theme.style.text};
   font-size: ${props => props.theme.style.textlg};
-  font-weight: 600;
   background-color: ${props => props.theme.style.white};
-  border: 8px solid ${props => props.theme.style.skyblue};
-  border-radius: ${props => props.theme.style.borderRadius};
+  border-radius: 15px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 10;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 `;
 
 const AcceptBtn = styled.button`
   width: 120px;
   height: 50px;
   border-radius: ${props => props.theme.style.BtnborderRadius};
-  background-color: ${props => props.theme.style.text};
-  font-size: ${props => props.theme.style.textsm};
-  color: ${props => props.theme.style.white};
+  background-color: ${props => props.theme.style.skyblue};
+  font-size: ${props => props.theme.style.textmd};
+  color: ${props => props.theme.style.text};
   border: 0;
   position: absolute;
   bottom: 30px;
   transition: 0.3s ease;
   &:hover {
-    background-color: ${props => props.theme.style.blue};
+    background-color: ${props => props.theme.style.text};
+    color: ${props => props.theme.style.white};
   }
+`;
+
+const CloseBtn = styled.button`
+  color: ${props => props.theme.style.text};
+  background-color: transparent;
+  border: none;
+  outline: none;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  font-size: 26px;
+  z-index: 10px;
 `;

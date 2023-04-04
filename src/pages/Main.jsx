@@ -41,7 +41,7 @@ export default function Main() {
 
   // js 데이터 객체 지역에 맞춰서 (시간))
   function scheduleList() {
-    console.log('scheduleList', selectedUser, selected);
+    // console.log('scheduleList', selectedUser, selected);
     return service.schedule().then(users => {
       setAllUserList(users);
       if (selected === '전체') {

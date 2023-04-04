@@ -11,6 +11,8 @@ export default function TodayDuty() {
     return service.todayDuty();
   });
 
+  // console.log(dutyList);
+
   return (
     <Container>
       <Title>오늘의 당직 😊</Title>

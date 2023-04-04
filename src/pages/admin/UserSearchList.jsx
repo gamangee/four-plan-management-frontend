@@ -1,7 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { useService } from '../../context/context';
 
 export default function UserSearchList({
   userList,
@@ -15,7 +13,7 @@ export default function UserSearchList({
   const onSubmit = e => {
     e.preventDefault();
     const value = inputRef.current.value;
-    console.log(value);
+    // console.log(value);
     setSearchUser(value);
   };
 
@@ -34,13 +32,13 @@ export default function UserSearchList({
 
     if (index > -1 && selectedUser) {
       const user = userList[index];
-      console.log(user);
+      // console.log(user);
       setSelectedUser([user]);
     } else {
       setSelectedUser([userList[index]]);
     }
   };
-  console.log(userList);
+  // console.log(userList);
 
   return (
     <Container>
