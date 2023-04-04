@@ -10,8 +10,6 @@ export default function AnnualDatePicker({
   setValue,
   setYearDay,
 }) {
-  const date = new Date();
-
   const isWeekday = date => {
     const day = date.getDay(date);
     return day !== 0 && day !== 6;

@@ -171,7 +171,6 @@ const ModalContainer = styled.div`
   transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
-  z-index: 9;
 `;
 
 const Modal = styled.div`
@@ -190,7 +189,6 @@ const Modal = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 10;
 `;
 
 const AcceptBtn = styled.button`

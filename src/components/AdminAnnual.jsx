@@ -6,7 +6,7 @@ import convertToKoreanTime from '../utility/koreanTime';
 import { useService } from '../context/context';
 import UserModal from './UserModal';
 
-export default function AdminAnnual({ annual }) {
+export default function AdminAnnual({ annual, isSearch }) {
   const { service } = useService();
 
   const [datepickerDate, setDatepicker] = useState({});
@@ -94,13 +94,24 @@ export default function AdminAnnual({ annual }) {
   };
 
   const handleSubmit = select => {
+    // 연차 등록
+    if (select === '등록') {
+      service
+        .registerSchedule({
+          start_date: value.start_date,
+          end_date: value.end_date,
+          scheduleType: value.scheduleType,
+        })
+        .then(res => setStatus(res));
+    }
+
     // 연차 수정
     if (select === '수정') {
       service
         .updateSchedule(value.id, {
           id: value.id,
           start_date: value.start_date,
-          end_date: value.end,
+          end_date: value.end_date,
           scheduleType: value.scheduleType,
         })
         .then(res => setStatus(res));
@@ -136,59 +147,63 @@ export default function AdminAnnual({ annual }) {
   return (
     <ManagementAnnual>
       <ManagementTab>연차관리</ManagementTab>
-      {annual && (
-        <>
-          <Input readOnly value={yearDay} />
-          <BtnAlign>
-            <Btn
-              onClick={e => {
-                handleSubmit(e.target.textContent);
-              }}
-            >
-              수정
-            </Btn>
-            <Btn
-              onClick={e => {
-                handleSubmit(e.target.textContent);
-              }}
-            >
-              삭제
-            </Btn>
-          </BtnAlign>
-          <StyleDatePicker>
-            <DatePicker
-              inline
-              selectsRange
-              disabledKeyboardNavigation
-              onChange={onChange}
-              startDate={datepickerDate.startDate}
-              endDate={datepickerDate.endDate}
-              filterDate={isWeekday}
-            />
-          </StyleDatePicker>
-          {submitted && (
-            <UserModal
-              isOpen={isOpen}
-              onClose={() => {
-                setIsOpen(false);
-                setStatus('');
-                setSubmitted(false);
-              }}
-              status={status}
-            />
-          )}
-        </>
+      {annual && <Input readOnly value={yearDay} />}
+      {!annual && !isSearch && <Input readOnly value="사용자를 검색하세요." />}
+      {!annual && isSearch && <Input readOnly value="연차가 없습니다." />}
+      <BtnAlign>
+        {annual && (
+          <Btn
+            onClick={e => {
+              handleSubmit(e.target.textContent);
+            }}
+          >
+            수정
+          </Btn>
+        )}
+        {!annual && isSearch && (
+          <Btn
+            onClick={e => {
+              handleSubmit(e.target.textContent);
+            }}
+          >
+            등록
+          </Btn>
+        )}
+        {isSearch && (
+          <Btn
+            onClick={e => {
+              handleSubmit(e.target.textContent);
+            }}
+          >
+            삭제
+          </Btn>
+        )}
+      </BtnAlign>
+      <StyleDatePicker>
+        <DatePicker
+          inline
+          selectsRange
+          disabledKeyboardNavigation
+          onChange={onChange}
+          startDate={datepickerDate.startDate}
+          endDate={datepickerDate.endDate}
+          filterDate={isWeekday}
+        />
+      </StyleDatePicker>
+      {submitted && (
+        <UserModal
+          isOpen={isOpen}
+          onClose={() => {
+            setIsOpen(false);
+            setStatus('');
+            setSubmitted(false);
+          }}
+          status={status}
+        />
       )}
-      {!annual && <NoLeft>연차가 없습니다.</NoLeft>}
     </ManagementAnnual>
   );
 }
-
-const NoLeft = styled.div`
-  ${props => props.theme.variables.flex('', 'center', 'center')};
-  width: 420px;
-  height: 440px;
-`;
 
 const ManagementAnnual = styled.div`
   ${props => props.theme.variables.flex('column', 'center', 'center')};
@@ -237,7 +252,7 @@ const Btn = styled.button`
   font-size: ${props => props.theme.style.textmd};
   width: 80px;
   height: 30px;
-  margin: 14px 0;
+  margin: 14px 0 0;
   outline: none;
   border: none;
   justify-content: space-around;
@@ -250,6 +265,7 @@ const StyleDatePicker = styled.div`
     width: 350px;
     height: 300px;
     border-radius: 16px;
+    margin-top: 10px;
   }
 
   .react-datepicker__current-month {

@@ -6,7 +6,7 @@ import convertToKoreanTime from '../utility/koreanTime';
 import { useService } from '../context/context';
 import UserModal from './UserModal';
 
-export default function AdminAnnual({ duty }) {
+export default function AdminAnnual({ duty, isSearch }) {
   const date = new Date();
   const { service } = useService();
   const [startDate, setStartDate] = useState(date);
@@ -23,14 +23,14 @@ export default function AdminAnnual({ duty }) {
       setDutyDay(convertToKoreanTime(duty.start_date));
       setFormatDay(convertToKoreanTime(duty.start_date));
       setValue({
-        id: duty?.id,
-        start_date: duty?.start_date,
-        end_date: duty?.end_date,
+        id: duty.id,
+        start_date: duty.start_date,
+        end_date: duty.end_date,
         scheduleType: 'DUTY',
       });
     } else {
       setValue({
-        id: duty?.id,
+        id: '',
         start_date: '',
         end_date: '',
         scheduleType: 'DUTY',
@@ -55,6 +55,17 @@ export default function AdminAnnual({ duty }) {
   };
 
   const handleSubmit = select => {
+    // 당직 등록
+    if (select === '등록') {
+      service
+        .registerSchedule({
+          start_date: value.start_date,
+          end_date: value.start_date,
+          scheduleType: value.scheduleType,
+        })
+        .then(res => setStatus(res));
+    }
+
     // 당직 수정
     if (select === '수정') {
       service
@@ -90,63 +101,65 @@ export default function AdminAnnual({ duty }) {
   return (
     <ManagementAnnual>
       <ManagementTab>당직관리</ManagementTab>
-      {duty && (
-        <>
-          <Input readOnly value={dutyDay} />
-          <BtnAlign>
-            <Btn
-              onClick={e => {
-                handleSubmit(e.target.textContent);
-              }}
-            >
-              수정
-            </Btn>
-            <Btn
-              onClick={e => {
-                handleSubmit(e.target.textContent);
-              }}
-            >
-              삭제
-            </Btn>
-          </BtnAlign>
-          <StyleDatePicker>
-            {duty && (
-              <DatePicker
-                inline
-                disabledKeyboardNavigation
-                selected={
-                  startDate instanceof Date && isNaN(startDate.getTime())
-                    ? new Date()
-                    : startDate
-                }
-                onChange={onChange}
-                filterDate={isWeekday}
-              />
-            )}
-          </StyleDatePicker>
-          {submitted && (
-            <UserModal
-              isOpen={isOpen}
-              onClose={() => {
-                setIsOpen(false);
-                setStatus('');
-                setSubmitted(false);
-              }}
-              status={status}
-            />
-          )}
-        </>
+      {duty && <Input readOnly value={dutyDay} />}
+      {!duty && !isSearch && <Input readOnly value="사용자를 검색하세요." />}
+      {!duty && isSearch && <Input readOnly value="당직이 없습니다." />}
+      <BtnAlign>
+        {duty && (
+          <Btn
+            onClick={e => {
+              handleSubmit(e.target.textContent);
+            }}
+          >
+            수정
+          </Btn>
+        )}
+        {!duty && isSearch && (
+          <Btn
+            onClick={e => {
+              handleSubmit(e.target.textContent);
+            }}
+          >
+            등록
+          </Btn>
+        )}
+        {isSearch && (
+          <Btn
+            onClick={e => {
+              handleSubmit(e.target.textContent);
+            }}
+          >
+            삭제
+          </Btn>
+        )}
+      </BtnAlign>
+      <StyleDatePicker>
+        <DatePicker
+          inline
+          disabledKeyboardNavigation
+          selected={
+            startDate instanceof Date && isNaN(startDate.getTime())
+              ? new Date()
+              : startDate
+          }
+          onChange={onChange}
+          filterDate={isWeekday}
+        />
+      </StyleDatePicker>
+      {submitted && (
+        <UserModal
+          isOpen={isOpen}
+          onClose={() => {
+            setIsOpen(false);
+            setStatus('');
+            setSubmitted(false);
+          }}
+          status={status}
+        />
       )}
-      {!duty && <NoLeft>당직이 없습니다.</NoLeft>}
     </ManagementAnnual>
   );
 }
-
-const NoLeft = styled.div`
-  ${props => props.theme.variables.flex('', 'center', 'center')};
-  width: 420px;
-  height: 440px;
-`;
 
 const ManagementAnnual = styled.div`
   ${props => props.theme.variables.flex('column', 'center', 'center')};
@@ -209,6 +222,7 @@ const StyleDatePicker = styled.div`
     width: 350px;
     height: 300px;
     border-radius: 16px;
+    margin-top: 10px;
   }
 
   .react-datepicker__current-month {

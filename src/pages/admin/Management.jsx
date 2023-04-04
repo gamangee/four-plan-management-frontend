@@ -11,6 +11,7 @@ export default function Management() {
   const [selectedUser, setSelectedUser] = useState(); // 선택한 유저 값
   const [schedule, setSchedule] = useState({});
   const [searchUser, setSearchUser] = useState(''); // search에서 검색한 값
+  const [isSearch, setIsSearch] = useState(false);
   const { service } = useService();
 
   const { data: userList } = useQuery(['userList', searchUser], () => {
@@ -28,12 +29,11 @@ export default function Management() {
         schedule => schedule.type === 'YEARLY'
       );
       setSchedule({ dutySchedule, yearlySchedule });
+      setIsSearch(true);
     } else {
       setSchedule({});
     }
   }, [selectedUser]);
-
-  console.log(userList);
 
   return (
     <>
@@ -46,11 +46,11 @@ export default function Management() {
             searchUser={searchUser}
             setSearchUser={setSearchUser}
           />
-          <Div>
-            <AdminDuty duty={schedule.dutySchedule} />
-            <AdminAnnual annual={schedule.yearlySchedule} />
-          </Div>
           <ChangeRole selectedUser={selectedUser} />
+          <Div>
+            <AdminDuty duty={schedule.dutySchedule} isSearch={isSearch} />
+            <AdminAnnual annual={schedule.yearlySchedule} isSearch={isSearch} />
+          </Div>
         </Container>
       )}
       {user.role !== 'ROLE_ADMIN' && (
