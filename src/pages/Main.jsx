@@ -7,6 +7,8 @@ import { useService } from '../context/context';
 import UserSearch from './UserSearch';
 import { useLocation } from 'react-router-dom';
 import { getCookie } from '../cookie';
+import ExcelDownload from '../components/ExcelDownload';
+import convertToKoreanTime from '../utility/koreanTime';
 
 // export const D = {
 //   PAGE_LIST: "PAGE_LIST",
@@ -21,6 +23,7 @@ export default function Main() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState([]); // 클릭해서 담은 값
   const [allUserList, setAllUserList] = useState([]);
+  const [excelSchedule, setExcelSchedule] = useState([]);
 
   const colorArray = ['#D3D3D3', '#FF9AA2', '#B5EAD7', '#C7CEEA', '#FFB7B2'];
   const { service, setUser } = useService();
@@ -41,9 +44,10 @@ export default function Main() {
 
   // js 데이터 객체 지역에 맞춰서 (시간))
   function scheduleList() {
-    // console.log('scheduleList', selectedUser, selected);
     return service.schedule().then(users => {
       setAllUserList(users);
+      setExcelSchedule(allUserList);
+
       if (selected === '전체') {
         return users.map(user => {
           return {
@@ -89,7 +93,6 @@ export default function Main() {
   );
 
   const selectFilter = e => {
-    // console.log('selectFilter');
     const textContent = e.target.textContent;
     if (textContent !== '유저') {
       setSelected(textContent);
@@ -101,7 +104,21 @@ export default function Main() {
     }
   };
 
-  // console.log('스케쥴 :', schedule);
+  const handleSchedule = () => {
+    const filterSchedule = excelSchedule.map(item => {
+      return {
+        name: item?.name,
+        department: item?.department,
+        email: item?.email,
+        position: item?.position,
+        yearly: item?.yearly,
+        duty: item?.duty ? 'O' : 'X',
+        start_date: convertToKoreanTime(new Date(item?.schedule?.start_date)),
+        end_date: convertToKoreanTime(new Date(item?.schedule?.end_date)),
+      };
+    });
+    setExcelSchedule(filterSchedule);
+  };
 
   return (
     <Container>
@@ -121,6 +138,15 @@ export default function Main() {
             부서
           </Btn>
           <Btn onClick={selectFilter}>유저</Btn>
+          {excelSchedule.length > 0 && (
+            <Btn>
+              <ExcelDownload
+                data={excelSchedule}
+                title="Excel"
+                handleSchedule={handleSchedule}
+              />
+            </Btn>
+          )}
         </BtnGroup>
         {isModalOpen && (
           <UserSearch
@@ -187,15 +213,13 @@ const FlexContainer2 = styled.div`
   border: 2.5px solid ${props => props.theme.style.skyblue};
   border-radius: 5px;
 `;
-const BtnGroup = styled.div`
-  ${props => props.theme.variables.flex('', 'space-between', 'center')}
-  width: 300px;
-`;
+const BtnGroup = styled.div``;
 
 const Btn = styled.button`
   width: 80px;
   height: 40px;
   border: none;
+  margin-right: 20px;
   background-color: ${props =>
     props.className === 'active' ? '#a8d3f4' : props.theme.style.skyblue};
   border-radius: 10px;
@@ -206,7 +230,6 @@ const Btn = styled.button`
 
   &:hover {
     background-color: #a8d3f4;
-    // background-color: ${props => props.theme.style.skyblue};
   }
 `;
 function colorSelect(user) {
