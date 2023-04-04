@@ -6,7 +6,7 @@ import convertToKoreanTime from '../utility/koreanTime';
 import { useService } from '../context/context';
 import UserModal from './UserModal';
 
-export default function AdminAnnual({ annual, isSearch }) {
+export default function AdminAnnual({ id, annual, isSearch }) {
   const { service } = useService();
 
   const [datepickerDate, setDatepicker] = useState({});
@@ -98,6 +98,7 @@ export default function AdminAnnual({ annual, isSearch }) {
     if (select === '등록') {
       service
         .registerSchedule({
+          id,
           start_date: value.start_date,
           end_date: value.end_date,
           scheduleType: value.scheduleType,

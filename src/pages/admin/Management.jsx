@@ -28,13 +28,12 @@ export default function Management() {
       const yearlySchedule = selectedUser[0].schedules.find(
         schedule => schedule.type === 'YEARLY'
       );
-      setSchedule({ dutySchedule, yearlySchedule });
+      setSchedule({ dutySchedule, yearlySchedule, id: selectedUser[0].id });
       setIsSearch(true);
     } else {
       setSchedule({});
     }
   }, [selectedUser]);
-
   return (
     <>
       {user.role === 'ROLE_ADMIN' && (
@@ -48,8 +47,16 @@ export default function Management() {
           />
           <ChangeRole selectedUser={selectedUser} />
           <Div>
-            <AdminDuty duty={schedule.dutySchedule} isSearch={isSearch} />
-            <AdminAnnual annual={schedule.yearlySchedule} isSearch={isSearch} />
+            <AdminDuty
+              id={schedule.id}
+              duty={schedule.dutySchedule}
+              isSearch={isSearch}
+            />
+            <AdminAnnual
+              id={schedule.id}
+              annual={schedule.yearlySchedule}
+              isSearch={isSearch}
+            />
           </Div>
         </Container>
       )}

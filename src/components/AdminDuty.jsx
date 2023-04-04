@@ -6,7 +6,7 @@ import convertToKoreanTime from '../utility/koreanTime';
 import { useService } from '../context/context';
 import UserModal from './UserModal';
 
-export default function AdminAnnual({ duty, isSearch }) {
+export default function AdminAnnual({ id, duty, isSearch }) {
   const date = new Date();
   const { service } = useService();
   const [startDate, setStartDate] = useState(date);
@@ -59,6 +59,7 @@ export default function AdminAnnual({ duty, isSearch }) {
     if (select === '등록') {
       service
         .registerSchedule({
+          id,
           start_date: value.start_date,
           end_date: value.start_date,
           scheduleType: value.scheduleType,
@@ -209,7 +210,7 @@ const Btn = styled.button`
   font-size: ${props => props.theme.style.textmd};
   width: 80px;
   height: 30px;
-  margin: 14px 0;
+  margin: 14px 0 0;
   outline: none;
   border: none;
   justify-content: space-around;
