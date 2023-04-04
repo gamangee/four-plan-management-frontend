@@ -69,7 +69,9 @@ export default function SideBar() {
                 </Department>
               </UserInfoContainer>
             </Content>
-            <RestYear>남은 연차 : {user.yearly}일</RestYear>
+            <RestYear>
+              남은 연차 : {user.yearly > 0 ? user.yearly : '0'}일
+            </RestYear>
           </UserInfo>
           <Title>
             <div>Calendar</div>
