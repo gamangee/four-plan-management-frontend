@@ -66,20 +66,9 @@
 >         - 연차를 확인하고 원하는 날짜를 선택하여 연차 등록, 수정, 삭제
 
 
-## 🎬 구현 영상
+## 🎬 구현 기능
 
-✅로그인
 
-<img width="350" src="https://user-images.githubusercontent.com/117700630/229610399-2683a485-76ae-4f82-a1fb-e3f9ed60dca6.gif" />
-
-✅ 회원가입  ```일반사용자```
-
-<img width="350" src="https://user-images.githubusercontent.com/117700630/229685058-4b3d6b16-0c8e-4b01-82b3-ced101100bc4.gif" />
-
-✅ 전체 스케쥴 (필터링 & 파일 다운로드)
-
- <img width="550" src="https://user-images.githubusercontent.com/117700630/229730845-34b0bf78-17cc-44d5-883c-7fd3619f5282.gif" />
- 
 ✅ 개인 정보 수정 ```일반사용자```
 
 <img width="550" src="https://user-images.githubusercontent.com/117700630/229609091-a2204456-b5a6-4dc1-bb6a-225bf7613673.gif" />  
@@ -91,11 +80,6 @@
 ✅ 사용자의 연차 / 당직 / 권한 관리 ```관리자```
 
 <img width="550" src="https://user-images.githubusercontent.com/117700630/229609562-6fb5e20c-3be7-44dc-8e5c-9780bc10ef22.gif" />
-
-✅ navigate & 로그아웃
-
- <img width="550" src="https://user-images.githubusercontent.com/117700630/229467969-6abaeb99-7837-4168-91cb-1b94c1b06cf1.gif" />
- 
 
 ## 🤔 고찰
 
