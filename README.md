@@ -17,69 +17,47 @@
 |<a href="https://github.com/dragong-sm">  <img width="70" height="70" src="https://avatars.githubusercontent.com/u/117700630?v=4" alt="Dragong"></a>  |<a href="https://github.com/gamangee"> <img width="70" height="70" src="https://user-images.githubusercontent.com/98649953/225550633-b6975a18-4b45-44d2-84be-4a7d95beb9ff.png"> </a>  |<a href="https://github.com/j-plum">  <img width="70" src ="https://user-images.githubusercontent.com/98649953/225549031-a4a69541-3845-4569-88ac-c7a5033a76a1.png"> </a> |<a href="https://github.com/moon-July5/Mini_Project_4"> <img width="70" src ="https://user-images.githubusercontent.com/117700630/229362021-be4aa445-048d-46fc-b7f5-dd0b27b86824.png"> </a> |
 
 
-## ✍🏻 역할
-
-> **공통**
-> - ```Management```
-> - CSS 구성
-> - Rest API 호출
-> - modal 기능 구성
-
-> **홍성민**
-> - ```Login``` ```AdminLogin``` ```SignUp```
-> - 로그인 / 회원가입 폼 생성 및 유효성 검사 ( react-hook-form & react-cookie )
-> - 관리자 페이지 권한 관리 Component 담당
-> - mock 서버 생성 ( mock service worker & postman )
-
-> **장문정**
-> - ```UserInfo``` ```UserAnnual```
-> - 개인 정보 수정 폼 생성 및 유효성 검사 ( react-hook-form )
-> - 연차 등록 / 수정 / 삭제 ( react-datepicker )
-> - 관리자 페이지 연차 / 당직 Component 담당
-> - Excel 파일 다운로드 기능 생성 ( react-csv )
-
-> **이정재**
-> - ```Main``` ```SideBar & DashBoard```
-> - 라우팅 설정 & 로그아웃 기능 생성
-> - 메인페이지 스케쥴 필터링 / 검색 ( FullCalender )
-> - 관리자 페이지 유저 검색 Component 담당
-
-## 📌 주요 기능
-
-- 관리자와 사용자의 기능 및 라우팅 분리
-
->     ✔️ 공통
->       - 오늘의 당직 및 전체 스케쥴 확인
->       - 스케쥴을 전체, 부서별, 유저별로 필터링 가능
->       - 스케쥴 목록 Excel 파일 다운로드 
->       - SideBar 에서 자신의 정보 확인 & 원하는 페이지 선택 및 이동
->
->     ✔️ 관리자
->         - 회원가입이 필요없으며, 이미 등록되어 있는 정보로 로그인
->         - 사용자를 검색하여 관련 정보 확인
->         - 해당 사용자의 연차 / 당직을 확인하고 수정 및 삭제
->         - 해당 사용자의 권한을 일반유저 or 관리자로 변경
->
->     ✔️ 일반사용자
->         - 인사팀(DB)에 데이터가 등록되어 있는 회사원만 회원가입 & 로그인 가능
->         - 자신의 개인 정보 (이메일, 비밀번호) 수정
->         - 연차를 확인하고 원하는 날짜를 선택하여 연차 등록, 수정, 삭제
-
-
 ## 🎬 구현 기능
 
 
-✅ 개인 정보 수정 ```일반사용자```
+### ✅ 개인 정보 수정 ```일반사용자```
 
-<img width="550" src="https://user-images.githubusercontent.com/117700630/229609091-a2204456-b5a6-4dc1-bb6a-225bf7613673.gif" />  
+<img width="550" src="https://user-images.githubusercontent.com/117700630/229609091-a2204456-b5a6-4dc1-bb6a-225bf7613673.gif" />
 
-✅ 개인 연차 관리 ```일반사용자```
+#### 1. react-hook-form을 이용하여 개인 정보 수정 폼 생성 및 유효성 검사
+- `react-hook-form`을 활용하여 개인 정보 수정 폼을 생성하고 유효성 검사를 구현했습니다.
+- 폼 필드들에 각각 필요한 유효성 규칙을 설정하여 사용자의 입력값을 실시간으로 검증하고, 비밀번호와 확인용 비밀번호가 일치하는지 확인하며, 유효성 검사에 실패하면 에러 메시지를 표시하였습니다.
+
+#### 2. 비밀번호 입력 시 가리기/보이기 기능 추가
+- 세 개의 비밀번호 입력 필드에 대해 눈 아이콘 클릭 시 비밀번호를 가리거나 보이게 설정할 수 있도록 구현하였습니다.
+- 클릭 시 해당 필드의 비밀번호 입력 타입을 'text' 또는 'password'로 변경하였습니다.
+<br/>
+
+### ✅ 개인 연차 관리 ```일반사용자```
 
 <img width="550" src="https://user-images.githubusercontent.com/117700630/229609108-cfd6a95b-93ce-4a15-bb06-566898f7fc88.gif" />
 
-✅ 사용자의 연차 / 당직 / 권한 관리 ```관리자```
+#### 3. react-datepicker를 사용하여 연차일 표시
+- `react-datepicker` 라이브러리를 사용하여 연차 등록일을 선택하는 기능을 구현했습니다.
+- 사용자가 시작일과 종료일을 선택하면 해당 날짜를 한국 시간 형식으로 표시하고 연차 등록일 입력 필드에 표시합니다.
+- `react-datepicker` css를 직접 수정하여 사용자가 보기 편한 달력으로 커스텀하였습니다.
 
-<img width="550" src="https://user-images.githubusercontent.com/117700630/229609562-6fb5e20c-3be7-44dc-8e5c-9780bc10ef22.gif" />
+#### 4. 연차 등록, 수정, 삭제 기능 구현
+ - 사용자가 `react-datepicker`로 날짜를 직접 선택하여 연차를 등록, 수정, 삭제할 수 있습니다.
+
+#### 5. 엑셀 다운로드 기능
+- `react-csv` 라이브러리를 사용하여 서버에서 받아온 데이터를 CSV 파일로 다운로드할 수 있도록 구현하였습니다.
+<br/>
+
+## ✍🏻 회고
+
+이번 프로젝트에서 `react-hook-form` 라이브러리를 처음 사용해보았는데, 폼 관리와 유효성 검사를 편리하게 처리할 수 있어서 매우 유용했습니다. 이전에는 직접 폼 상태를 관리하고 유효성 검사를 구현하는데 많은 시간과 코드가 필요했지만, 이번 라이브러리를 사용하면서 많은 부분을 단순화하고 개선할 수 있었습니다.
+
+또한 `datepicker` 라이브러리를 사용하여 연차 등록 기능을 구현하는 과정에서 CSS 커스터마이징을 진행했습니다. 사용자가 보기 편한 디자인으로 달력을 수정하고, 원하는 날짜를 등록, 수정, 삭제할 수 있도록 기능을 구현하는 데에 성공했습니다.
+
+이러한 경험을 통해 라이브러리 활용의 중요성을 더욱 깨달았습니다. 라이브러리를 사용하면서 개발 효율성을 높일 수 있지만 제대로 이해하고 올바르게 활용하지 않는다면 구현하는데 더 많은 시간과 노력을 투자해야 할 수 있기 때문입니다.
+
+<br/>
 
 ## 🤔 고찰
 
