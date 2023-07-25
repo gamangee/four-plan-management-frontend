@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FiUser, FiCalendar } from 'react-icons/fi';
-import { MdLogout } from 'react-icons/md';
+import { FiUser } from '@react-icons/all-files/fi/FiUser';
+import { FiCalendar } from '@react-icons/all-files/fi/FiCalendar';
+import { FiLogOut } from '@react-icons/all-files/fi/FiLogOut';
 
 export default function UserMyPage({ selectItem, select }) {
   return (
@@ -26,7 +27,7 @@ export default function UserMyPage({ selectItem, select }) {
           <ItemText>Annual Management</ItemText>
         </Item>
         <LogOut data-id="">
-          <MdLogout />
+          <FiLogOut />
           <ItemText>LOGOUT</ItemText>
         </LogOut>
       </MyPageItems>

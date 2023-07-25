@@ -1,24 +1,24 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { DarkModeProvider } from './context/DarkModeContext';
-import NotFound from './pages/NotFound';
-import Login from './pages/user/Login';
-import Signup from './pages/user/SignUp';
-import UserAnnaul from './pages/user/UserAnnaul';
-import UserInfo from './pages/user/UserInfo';
-import Main from './pages/Main';
-import Management from './pages/admin/Management';
-import AdminLogin from './pages/admin/AdminLogin';
+import { worker } from './mocks/worker';
 
-// import { worker } from './mocks/worker';
+if (process.env.NODE_ENV === 'development') {
+  worker.start();
+}
 
-// if (process.env.NODE_ENV === 'development') {
-//   worker.start();
-// }
+const App = lazy(() => import('./App'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+const Login = lazy(() => import('./pages/user/Login'));
+const Signup = lazy(() => import('./pages/user/SignUp'));
+const UserAnnaul = lazy(() => import('./pages/user/UserAnnaul'));
+const UserInfo = lazy(() => import('./pages/user/UserInfo'));
+const Main = lazy(() => import('./pages/Main'));
+const Management = lazy(() => import('./pages/admin/Management'));
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
 
 const router = createBrowserRouter([
   {
@@ -54,7 +54,13 @@ const router = createBrowserRouter([
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<RouterProvider router={router} />);
+root.render(
+  <Suspense fallback={<div>Loading...</div>}>
+    <RouterProvider router={router}>
+      <App />
+    </RouterProvider>
+  </Suspense>
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

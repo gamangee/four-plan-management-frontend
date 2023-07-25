@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import TodayDuty from '../pages/TodayDuty';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { AiOutlineCalendar } from 'react-icons/ai';
+import { AiOutlineCalendar } from '@react-icons/all-files/ai/AiOutlineCalendar';
 import { useService } from '../context/context';
 import AdminPage from './AdminPage';
 import UserMyPage from './UserMyPage';
@@ -60,10 +60,14 @@ export default function SideBar() {
             <UserInfo>
               <Content>
                 {user.role === 'ROLE_ADMIN' ? (
-                  <UserProfile src="/images/profile/admin_profile.jpg" />
+                  <UserProfile
+                    src="/images/profile/admin_profile.jpg"
+                    alt="admin_profile_img"
+                  />
                 ) : (
                   <UserProfile
                     src={`/images/profile/profile_img_${index}.jpg`}
+                    alt="profile_img"
                   />
                 )}
                 <UserInfoContainer>
@@ -173,7 +177,6 @@ const Title = styled.div`
   border-radius: ${props => props.theme.style.borderRadius};
   margin: 33px 0 63px 0;
   line-height: 36px;
-  }
 `;
 
 const HighLight = styled.div`

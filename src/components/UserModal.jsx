@@ -1,5 +1,5 @@
 import React from 'react';
-import { IoIosClose } from 'react-icons/io';
+import { IoIosClose } from '@react-icons/all-files/io/IoIosClose';
 import styled from 'styled-components';
 
 export default function UserModal({ isOpen, onClose, status }) {

@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
+import { AiFillEyeInvisible } from '@react-icons/all-files/ai/AiFillEyeInvisible';
+import { AiFillEye } from '@react-icons/all-files/ai/AiFillEye';
 import { setCookie } from '../../cookie';
 import { useService } from '../../context/context';
 

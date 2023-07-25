@@ -233,8 +233,8 @@ const Checkbox = styled.input`
     padding-left: 5px;
   }
   & + Label:before {
-    position : absolute;
-    left : 5px;
+    position: absolute;
+    left: 5px;
     content: '';
     display: inline-block;
     width: 17px;
@@ -242,16 +242,17 @@ const Checkbox = styled.input`
     border: 2px solid ${props => props.theme.style.text};
     border-radius: 4px;
     vertical-align: middle;
-    margin-left :10px;
+    margin-left: 10px;
   }
-  &:checked + Label:before{
-  width: 17px;
-  height: 17px;
-  content: '';
-  background-color: ${props => props.theme.style.text};
-  border-color: ${props => props.theme.style.text};
-  background-repeat: no-repeat;
-  background-position: 50%;
+  &:checked + Label:before {
+    width: 17px;
+    height: 17px;
+    content: '';
+    background-color: ${props => props.theme.style.text};
+    border-color: ${props => props.theme.style.text};
+    background-repeat: no-repeat;
+    background-position: 50%;
+  }
 `;
 
 const Li = styled.li`
@@ -264,8 +265,7 @@ const Label = styled.label`
   width : 280px;
   padding-bottom: 8px;
   border-bottom: 1px solid ${props => props.theme.style.lightGray};
-  padding-left 30px;
-  }
+  padding-left: 30px;
 `;
 
 const Name = styled.div`

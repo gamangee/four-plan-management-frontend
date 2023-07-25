@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useService } from '../context/context';
 import { useEffect } from 'react';
-import { IoIosClose } from 'react-icons/io';
+import { IoIosClose } from '@react-icons/all-files/io/IoIosClose';
 
 export default function ChangeRole({ selectedUser }) {
   const { service } = useService();
